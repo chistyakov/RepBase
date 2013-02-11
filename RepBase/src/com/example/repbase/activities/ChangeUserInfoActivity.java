@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -66,7 +67,7 @@ public class ChangeUserInfoActivity extends Activity
 					return;
 				if (!newPass1Box.getText().toString().equals("") || !newPass2Box.getText().toString().equals(""))
 				{
-					if (!Common.CheckControl(ChangeUserInfoActivity.this, emailBox, "Для изменения пароля необходимо указать старый пароль"))
+					if (!Common.CheckControl(ChangeUserInfoActivity.this, oldPassBox, "Для изменения пароля необходимо указать старый пароль"))
 						return;
 					if (!newPass1Box.getText().toString().equals(newPass2Box.getText()))
 					{
@@ -90,7 +91,10 @@ public class ChangeUserInfoActivity extends Activity
 						{
 							if (!nameBox.getText().toString().equals(atr.Value))
 							{
+								Log.d("myLogs","User name before ChangeUserName method: "+Common.getSpecifiedAttribute(user, "Name"));
 								JSONObject res = DBInterface.ChangeUserName(SessionState.AuthorizedUser, nameBox.getText().toString());
+//								JSONObject LogUser = DBInterface.GetUserByID(SessionState.AuthorizedUser);
+								Log.d("myLogs","User name after ChangeUserName method: "+Common.getSpecifiedAttribute(user, "Name"));
 								if (!Check(res)) return;
 							} 
 						}
