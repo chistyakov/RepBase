@@ -11,45 +11,110 @@ import android.widget.Toast;
 
 import com.example.repbase.classes.Attribute;
 
-public class Common 
-{
-	public static void ShowMessageBox(Context context, String msg)
-	{
+// TODO: think about i18n of application
+public class Common {
+	public static void ShowMessageBox(Context context, String msg) {
 		Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
 	}
-	
-	public static boolean CheckControl(Context context, EditText control, String failureMessage)
-	{
-		if (control.getText().toString().equals(""))
-		{
+
+	public static boolean CheckControl(Context context, EditText control,
+			String failureMessage) {
+		if (control.getText().toString().equals("")) {
 			Common.ShowMessageBox(context, failureMessage);
 			return false;
 		}
 		return true;
 	}
-	
-	public static JSONArray GetAttributes(JSONObject object) 
-			throws JSONException
-	{
-		return object.getJSONObject("Attributes").getJSONArray("Attributes");
+
+	private static JSONArray GetAttributes(JSONObject jobject)
+			throws JSONException {
+		return jobject.getJSONObject("Attributes").getJSONArray("Attributes");
+	}
+
+	public static ArrayList<Attribute> GetAttributesList(JSONObject object)
+			throws JSONException {
+		ArrayList<Attribute> result = new ArrayList<Attribute>();
+
+		JSONArray attrs = Common.GetAttributes(object);
+
+		for (int i = 0; i < attrs.length(); i++) {
+			result.add(new Attribute(attrs.getJSONObject(i).getInt("ID"), attrs
+					.getJSONObject(i).getString("Value"), attrs
+					.getJSONObject(i).getJSONObject("Type").getInt("ID"), attrs
+					.getJSONObject(i).getJSONObject("Type").getString("Name")));
+		}
+
+		return result;
+	}
+
+	// method returns the value of attribute from the list
+	// with specified name
+	public static String getSpecifiedAttribute(JSONObject object, String AttType)
+			throws JSONException {
+		ArrayList<Attribute> attList = new ArrayList<Attribute>();
+		attList = Common.GetAttributesList(object);
+		for (Attribute a : attList) {
+			if (a.Type.equals(AttType))
+				return a.Value;
+		}
+		return null;
 	}
 	
-	public static ArrayList<Attribute> GetAttributesList(JSONObject object)
-			throws JSONException
-	{		
-		ArrayList<Attribute> result = new ArrayList<Attribute>();
-		
-		JSONArray attrs = Common.GetAttributes(object);
-		
-		for (int i = 0; i < attrs.length(); i++)
-		{
-			result.add(new Attribute(
-					attrs.getJSONObject(i).getInt("ID"), 
-					attrs.getJSONObject(i).getString("Value"),
-					attrs.getJSONObject(i).getJSONObject("Type").getInt("ID"),
-					attrs.getJSONObject(i).getJSONObject("Type").getString("Name")));
+	// returns the value of required attribute and fallback if attribute is not exists
+	public static String optSpecifiedAttribute(JSONObject object, String AttType, String fallback)
+			throws JSONException {
+		ArrayList<Attribute> attList = new ArrayList<Attribute>();
+		attList = Common.GetAttributesList(object);
+		for (Attribute a : attList) {
+			if (a.Type.equals(AttType))
+				return a.Value;
 		}
-		
-		return result;
+		return fallback;
+	}
+
+	// this function is not the best i18n approach :)
+	// IT'S DREADFUL !!!
+	// it should be renamed to terribleTranslateToRo()
+	public static String translateToRu(String engStr) {
+		// Actually switch statement for Strings was added in jdk 7
+		// see:
+		// http://stackoverflow.com/questions/338206/switch-statement-with-strings-in-java
+		// we use ancient if-then-elseif approach because
+		// afaik, Android does not currently support java7
+
+		if (engStr
+				.equals("Invalid argument. Invalid \"Nickname\" argument - length")) {
+			return "Длина ника от 4 до 15 символов";
+		} else if (engStr
+				.equals("Invalid argument. Invalid \"Nickname\" argument - already exists")) {
+			return "Пользователь с таким ником уже зарегистрирован";
+		} else if (engStr
+				.equals("Invalid argument. Invalid \"Password\" argument - length")) {
+			return "Длина пароля от 4 до 25 символов";
+		} else if (engStr
+				.equals("Invalid argument. Invalid \"Name\" argument - length")) {
+			return "Длина имени до 20 символов";
+		} else if (engStr
+				.equals("Invalid argument. Invalid \"Surname\" argument - length")) {
+			return "Длина фамилии до 20 символов";
+		} else if (engStr.equals("Invalid phone number format")) {
+			// return "Неверный формат номера телефона"
+			return "Неверная длина номера телефона (необходимо 11 цифр)";
+		} else if (engStr
+				.equals("Invalid argument. Invalid \"Phone\" argument - length")) {
+			return "Неверная длина номера телефона (необходимо 11 цифр)";
+		} else if (engStr
+				.equals("Invalid argument. Invalid \"Phone\" argument - already exists")) {
+			return "Пользователь с таким номером тел. уже зарегистрирован";
+		} else if (engStr
+				.equals("Invalid argument. Invalid \"E-mail\" argument - already exists")) {
+			return "Пользователь с таким e-mail уже зарегистрирован";
+		} else if (engStr.equals("There is no such user in database")) {
+			return "Такого пользователя не сущуствует";
+		} else if (engStr.equals("Authentication failed. The password is incorrect.")){
+			return ("Проверьте правильность ввода пароля");
+		}
+		else
+			return engStr;
 	}
 }
