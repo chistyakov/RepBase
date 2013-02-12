@@ -20,7 +20,7 @@
         android:layout_toRightOf="@+id/textView1"
         android:text="Название"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-
+
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
         android:layout_toRightOf="@+id/textView4"
         android:text="00:00"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-
+
     <Button
         android:id="@+id/cancelRepButton_list"
         style="?android:attr/buttonStyleSmall"
@@ -149,7 +149,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textStyle="bold"
         android:visibility="invisible" />
-
+
     <TextView
         android:id="@+id/repCostText_list"
         android:layout_width="wrap_content"
@@ -161,7 +161,7 @@
         android:text="100500"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:visibility="invisible" />
-
+
     <TextView
         android:id="@+id/repPayedLabel_list"
         android:layout_width="wrap_content"
@@ -173,7 +173,7 @@
         android:text="Оплачено:"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:visibility="invisible" />
-
+
     <TextView
         android:id="@+id/repPayedText_list"
         android:layout_width="wrap_content"
@@ -195,7 +195,7 @@
         android:text="Дата:"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textStyle="bold" />
-
+
     <TextView
         android:id="@+id/repDateText_list"
         android:layout_width="wrap_content"

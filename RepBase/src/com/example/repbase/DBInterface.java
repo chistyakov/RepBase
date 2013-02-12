@@ -8,13 +8,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import com.example.repbase.classes.Attribute;
 import com.example.repbase.classes.SessionState;
 
+// TODO: spyke: mark class as static
+// (all methods are static but GetAvailableTimes())
 
 public class DBInterface
 {
-	public static String URL = "http://192.168.1.3/DBService/DBService.svc/";
+	public static String URL = "http://test-blabla.no-ip.org/DBService/DBService.svc/";
 	public static String WrapParameter(String ParameterName, String Parameter)
 	{
 		return "?" + ParameterName + "=" + Parameter;
@@ -45,6 +49,11 @@ public class DBInterface
 			throws ExecutionException, InterruptedException
 	{
 		String MethodURL = "CheckAuthorization/";
+		Log.d("Auth",URL + MethodURL + 
+				DBInterface.WrapParameter("Nick", Nick) + "&" + 
+				DBInterface.WrapParameter("Password", Password)); // why not WrapParameter_() but WrapParameter() should be used???
+		// http://test-blabla.no-ip.org/DBService/DBService.svc/CheckAuthorization/?Nick=alexch&?Password=password1
+		
 		return new GetJSONFromUrl().execute(URL + MethodURL + 
 				DBInterface.WrapParameter("Nick", Nick) + "&" + 
 				DBInterface.WrapParameter("Password", Password)
@@ -133,11 +142,14 @@ public class DBInterface
 	public static JSONObject ChangeUserName(String UserID, String Name)
 			throws InterruptedException, ExecutionException, JSONException
 	{
+		Log.d("myLogs","ChangeUserName method was called with :"+Name);
 		String MethodURL = "User_ChangeName/";
-		return new GetJSONFromUrl().execute(URL + MethodURL +
+		JSONObject jo=new GetJSONFromUrl().execute(URL + MethodURL +
 				DBInterface.WrapParameter("ActionPerformerID", SessionState.AuthorizedUser) + '&' +
 				DBInterface.WrapParameter_("UserID", SessionState.AuthorizedUser) + '&' + 
 				DBInterface.WrapParameter_("Name", Name)).get();
+		
+		return jo;
 	}
 	
 	public static JSONObject ChangeUserSurname(String UserID, String Surname)
