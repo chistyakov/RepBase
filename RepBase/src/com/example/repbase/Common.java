@@ -57,7 +57,7 @@ public class Common {
 			if (a.Type.equals(AttType))
 				return a.Value;
 		}
-		return null;
+		throw new JSONException("can't find key "+AttType+" in JSON array of attributes");
 	}
 	
 	// returns the value of required attribute and fallback if attribute is not exists

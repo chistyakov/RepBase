@@ -31,6 +31,7 @@ public class UserWithJSONskills extends User {
 		JSONObject jo = new JSONObject();
 		jo = DBInterface
 				.CreateUser(Nick, Password, Name, Surname, Phone, Email);
+		Log.d("reg", jo.toString());
 
 		// TODO: test this assumption
 		// jo can contain "Exception" (see RegisterActivity.java)
@@ -55,10 +56,8 @@ public class UserWithJSONskills extends User {
 			this.setSurname(Common.getSpecifiedAttribute(jo, "Surname"));
 			this.setEmail(Common.getSpecifiedAttribute(jo, "E-mail"));
 
-			// TODO: test Boolean.parseBoolean() method with "TRUE" and "FALSE"
-			// strings
-			if (Boolean.parseBoolean(Common.getSpecifiedAttribute(jo,
-					"Full Rights")))
+			if (Boolean.parseBoolean(Common.optSpecifiedAttribute(jo,
+					"Full Rights", "FALSE")))
 				this.markAsAdmin();
 			if (Boolean.parseBoolean(Common
 					.getSpecifiedAttribute(jo, "Deleted")))
@@ -117,5 +116,9 @@ public class UserWithJSONskills extends User {
 
 	public boolean isActual() {
 		return actuality;
+	}
+	
+	public void changeName() {
+		
 	}
 }

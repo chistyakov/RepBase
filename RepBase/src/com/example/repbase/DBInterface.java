@@ -82,6 +82,14 @@ public class DBInterface
 			throws ExecutionException, InterruptedException, JSONException
 	{
 		String MethodURL = "CreateUser/";
+		Log.d("reg", URL + MethodURL +
+				DBInterface.WrapParameter("Phone", Phone) + '&' +
+				DBInterface.WrapParameter_("Password", Password) + '&' +
+				DBInterface.WrapParameter_("Nick", Nick) + '&' +
+				DBInterface.WrapParameter_("Name", Name) + '&' +
+				DBInterface.WrapParameter_("Surname", Surname) + '&' +
+				DBInterface.WrapParameter_("E_mail", Email));
+		
 		return new GetJSONFromUrl().execute(URL + MethodURL +
 				DBInterface.WrapParameter("Phone", Phone) + '&' +
 				DBInterface.WrapParameter_("Password", Password) + '&' +

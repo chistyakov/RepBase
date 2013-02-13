@@ -66,7 +66,7 @@ public class RegisterActivity extends Activity {
 						ShowMessageBox("Максимальная длина e-mail: " + MAX_EMAIL_LENGTH);
 						return;
 					}
-
+					try {
 					SessionState.currentUser = new UserWithJSONskills(
 							nicknameBox.getText().toString(),
 							passwdBox1.getText().toString(),
@@ -77,18 +77,18 @@ public class RegisterActivity extends Activity {
 
 					
 					
-					JSONObject newusr = DBInterface.CreateUser(nicknameBox
-							.getText().toString(), passwdBox1.getText()
-							.toString(), nameBox.getText().toString(),
-							surnameBox.getText().toString(), phoneBox.getText()
-									.toString(), emailBox.getText().toString());
+//					JSONObject newusr = DBInterface.CreateUser(nicknameBox
+//							.getText().toString(), passwdBox1.getText()
+//							.toString(), nameBox.getText().toString(),
+//							surnameBox.getText().toString(), phoneBox.getText()
+//									.toString(), emailBox.getText().toString());
 
-					try {
 						if(SessionState.currentUser.isActual())
 						{
-						newusr.getString("Password"); // does this statement call exception?
-						SessionState.AuthorizedUser = Integer.toString(newusr
-								.getInt("ID"));
+//						newusr.getString("Password"); // does this statement call exception?
+//						SessionState.AuthorizedUser = Integer.toString(newusr
+//								.getInt("ID"));
+						SessionState.AuthorizedUser=String.valueOf(SessionState.currentUser.getId());
 						AlertDialog.Builder ad = new AlertDialog.Builder(RegisterActivity.this);
 						ad.setTitle("Пользователь создан");
 						ad.setMessage("Пользователь успешно создан");
