@@ -31,40 +31,11 @@ public class UserWithJSONskills extends User {
 		JSONObject jo = new JSONObject();
 		jo = DBInterface
 				.CreateUser(Nick, Password, Name, Surname, Phone, Email);
-		Log.d("reg", jo.toString());
 
-		// TODO: test this assumption
-		// jo can contain "Exception" (see RegisterActivity.java)
 		if (jo.has("Exception"))
 			throw new JSONException(jo.getString("Exception"));
 		else {
-
-			// super(jo.getInt("ID"), Nick, jo.getString("Password"), Phone);
-			// bitch!!!
-			// "Constructor call must be the first statement in a constructor"
-			// we have to set every field manually
-
-			this.setId(jo.getInt("ID"));
-			this.setPassword(jo.getString("Password"));
-			this.setNick(jo.getString("Nick"));
-			this.setPhone(jo.getString("Phone"));
-
-			// we can use Common.GetAttributesList() method with loop.
-			// Common.getSpecifiedAttribute() is more slowly
-			// but more clearly in my eyes
-			this.setName(Common.getSpecifiedAttribute(jo, "Name"));
-			this.setSurname(Common.getSpecifiedAttribute(jo, "Surname"));
-			this.setEmail(Common.getSpecifiedAttribute(jo, "E-mail"));
-
-			if (Boolean.parseBoolean(Common.optSpecifiedAttribute(jo,
-					"Full Rights", "FALSE")))
-				this.markAsAdmin();
-			if (Boolean.parseBoolean(Common
-					.getSpecifiedAttribute(jo, "Deleted")))
-				this.markAsDeleted();
-			if (Boolean
-					.parseBoolean(Common.getSpecifiedAttribute(jo, "Banned")))
-				this.markAsBanned();
+			fillFields(jo);
 			this.actuality = true;
 			// this.URL = URL;
 		}
@@ -76,9 +47,7 @@ public class UserWithJSONskills extends User {
 		// contains name "CheckAuthorizationResult" in case nick was found
 		// and name "Exception" otherwise
 		// see GetJSONFromUrl.java
-		Log.d("Auth", "i've come back to UserWithJSONskills constructor");
 		JSONObject joCheckAuth = new JSONObject();
-		Log.d("Auth",joCheckAuth.optString("Exception", joCheckAuth.toString()));
 		joCheckAuth = DBInterface.CheckAuth(Nick, Password);
 		if (joCheckAuth.has("Exception"))
 			throw new JSONException(joCheckAuth.getString("Exception"));
@@ -86,39 +55,68 @@ public class UserWithJSONskills extends User {
 			if (joCheckAuth.getBoolean("CheckAuthorizationResult")) {
 				JSONObject jo = new JSONObject();
 				jo = DBInterface.GetUserByNickname(Nick);
-				this.setId(jo.getInt("ID"));
-				this.setPassword(jo.getString("Password"));
-				this.setNick(jo.getString("Nick"));
-				this.setPhone(jo.getString("Phone"));
-				
-				this.setName(Common.getSpecifiedAttribute(jo, "Name"));
-				this.setSurname(Common.getSpecifiedAttribute(jo, "Surname"));
-				this.setEmail(Common.getSpecifiedAttribute(jo, "E-mail"));
-
-				if (Boolean.parseBoolean(Common.optSpecifiedAttribute(jo,
-						"Full Rights", "FALSE")))
-					this.markAsAdmin(); // Common.optSpecifiedAttribute is used instead of Common.getSpecifiedAttribute
-										// because "Full Rights" attribute can be missed
-				if (Boolean.parseBoolean(Common.getSpecifiedAttribute(jo,
-						"Deleted")))
-					this.markAsDeleted();
-				if (Boolean.parseBoolean(Common.getSpecifiedAttribute(jo,
-						"Banned")))
-					this.markAsBanned();
-
+				fillFields(jo);
 				this.actuality = true;
 			} else
 				throw new JSONException(
 						"Authentication failed. The password is incorrect.");
-			Log.d("Auth", "i've finished with UserWithJSONskills constructor");
 		}
 	}
+	
+	// private method fills all fields of user from JSON object
+	private void fillFields(JSONObject joUser) throws JSONException, InterruptedException, ExecutionException{
+		this.setPassword(joUser.getString("Password"));
+		this.setNick(joUser.getString("Nick"));
+		this.setPhone(joUser.getString("Phone"));
+		
+		// new JSON request is sent in DBInterface.DeEncryptPhone(String ID)
+		this.setPhone(DBInterface.DeEncryptPhone(joUser.getString("ID")));
 
+		// we can use Common.GetAttributesList() method with loop.
+		// Common.getSpecifiedAttribute() is more slowly
+		// but more clearly in my eyes
+		this.setName(Common.getSpecifiedAttribute(joUser, "Name"));
+		this.setSurname(Common.getSpecifiedAttribute(joUser, "Surname"));
+		this.setEmail(Common.getSpecifiedAttribute(joUser, "E-mail"));
+
+		if (Boolean.parseBoolean(Common.optSpecifiedAttribute(joUser,
+				"Full Rights", "FALSE")))
+			this.markAsAdmin(); // Common.OPTspecifiedAttribute is used instead of Common.getSpecifiedAttribute
+								// because "Full Rights" attribute can be missed
+		if (Boolean.parseBoolean(Common.getSpecifiedAttribute(joUser,
+				"Deleted")))
+			this.markAsDeleted();
+		if (Boolean.parseBoolean(Common.getSpecifiedAttribute(joUser,
+				"Banned")))
+			this.markAsBanned();	
+	}
+
+	// refresh all values from server
+	public void refresh() throws ExecutionException, InterruptedException, JSONException{
+		JSONObject jo = new JSONObject();
+		jo = DBInterface.GetUserByID(String.valueOf(getId()));
+		fillFields(jo);
+	}
+	
 	public boolean isActual() {
 		return actuality;
 	}
-	
-	public void changeName() {
 		
+	public boolean checkPassword(String passw) throws ExecutionException, InterruptedException, JSONException{
+		JSONObject joCheckAuth = DBInterface.CheckAuth(getNick(), passw);
+		return joCheckAuth.getBoolean("CheckAuthorizationResult");
 	}
+
+	// returns true if the value was changed
+	public boolean changeName(String name) throws InterruptedException, ExecutionException, JSONException {
+		if (name==getName()) return false;
+		else{
+			DBInterface.ChangeUserName(String.valueOf(getId()), name);
+			// refresh function exchanges data with server
+			// it will be better if DBInterface.ChangeUserName returns boolean
+			refresh();
+			return (name==getName());
+		}
+	}
+
 }

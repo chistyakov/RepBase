@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
 		// обработчик кнопки Войти
 		OnClickListener submit_click = new OnClickListener() {
 			public void onClick(View v) {
-				JSONObject auth = new JSONObject();
+//				JSONObject auth = new JSONObject();
 
 				try {
 					if (!Common.CheckControl(MainActivity.this, nicknameBox,
@@ -62,21 +62,21 @@ public class MainActivity extends Activity {
 
 						// check created user
 						// ctrl+shift+f always crashes this strings
-						Log.d(tagAuth,"id: " + SessionState.currentUser.getId());
-						Log.d(tagAuth,"Nick: " + SessionState.currentUser.getNick());
-						Log.d(tagAuth,"Name: " + SessionState.currentUser.getName());
-						Log.d(tagAuth,"Surname: "
-										+ SessionState.currentUser.getSurname());
-						Log.d(tagAuth,"Password: "
-										+ SessionState.currentUser.getPassword());
-						Log.d(tagAuth,"Phone: " + SessionState.currentUser.getPhone());
-						Log.d(tagAuth,"Email" + SessionState.currentUser.getEmail());
-						Log.d(tagAuth,"deleted: "
-										+ String.valueOf(SessionState.currentUser.getDelStatus()));
-						Log.d(tagAuth,"banned: "
-										+ String.valueOf(SessionState.currentUser.getBanStatus()));
-						Log.d(tagAuth,"admin: "
-										+ String.valueOf(SessionState.currentUser.getFullRightsStatus()));
+//						Log.d(tagAuth,"id: " + SessionState.currentUser.getId());
+//						Log.d(tagAuth,"Nick: " + SessionState.currentUser.getNick());
+//						Log.d(tagAuth,"Name: " + SessionState.currentUser.getName());
+//						Log.d(tagAuth,"Surname: "
+//										+ SessionState.currentUser.getSurname());
+//						Log.d(tagAuth,"Password: "
+//										+ SessionState.currentUser.getPassword());
+//						Log.d(tagAuth,"Phone: " + SessionState.currentUser.getPhone());
+//						Log.d(tagAuth,"Email" + SessionState.currentUser.getEmail());
+//						Log.d(tagAuth,"deleted: "
+//										+ String.valueOf(SessionState.currentUser.getDelStatus()));
+//						Log.d(tagAuth,"banned: "
+//										+ String.valueOf(SessionState.currentUser.getBanStatus()));
+//						Log.d(tagAuth,"admin: "
+//										+ String.valueOf(SessionState.currentUser.getFullRightsStatus()));
 
 						
 						// deprecated strings						
@@ -103,11 +103,11 @@ public class MainActivity extends Activity {
 				} catch (JSONException e) {
 					ShowMessageBox(Common.translateToRu(e.getMessage()));
 				} catch (Exception e) {
-					Log.d(tagAuth, e.toString());
-					StackTraceElement[] ste = e.getStackTrace();
-					for (int i = 0; i < ste.length; i++) {
-						Log.d(tagAuth, ste[i].toString());						
-					}
+//					Log.d(tagAuth, e.toString());
+//					StackTraceElement[] ste = e.getStackTrace();
+//					for (int i = 0; i < ste.length; i++) {
+//						Log.d(tagAuth, ste[i].toString());						
+//					}
 					ShowMessageBox(e.toString());
 				}
 			}

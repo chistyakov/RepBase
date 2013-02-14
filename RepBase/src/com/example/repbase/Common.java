@@ -74,7 +74,7 @@ public class Common {
 
 	// this function is not the best i18n approach :)
 	// IT'S DREADFUL !!!
-	// it should be renamed to terribleTranslateToRo()
+	// it should be renamed to terribleTranslateToRu()
 	public static String translateToRu(String engStr) {
 		// Actually switch statement for Strings was added in jdk 7
 		// see:
@@ -90,7 +90,7 @@ public class Common {
 			return "Пользователь с таким ником уже зарегистрирован";
 		} else if (engStr
 				.equals("Invalid argument. Invalid \"Password\" argument - length")) {
-			return "Длина пароля от 4 до 25 символов";
+			return "Длина пароля от 5 до 25 символов";
 		} else if (engStr
 				.equals("Invalid argument. Invalid \"Name\" argument - length")) {
 			return "Длина имени до 20 символов";

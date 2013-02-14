@@ -141,6 +141,10 @@ public class DBInterface
 			throws InterruptedException, ExecutionException, JSONException
 	{
 		String MethodURL = "User_ChangePhone/";
+		Log.d("change", "phone: "+URL + MethodURL +
+				DBInterface.WrapParameter("ActionPerformerID", SessionState.AuthorizedUser) + '&' +
+				DBInterface.WrapParameter_("UserID", SessionState.AuthorizedUser) + '&' + 
+				DBInterface.WrapParameter_("Phone", Phone));
 		return new GetJSONFromUrl().execute(URL + MethodURL +
 				DBInterface.WrapParameter("ActionPerformerID", SessionState.AuthorizedUser) + '&' +
 				DBInterface.WrapParameter_("UserID", SessionState.AuthorizedUser) + '&' + 
@@ -150,8 +154,12 @@ public class DBInterface
 	public static JSONObject ChangeUserName(String UserID, String Name)
 			throws InterruptedException, ExecutionException, JSONException
 	{
-		Log.d("myLogs","ChangeUserName method was called with :"+Name);
 		String MethodURL = "User_ChangeName/";
+		Log.d("myLogs","ChangeUserName method was called with :"+Name);
+		Log.d("myLogs",URL + MethodURL +
+				DBInterface.WrapParameter("ActionPerformerID", SessionState.AuthorizedUser) + '&' +
+				DBInterface.WrapParameter_("UserID", SessionState.AuthorizedUser) + '&' + 
+				DBInterface.WrapParameter_("Name", Name));
 		JSONObject jo=new GetJSONFromUrl().execute(URL + MethodURL +
 				DBInterface.WrapParameter("ActionPerformerID", SessionState.AuthorizedUser) + '&' +
 				DBInterface.WrapParameter_("UserID", SessionState.AuthorizedUser) + '&' + 
@@ -184,6 +192,10 @@ public class DBInterface
 			throws InterruptedException, ExecutionException, JSONException
 	{
 		String MethodURL = "User_ChangePassword/";
+		Log.d("change", "passw: "+URL + MethodURL +
+				DBInterface.WrapParameter("ActionPerformerID", SessionState.AuthorizedUser) + '&' +
+				DBInterface.WrapParameter_("UserID", SessionState.AuthorizedUser) + '&' + 
+				DBInterface.WrapParameter_("Password", Password));
 		return new GetJSONFromUrl().execute(URL + MethodURL +
 				DBInterface.WrapParameter("ActionPerformerID", SessionState.AuthorizedUser) + '&' +
 				DBInterface.WrapParameter_("UserID", SessionState.AuthorizedUser) + '&' + 

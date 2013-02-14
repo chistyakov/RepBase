@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import com.example.repbase.Common;
 import com.example.repbase.DBInterface;
 import com.example.repbase.R;
-import com.example.repbase.classes.Attribute;
+//import com.example.repbase.classes.Attribute;
 import com.example.repbase.classes.SessionState;
 
 import android.app.Activity;
@@ -39,6 +39,7 @@ public class ProfileActivity extends Activity
 	    	public void onClick(View v)
 	    	{
 	    		SessionState.AuthorizedUser = "";
+	    		SessionState.currentUser=null;
 	    		Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
 	    		startActivity(intent);
 	    	}
@@ -123,18 +124,23 @@ public class ProfileActivity extends Activity
 	    
 	    try
         {
-        	JSONObject user = DBInterface.GetUserByID(SessionState.AuthorizedUser);
-        	nickText.setText(user.getString("Nick"));
-    		phoneText.setText(DBInterface.DeEncryptPhone(user.getString("ID")));
-        	for (Attribute a: Common.GetAttributesList(user))
-        	{
-        		if (a.Type.equals("Name"))
-        			nameText.setText(a.Value);
-        		else if (a.Type.equals("Surname"))
-        			surnameText.setText(a.Value);
-        		else if (a.Type.equals("E-mail"))
-        			emailText.setText(a.Value);
-        	}
+//        	JSONObject user = DBInterface.GetUserByID(SessionState.AuthorizedUser);
+//        	nickText.setText(user.getString("Nick"));
+//    		phoneText.setText(DBInterface.DeEncryptPhone(user.getString("ID")));
+//        	for (Attribute a: Common.GetAttributesList(user))
+//        	{
+//        		if (a.Type.equals("Name"))
+//        			nameText.setText(a.Value);
+//        		else if (a.Type.equals("Surname"))
+//        			surnameText.setText(a.Value);
+//        		else if (a.Type.equals("E-mail"))
+//        			emailText.setText(a.Value);
+//        	}
+	    	nickText.setText(SessionState.currentUser.getNick());
+	    	phoneText.setText(SessionState.currentUser.getPhone());
+	    	nameText.setText(SessionState.currentUser.getName());
+	    	surnameText.setText(SessionState.currentUser.getSurname());
+	    	emailText.setText(SessionState.currentUser.getEmail());
         }
         catch (Exception ex)
         {
