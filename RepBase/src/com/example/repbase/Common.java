@@ -13,6 +13,8 @@ import com.example.repbase.classes.Attribute;
 
 // TODO: think about i18n of application
 public class Common {
+	public static final int MAX_EMAIL_LENGTH=20;
+	
 	public static void ShowMessageBox(Context context, String msg) {
 		Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
 	}

@@ -63,6 +63,10 @@ public class ChangeUserInfoActivity extends Activity {
 						return;
 					if (!Common.CheckControl(ChangeUserInfoActivity.this, emailBox, "Введите e-mail"))
 						return;
+					if (emailBox.getText().toString().length()>Common.MAX_EMAIL_LENGTH){
+						ShowMessageBox("Максимальная длина e-mail: " + Common.MAX_EMAIL_LENGTH);
+						return;
+					}
 					boolean changePass; // flag is set in 1 when we should try to change password.
 					if (changePass=(!newPass1Box.getText().toString().equals("") || !newPass2Box.getText().toString().equals(""))) {
 						// newPass1Box is not empty or newPass2Box is not empty
@@ -73,8 +77,6 @@ public class ChangeUserInfoActivity extends Activity {
 							ShowMessageBox("Проверьте правильность ввода старого пароля");
 							return;
 						}
-//						Log.d("change", "newPass1Box: " + newPass1Box.getText().toString());
-//						Log.d("change", "newPass2Box: " + newPass2Box.getText().toString());
 						if (!newPass1Box.getText().toString().equals(newPass2Box.getText().toString())) {
 							ShowMessageBox("Введенные пароли не совпадают");
 							return;

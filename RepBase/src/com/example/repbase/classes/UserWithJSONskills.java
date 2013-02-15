@@ -148,10 +148,6 @@ public class UserWithJSONskills extends User {
 		else {
 			JSONObject joRespond=new JSONObject();
 			joRespond=DBInterface.ChangeUserNick(String.valueOf(getId()), nick);
-			///////
-			///////
-			Log.d("changeexc", "joRespond.toString(): "+joRespond.toString());
-			Log.d("changeexc", "joRespond.length(): "+joRespond.length());
 			if (joRespond.length()!=0 && joRespond.has("Exception"))
 				throw new JSONException(joRespond.getString("Exception"));
 			refresh();
@@ -186,7 +182,7 @@ public class UserWithJSONskills extends User {
 	}
 	
 	public boolean changePassword(String password) throws ExecutionException, InterruptedException, JSONException{
-		Log.d("changeexc", "METHOD changePassword()");
+		Log.d("changeexc", "METHOD changePassword() was started");
 		if (checkPassword(password))
 			return false;
 		else {

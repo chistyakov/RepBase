@@ -51,7 +51,7 @@ public class GetJSONFromUrl extends AsyncTask<String, Integer, JSONObject> {
 			reader.close();
 			br.close();
 
-			JSONObject result=new JSONObject();
+			JSONObject result;
 
 			Log.d("Auth", "server's respond (the value of strBuffer): "
 					+ strBuffer);

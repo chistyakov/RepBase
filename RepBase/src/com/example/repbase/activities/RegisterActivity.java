@@ -22,7 +22,7 @@ import com.example.repbase.classes.UserWithJSONskills;
 public class RegisterActivity extends Activity {
 	
 	// TODO: test new code
-	private final int MAX_EMAIL_LENGTH=20;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,11 +62,10 @@ public class RegisterActivity extends Activity {
 					if (!Common.CheckControl(RegisterActivity.this, emailBox,
 							"Введите адрес электронной почты"))
 						return;
-					if (emailBox.getText().toString().length()>MAX_EMAIL_LENGTH){
-						ShowMessageBox("Максимальная длина e-mail: " + MAX_EMAIL_LENGTH);
+					if (emailBox.getText().toString().length()>Common.MAX_EMAIL_LENGTH){
+						ShowMessageBox("Максимальная длина e-mail: " + Common.MAX_EMAIL_LENGTH);
 						return;
 					}
-					try {
 					SessionState.currentUser = new UserWithJSONskills(
 							nicknameBox.getText().toString(),
 							passwdBox1.getText().toString(),
@@ -75,20 +74,8 @@ public class RegisterActivity extends Activity {
 							surnameBox.getText().toString(),
 							emailBox.getText().toString());
 
-					
-					
-//					JSONObject newusr = DBInterface.CreateUser(nicknameBox
-//							.getText().toString(), passwdBox1.getText()
-//							.toString(), nameBox.getText().toString(),
-//							surnameBox.getText().toString(), phoneBox.getText()
-//									.toString(), emailBox.getText().toString());
-
-						if(SessionState.currentUser.isActual())
-						{
-//						newusr.getString("Password"); // does this statement call exception?
-//						SessionState.AuthorizedUser = Integer.toString(newusr
-//								.getInt("ID"));
-						SessionState.AuthorizedUser=String.valueOf(SessionState.currentUser.getId());
+					if (SessionState.currentUser.isActual()) {
+						SessionState.AuthorizedUser = String.valueOf(SessionState.currentUser.getId()); // deprecated
 						AlertDialog.Builder ad = new AlertDialog.Builder(RegisterActivity.this);
 						ad.setTitle("Пользователь создан");
 						ad.setMessage("Пользователь успешно создан");
@@ -101,17 +88,10 @@ public class RegisterActivity extends Activity {
 									}
 								});
 						ad.show();
-						}
-					} catch (JSONException e){
-						ShowMessageBox(Common.translateToRu(e.getMessage()));						
 					}
-					catch (Exception e) {
-						//String exception = newusr.getString("Exception");
-						ShowMessageBox(e.toString());
-					}
+				} catch (JSONException e) {
+					ShowMessageBox(Common.translateToRu(e.getMessage()));
 				} catch (Exception e) {
-					// wtf?
-					//ShowMessageBox("Неверная длина номера телефона (необходимо 11 цифр)");
 					ShowMessageBox(e.toString());
 				}
 			}

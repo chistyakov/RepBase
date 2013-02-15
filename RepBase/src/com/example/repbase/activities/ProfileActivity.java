@@ -124,18 +124,6 @@ public class ProfileActivity extends Activity
 	    
 	    try
         {
-//        	JSONObject user = DBInterface.GetUserByID(SessionState.AuthorizedUser);
-//        	nickText.setText(user.getString("Nick"));
-//    		phoneText.setText(DBInterface.DeEncryptPhone(user.getString("ID")));
-//        	for (Attribute a: Common.GetAttributesList(user))
-//        	{
-//        		if (a.Type.equals("Name"))
-//        			nameText.setText(a.Value);
-//        		else if (a.Type.equals("Surname"))
-//        			surnameText.setText(a.Value);
-//        		else if (a.Type.equals("E-mail"))
-//        			emailText.setText(a.Value);
-//        	}
 	    	nickText.setText(SessionState.currentUser.getNick());
 	    	phoneText.setText(SessionState.currentUser.getPhone());
 	    	nameText.setText(SessionState.currentUser.getName());
