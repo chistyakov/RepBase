@@ -15,7 +15,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView1" >
+        android:layout_below="@+id/textView1"
+        android:singleLine="true"
+        android:imeOptions="actionNext" >
 
         <requestFocus />
     </EditText>
@@ -34,7 +36,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textView2"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:singleLine="true"
+        android:imeOptions="actionDone"
+        />
 
     <Button
         android:id="@+id/submit"

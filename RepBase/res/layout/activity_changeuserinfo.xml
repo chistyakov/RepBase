@@ -50,7 +50,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="false"
-                    android:layout_below="@+id/textView1" >
+                    android:layout_below="@+id/textView1"
+                    android:imeOptions="actionNext"
+                    android:singleLine="true" >
 
                     <requestFocus />
                 </EditText>
@@ -69,7 +71,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="false"
-                    android:layout_below="@+id/textView2" />
+                    android:layout_below="@+id/textView2"
+                    android:imeOptions="actionNext"
+                    android:singleLine="true" />
 
                 <TextView
                     android:id="@+id/textView3"
@@ -85,7 +89,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="false"
-                    android:layout_below="@+id/textView3" />
+                    android:layout_below="@+id/textView3"
+                    android:imeOptions="actionNext"
+                    android:singleLine="true" />
 
                 <TextView
                     android:id="@+id/textView4"
@@ -102,7 +108,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="false"
                     android:layout_below="@+id/textView4"
-                    android:inputType="phone" />
+                    android:imeOptions="actionNext"
+                    android:inputType="phone"
+                    android:singleLine="true" />
 
                 <TextView
                     android:id="@+id/textView5"
@@ -118,13 +126,32 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="false"
                     android:layout_below="@+id/textView5"
-                    android:inputType="textEmailAddress" />
+                    android:imeOptions="actionDone"
+                    android:inputType="textEmailAddress"
+                    android:singleLine="true" />
+
+                <View
+                    android:id="@+id/separateline"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_below="@+id/emailBox_ch"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/separateline"
+                    android:text="Изменить пароль"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
 
                 <TextView
                     android:id="@+id/textView6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/emailBox_ch"
+                    android:layout_below="@+id/textView9"
                     android:text="Старый пароль"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -132,14 +159,14 @@
                     android:id="@+id/oldPassword_ch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="false"
-                    android:layout_below="@+id/textView6" />
+                    android:layout_below="@+id/textView6"
+                    android:imeOptions="actionNext"
+                    android:singleLine="true" />
 
                 <TextView
                     android:id="@+id/textView7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="false"
                     android:layout_below="@+id/oldPassword_ch"
                     android:text="Новый пароль"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -148,15 +175,15 @@
                     android:id="@+id/newPassword1_ch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="false"
                     android:layout_below="@+id/textView7"
-                    android:inputType="textPassword" />
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:singleLine="true" />
 
                 <TextView
                     android:id="@+id/textView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="false"
                     android:layout_below="@+id/newPassword1_ch"
                     android:text="Повтор пароля"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -165,9 +192,10 @@
                     android:id="@+id/newPassword2_ch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="false"
                     android:layout_below="@+id/textView8"
-                    android:inputType="textPassword" />
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:singleLine="true" />
             </RelativeLayout>
         </ScrollView>
     </RelativeLayout>

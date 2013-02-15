@@ -25,7 +25,9 @@
             <EditText
                 android:id="@+id/nicknameBox_r"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:imeOptions="actionNext" >
 
                 <requestFocus />
             </EditText>
@@ -41,7 +43,9 @@
                 android:id="@+id/passwdBox1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:imeOptions="actionNext" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -54,7 +58,9 @@
                 android:id="@+id/passwdBox2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword" />
+                android:inputType="textPassword" 
+                android:singleLine="true"
+                android:imeOptions="actionNext" />
 
             <TextView
                 android:id="@+id/textView4"
@@ -66,7 +72,9 @@
             <EditText
                 android:id="@+id/nameBox"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:imeOptions="actionNext" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -78,7 +86,9 @@
             <EditText
                 android:id="@+id/surnameBox"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:imeOptions="actionNext" />
 
             <TextView
                 android:id="@+id/textView6"
@@ -91,7 +101,9 @@
                 android:id="@+id/phoneBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="phone" />
+                android:inputType="phone"
+                android:singleLine="true"
+                android:imeOptions="actionNext" />
 
             <TextView
                 android:id="@+id/textView7"
@@ -104,7 +116,9 @@
                 android:id="@+id/emailBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:singleLine="true"
+                android:imeOptions="actionDone" />
 
             <Button
                 android:id="@+id/submitData"
