@@ -5,7 +5,6 @@ import java.util.concurrent.ExecutionException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.R.bool;
 import android.util.Log;
 
 import com.example.repbase.Common;
@@ -115,73 +114,85 @@ public class UserWithJSONskills extends User {
 
 	// returns true if the value was changed
 	public boolean changeName(String name) throws InterruptedException, ExecutionException, JSONException {
-		if (name==getName()) return false;
-		else{
+		if (name.equals(getName()))
+			return false;
+		else {
 			JSONObject joRespond=new JSONObject();
 			joRespond=DBInterface.ChangeUserName(String.valueOf(getId()), name);
-			if (joRespond.has("Exception"))
+			if (joRespond.length()!=0 && joRespond.has("Exception"))
 				throw new JSONException(joRespond.getString("Exception"));
 			// refresh function exchanges data with server
 			// it will be better if DBInterface.ChangeUserName returns boolean
 			refresh();
-			return (name==getName());
+			return (name.equals(getName()));
 		}
 	}
 	
 	public boolean changeSurname(String surname) throws InterruptedException, ExecutionException, JSONException{
-		if (surname == getSurname()) return false;
-		else{
+		if (surname.equals(getSurname()))
+			return false;
+		else {
 			JSONObject joRespond=new JSONObject();
 			joRespond=DBInterface.ChangeUserSurname(String.valueOf(getId()), surname);
-			if (joRespond.has("Exception"))
+			if (joRespond.length()!=0 && joRespond.has("Exception"))
 				throw new JSONException(joRespond.getString("Exception"));
 			refresh();
-			return (surname==getSurname());
+			return (surname.equals(getSurname()));
 		}
 	}
 	
 	public boolean changeNick(String nick) throws InterruptedException, ExecutionException, JSONException{
-		if (nick == getNick()) return false;
-		else{
+		Log.d("changeexc", "changeNick method with parametr "+ nick+ " was called");
+		if (nick.equals(getNick()))
+			return false;
+		else {
 			JSONObject joRespond=new JSONObject();
 			joRespond=DBInterface.ChangeUserNick(String.valueOf(getId()), nick);
-			if (joRespond.has("Exception"))
+			///////
+			///////
+			Log.d("changeexc", "joRespond.toString(): "+joRespond.toString());
+			Log.d("changeexc", "joRespond.length(): "+joRespond.length());
+			if (joRespond.length()!=0 && joRespond.has("Exception"))
 				throw new JSONException(joRespond.getString("Exception"));
 			refresh();
-			return (nick==getNick());
+			return (nick.equals(getNick()));
 		}
 	}
 	
 	public boolean changeEmail(String email) throws InterruptedException, ExecutionException, JSONException{
-		if (email == getEmail()) return false;
-		else{
+		if (email.equals(getEmail()))
+			return false;
+		else {
 			JSONObject joRespond=new JSONObject();
 			joRespond=DBInterface.ChangeUserEmail(String.valueOf(getId()), email);
-			if (joRespond.has("Exception"))
+			if (joRespond.length()!=0 && joRespond.has("Exception"))
 				throw new JSONException(joRespond.getString("Exception"));
 			refresh();
-			return (email == getEmail());
+			return (email.equals(getEmail()));
 		}
 	}
 	
 	public boolean changePhone(String phone) throws InterruptedException, ExecutionException, JSONException {
-		if (phone == getPhone()) return false;
+		if (phone.equals(getPhone()))
+			return false;
 		else {
 			JSONObject joRespond=new JSONObject();
 			joRespond=DBInterface.ChangeUserPhone(String.valueOf(getId()), phone);
-			if (joRespond.has("Exception"))
+			if (joRespond.length()!=0 && joRespond.has("Exception"))
 				throw new JSONException(joRespond.getString("Exception"));
 			refresh();
-			return (phone == getPhone());
+			return (phone.equals(getPhone()));
 		}
 	}
 	
 	public boolean changePassword(String password) throws ExecutionException, InterruptedException, JSONException{
-		if (checkPassword(password)) return false;
+		Log.d("changeexc", "METHOD changePassword()");
+		if (checkPassword(password))
+			return false;
 		else {
-			JSONObject joRespond=new JSONObject();
-			joRespond=DBInterface.ChangeUserPassword(String.valueOf(getId()),password);
-			if (joRespond.has("Exception"))
+			JSONObject joRespond = new JSONObject();
+			joRespond = DBInterface.ChangeUserPassword(String.valueOf(getId()), password);
+			if (joRespond.length() != 0 && joRespond.has("Exception"))
 				throw new JSONException(joRespond.getString("Exception"));
 			refresh();
 			return checkPassword(password);

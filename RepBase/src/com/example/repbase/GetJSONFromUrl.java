@@ -9,6 +9,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
 ///import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,30 +51,35 @@ public class GetJSONFromUrl extends AsyncTask<String, Integer, JSONObject> {
 			reader.close();
 			br.close();
 
-			JSONObject result;
+			JSONObject result=new JSONObject();
 
 			Log.d("Auth", "server's respond (the value of strBuffer): "
 					+ strBuffer);
 			try {
 				result = new JSONObject(strBuffer);
-			} catch (Exception ex) {
-				Log.d("Auth", "exception during creating JSONObject occurred.");
+			} catch (JSONException ex) {
+				Log.d("changeexc", "exception during creating JSONObject occurred.");
 				int startIndex = strBuffer.indexOf(magicExcStartStr);
 				int endIndex = strBuffer.indexOf(magicExcEndStr);
 				if (startIndex != -1 && endIndex != -1) {
+					Log.d("changeexc", "CAN parse");
 					startIndex += magicExcStartStr.length();
 					endIndex -= 1;
-					// Log.d("Auth", "startIndex: " + String.valueOf(startIndex)
-					// + "; endIndex: " + String.valueOf(endIndex));
+					
+					String substr=strBuffer.substring(startIndex, endIndex);
+					Log.d("changeexc", "startIndex: " + String.valueOf(startIndex)
+					 + "; endIndex: " + String.valueOf(endIndex)+" " + substr+"; "+substr.replace("\"","\\\""));
 					result = new JSONObject("{\"Exception\":\""
-							+ strBuffer.subSequence(startIndex, endIndex)
+							+ strBuffer.substring(startIndex, endIndex).replace("\"","\\\"")
 							+ "\"}");
-					Log.d("Auth", result.toString());
+					Log.d("changeexc", result.toString());
 				} else {
+					Log.d("changeexc", "can't parse");
 					result = new JSONObject(
-							"{\"Exception\":\"Error occurred. Can't parse error's text from server's respond :(\"}");
+							"{\"Exception\":\"Error occurred. Can't parse error's text from server's respond\"}");
 				}
 			}
+			Log.d("changeexc","result from GetJSONFromUrl: "+result.toString());
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();

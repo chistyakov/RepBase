@@ -1,5 +1,6 @@
 package com.example.repbase.activities;
 
+//TODO: delete logging
 //import java.net.PasswordAuthentication;
 
 import org.json.JSONException;
@@ -9,6 +10,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -61,7 +63,9 @@ public class ChangeUserInfoActivity extends Activity {
 						return;
 					if (!Common.CheckControl(ChangeUserInfoActivity.this, emailBox, "Введите e-mail"))
 						return;
-					if (!newPass1Box.getText().toString().equals("") || !newPass2Box.getText().toString().equals("")) {
+					boolean changePass; // flag is set in 1 when we should try to change password.
+					if (changePass=(!newPass1Box.getText().toString().equals("") || !newPass2Box.getText().toString().equals(""))) {
+						// newPass1Box is not empty or newPass2Box is not empty
 						if (!Common.CheckControl(ChangeUserInfoActivity.this,oldPassBox,
 										"Для изменения пароля необходимо указать старый пароль"))
 							return;
@@ -83,10 +87,10 @@ public class ChangeUserInfoActivity extends Activity {
 							SessionState.currentUser.changeSurname(surnameBox.getText().toString())||
 							SessionState.currentUser.changeEmail(emailBox.getText().toString())||
 							SessionState.currentUser.changePhone(phoneBox.getText().toString()))||
-							SessionState.currentUser.changePassword(newPass1Box.getText().toString())) {
+							(changePass&&SessionState.currentUser.changePassword(newPass1Box.getText().toString()))) {
 						makingChangesRes="Информация успешно изменена";
-					}
-					else makingChangesRes="Вы не внесли изменений";
+					} else
+						makingChangesRes = "Вы не внесли изменений";
 					AlertDialog.Builder ad = new AlertDialog.Builder(ChangeUserInfoActivity.this);
 					ad.setTitle("Изменение информации");
 					ad.setMessage(makingChangesRes);
@@ -102,9 +106,19 @@ public class ChangeUserInfoActivity extends Activity {
 					ad.show();
 						
 				} catch (JSONException e){
+					Log.d("changeexc", e.toString());
+					StackTraceElement[] ste = e.getStackTrace();
+					for (int i = 0; i < ste.length; i++) {
+						Log.d("changeexc", ste[i].toString());						
+					}
 					ShowMessageBox(Common.translateToRu(e.getMessage()));
 				}
 				catch (Exception e) {
+					Log.d("changeexc", e.toString());
+					StackTraceElement[] ste = e.getStackTrace();
+					for (int i = 0; i < ste.length; i++) {
+						Log.d("changeexc", ste[i].toString());						
+					}
 					ShowMessageBox("Exception occured: " + e.toString());
 				}
 			}
