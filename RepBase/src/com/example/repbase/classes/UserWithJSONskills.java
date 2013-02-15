@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutionException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.bool;
 import android.util.Log;
 
 import com.example.repbase.Common;
@@ -65,6 +66,7 @@ public class UserWithJSONskills extends User {
 	
 	// private method fills all fields of user from JSON object
 	private void fillFields(JSONObject joUser) throws JSONException, InterruptedException, ExecutionException{
+		this.setId(Integer.valueOf(joUser.getString("ID")));
 		this.setPassword(joUser.getString("Password"));
 		this.setNick(joUser.getString("Nick"));
 		this.setPhone(joUser.getString("Phone"));
@@ -93,9 +95,13 @@ public class UserWithJSONskills extends User {
 
 	// refresh all values from server
 	public void refresh() throws ExecutionException, InterruptedException, JSONException{
+		Log.d("changeexc","nick before refresh (): "+getNick());
 		JSONObject jo = new JSONObject();
+		Log.d("changeexc", String.valueOf(getId()));
 		jo = DBInterface.GetUserByID(String.valueOf(getId()));
+		Log.d("changeexc",jo.optString("Nick",jo.toString()));
 		fillFields(jo);
+		Log.d("changeexc","nick after refresh (): "+getNick());
 	}
 	
 	public boolean isActual() {
@@ -111,11 +117,74 @@ public class UserWithJSONskills extends User {
 	public boolean changeName(String name) throws InterruptedException, ExecutionException, JSONException {
 		if (name==getName()) return false;
 		else{
-			DBInterface.ChangeUserName(String.valueOf(getId()), name);
+			JSONObject joRespond=new JSONObject();
+			joRespond=DBInterface.ChangeUserName(String.valueOf(getId()), name);
+			if (joRespond.has("Exception"))
+				throw new JSONException(joRespond.getString("Exception"));
 			// refresh function exchanges data with server
 			// it will be better if DBInterface.ChangeUserName returns boolean
 			refresh();
 			return (name==getName());
+		}
+	}
+	
+	public boolean changeSurname(String surname) throws InterruptedException, ExecutionException, JSONException{
+		if (surname == getSurname()) return false;
+		else{
+			JSONObject joRespond=new JSONObject();
+			joRespond=DBInterface.ChangeUserSurname(String.valueOf(getId()), surname);
+			if (joRespond.has("Exception"))
+				throw new JSONException(joRespond.getString("Exception"));
+			refresh();
+			return (surname==getSurname());
+		}
+	}
+	
+	public boolean changeNick(String nick) throws InterruptedException, ExecutionException, JSONException{
+		if (nick == getNick()) return false;
+		else{
+			JSONObject joRespond=new JSONObject();
+			joRespond=DBInterface.ChangeUserNick(String.valueOf(getId()), nick);
+			if (joRespond.has("Exception"))
+				throw new JSONException(joRespond.getString("Exception"));
+			refresh();
+			return (nick==getNick());
+		}
+	}
+	
+	public boolean changeEmail(String email) throws InterruptedException, ExecutionException, JSONException{
+		if (email == getEmail()) return false;
+		else{
+			JSONObject joRespond=new JSONObject();
+			joRespond=DBInterface.ChangeUserEmail(String.valueOf(getId()), email);
+			if (joRespond.has("Exception"))
+				throw new JSONException(joRespond.getString("Exception"));
+			refresh();
+			return (email == getEmail());
+		}
+	}
+	
+	public boolean changePhone(String phone) throws InterruptedException, ExecutionException, JSONException {
+		if (phone == getPhone()) return false;
+		else {
+			JSONObject joRespond=new JSONObject();
+			joRespond=DBInterface.ChangeUserPhone(String.valueOf(getId()), phone);
+			if (joRespond.has("Exception"))
+				throw new JSONException(joRespond.getString("Exception"));
+			refresh();
+			return (phone == getPhone());
+		}
+	}
+	
+	public boolean changePassword(String password) throws ExecutionException, InterruptedException, JSONException{
+		if (checkPassword(password)) return false;
+		else {
+			JSONObject joRespond=new JSONObject();
+			joRespond=DBInterface.ChangeUserPassword(String.valueOf(getId()),password);
+			if (joRespond.has("Exception"))
+				throw new JSONException(joRespond.getString("Exception"));
+			refresh();
+			return checkPassword(password);
 		}
 	}
 

@@ -1,22 +1,21 @@
 package com.example.repbase.activities;
 
-import org.json.JSONObject;
+//import java.net.PasswordAuthentication;
+
+import org.json.JSONException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.repbase.Common;
-import com.example.repbase.DBInterface;
 import com.example.repbase.R;
-import com.example.repbase.classes.Attribute;
 import com.example.repbase.classes.SessionState;
 
 public class ChangeUserInfoActivity extends Activity {
@@ -41,11 +40,11 @@ public class ChangeUserInfoActivity extends Activity {
 
 		OnClickListener decline_click = new OnClickListener() {
 			public void onClick(View v) {
-				Intent intent = new Intent(ChangeUserInfoActivity.this,
-						AuthorizedActivity.class);
+				Intent intent = new Intent(ChangeUserInfoActivity.this, AuthorizedActivity.class);
 				startActivity(intent);
 			}
 		};
+		
 		decline.setOnClickListener(decline_click);
 
 		OnClickListener save_click = new OnClickListener() {
@@ -70,87 +69,30 @@ public class ChangeUserInfoActivity extends Activity {
 							ShowMessageBox("Проверьте правильность ввода старого пароля");
 							return;
 						}
-						Log.d("change", "newPass1Box: " + newPass1Box.getText().toString());
-						Log.d("change", "newPass2Box: " + newPass2Box.getText().toString());
+//						Log.d("change", "newPass1Box: " + newPass1Box.getText().toString());
+//						Log.d("change", "newPass2Box: " + newPass2Box.getText().toString());
 						if (!newPass1Box.getText().toString().equals(newPass2Box.getText().toString())) {
 							ShowMessageBox("Введенные пароли не совпадают");
 							return;
 						}
 					}
-
-					JSONObject user = DBInterface
-							.GetUserByID(SessionState.AuthorizedUser);
-					// изменение данных
-					if (!(nickBox.getText().toString().equals(user.getString("Nick")))) {
-						JSONObject res = DBInterface.ChangeUserNick(
-								SessionState.AuthorizedUser, nickBox.getText().toString());
-						if (!Check(res))
-							return;
+								
+					String makingChangesRes;
+					if((SessionState.currentUser.changeNick(nickBox.getText().toString())||
+							SessionState.currentUser.changeName(nameBox.getText().toString())||
+							SessionState.currentUser.changeSurname(surnameBox.getText().toString())||
+							SessionState.currentUser.changeEmail(emailBox.getText().toString())||
+							SessionState.currentUser.changePhone(phoneBox.getText().toString()))||
+							SessionState.currentUser.changePassword(newPass1Box.getText().toString())) {
+						makingChangesRes="Информация успешно изменена";
 					}
-					for (Attribute atr : Common.GetAttributesList(user)) {
-						if (atr.Type.equals("Name")) {
-							if (!nameBox.getText().toString().equals(atr.Value)) {
-								Log.d("myLogs",	"User name before ChangeUserName method: "
-												+ Common.getSpecifiedAttribute(
-														user, "Name"));
-								JSONObject res = DBInterface.ChangeUserName(
-										SessionState.AuthorizedUser, nameBox.getText().toString());
-								// JSONObject LogUser =
-								// DBInterface.GetUserByID(SessionState.AuthorizedUser);
-								Log.d("myLogs",	"User name after ChangeUserName method: "
-												+ Common.getSpecifiedAttribute(user, "Name"));
-								if (!Check(res))
-									return;
-							}
-						} else if (atr.Type.equals("Surname")) {
-							if (!surnameBox.getText().toString()
-									.equals(atr.Value)) {
-								JSONObject res = DBInterface.ChangeUserSurname(
-										SessionState.AuthorizedUser, surnameBox
-												.getText().toString());
-								if (!Check(res))
-									return;
-							}
-						}
-					}
-					if (!(phoneBox.getText().toString().equals(user.getString("Phone")))) {
-						JSONObject res = DBInterface.ChangeUserPhone(
-								SessionState.AuthorizedUser, phoneBox.getText().toString());
-						if (!Check(res))
-							return;
-					}
-					for (Attribute atr : Common.GetAttributesList(user)) {
-						if (atr.Type.equals("E-mail")) {
-							if (!emailBox.getText().toString().equals(atr.Value)) {
-								JSONObject res = DBInterface.ChangeUserEmail(
-										SessionState.AuthorizedUser, emailBox.getText().toString());
-								if (!Check(res))
-									return;
-								break;
-							}
-						}
-					}
-					if (!newPass1Box.getText().toString().equals("")) {
-						if (DBInterface.CheckAuth(
-								DBInterface.GetUserByID(SessionState.AuthorizedUser).getString("Nick"),
-								oldPassBox.getText().toString()).getBoolean(
-								"CheckAuthorizationResult")) {
-							JSONObject res = DBInterface.ChangeUserPassword(
-									SessionState.AuthorizedUser, newPass1Box.getText().toString());
-							if (!Check(res))
-								return;
-						} else
-							return;
-					}
-
-					AlertDialog.Builder ad = new AlertDialog.Builder(
-							ChangeUserInfoActivity.this);
+					else makingChangesRes="Вы не внесли изменений";
+					AlertDialog.Builder ad = new AlertDialog.Builder(ChangeUserInfoActivity.this);
 					ad.setTitle("Изменение информации");
-					ad.setMessage("Информация успешно изменена");
+					ad.setMessage(makingChangesRes);
 					ad.setPositiveButton("OK",
 							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int which) {
+								public void onClick(DialogInterface dialog, int which) {
 									Intent intent = new Intent(
 											ChangeUserInfoActivity.this,
 											AuthorizedActivity.class);
@@ -158,61 +100,16 @@ public class ChangeUserInfoActivity extends Activity {
 								}
 							});
 					ad.show();
-				} catch (Exception e) {
-					ShowMessageBox("Exception occured: " + e.getMessage());
+						
+				} catch (JSONException e){
+					ShowMessageBox(Common.translateToRu(e.getMessage()));
+				}
+				catch (Exception e) {
+					ShowMessageBox("Exception occured: " + e.toString());
 				}
 			}
 		};
 		save.setOnClickListener(save_click);
-	}
-
-	private boolean Check(JSONObject res) {
-		try {
-			if (res == null)
-				return true;
-			String exception = res.getString("Exception");
-
-			if (exception
-					.equals("Invalid argument. Invalid \"Nickname\" argument - length")) {
-				ShowMessageBox("Длина ника от 4 до 15 символов");
-				return false;
-			} else if (exception
-					.equals("Invalid argument. Invalid \"Nickname\" argument - already exists")) {
-				ShowMessageBox("Пользователь с таким ником уже зарегистрирован");
-				return false;
-			} else if (exception
-					.equals("Invalid argument. Invalid \"Password\" argument - length")) {
-				ShowMessageBox("Длина пароля от 4 до 25 символов");
-				return false;
-			} else if (exception
-					.equals("Invalid argument. Invalid \"Name\" argument - length")) {
-				ShowMessageBox("Длина имени до 20 символов");
-				return false;
-			} else if (exception
-					.equals("Invalid argument. Invalid \"Surname\" argument - length")) {
-				ShowMessageBox("Длина фамилии до 20 символов");
-				return false;
-			} else if (exception.equals("Invalid phone number format")) {
-				ShowMessageBox("Неверная длина номера телефона (необходимо 11 цифр)");
-				return false;
-			} else if (exception
-					.equals("Invalid argument. Invalid \"Phone\" argument - length")) {
-				ShowMessageBox("Неверная длина номера телефона (необходимо 11 цифр)");
-				return false;
-			} else if (exception
-					.equals("Invalid argument. Invalid \"Phone\" argument - already exists")) {
-				ShowMessageBox("Пользователь с таким номером тел. уже зарегистрирован");
-				return false;
-			} else if (exception
-					.equals("Invalid argument. Invalid \"E-mail\" argument - already exists")) {
-				ShowMessageBox("Пользователь с таким e-mail уже зарегистрирован");
-				return false;
-			} else
-				return true;
-		} catch (Exception e) {
-			ShowMessageBox("Someshit");
-			return false;
-		}
 	}
 
 	private void Reset() {
@@ -230,19 +127,13 @@ public class ChangeUserInfoActivity extends Activity {
 		newPass2Box.setText("");
 
 		try {
-			JSONObject user = DBInterface
-					.GetUserByID(SessionState.AuthorizedUser);
-			nickBox.setText(user.getString("Nick"));
-			phoneBox.setText(DBInterface
-					.DeEncryptPhone(SessionState.AuthorizedUser));
-			for (Attribute atr : Common.GetAttributesList(user)) {
-				if (atr.Type.equals("Name"))
-					nameBox.setText(atr.Value);
-				else if (atr.Type.equals("Surname"))
-					surnameBox.setText(atr.Value);
-				else if (atr.Type.equals("E-mail"))
-					emailBox.setText(atr.Value);
-			}
+			SessionState.currentUser.refresh();
+			
+			nickBox.setText(SessionState.currentUser.getNick());
+			phoneBox.setText(SessionState.currentUser.getPhone());
+			nameBox.setText(SessionState.currentUser.getName());
+			surnameBox.setText(SessionState.currentUser.getSurname());
+			emailBox.setText(SessionState.currentUser.getEmail());
 		} catch (Exception e) {
 			ShowMessageBox("Exception occured: " + e.getMessage());
 		}
