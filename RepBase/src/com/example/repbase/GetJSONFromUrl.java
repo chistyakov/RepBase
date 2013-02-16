@@ -55,6 +55,9 @@ public class GetJSONFromUrl extends AsyncTask<String, Integer, JSONObject> {
 
 			Log.d("Auth", "server's respond (the value of strBuffer): "
 					+ strBuffer);
+			
+			if(strBuffer.isEmpty()) return new JSONObject();
+			
 			try {
 				result = new JSONObject(strBuffer);
 			} catch (JSONException ex) {
