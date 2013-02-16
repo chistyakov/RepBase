@@ -3,6 +3,11 @@ package com.example.repbase.activities;
 //TODO: delete logging
 //import java.net.PasswordAuthentication;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+
 import org.json.JSONException;
 
 import android.app.Activity;
@@ -19,8 +24,20 @@ import android.widget.EditText;
 import com.example.repbase.Common;
 import com.example.repbase.R;
 import com.example.repbase.classes.SessionState;
+import com.example.repbase.classes.UserWithJSONskills;
 
 public class ChangeUserInfoActivity extends Activity {
+	
+	private EditText nickBox;
+	private EditText nameBox;
+	private EditText surnameBox;
+	private EditText phoneBox;
+	private EditText emailBox;
+	private EditText oldPassBox;
+	private EditText newPass1Box;
+	private EditText newPass2Box;
+	private ArrayList<EditText> errList;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -29,15 +46,17 @@ public class ChangeUserInfoActivity extends Activity {
 		Button decline = (Button) findViewById(R.id.declineUserChangesButton);
 		Button save = (Button) findViewById(R.id.saveUserChangesButton);
 
-		final EditText nickBox = (EditText) findViewById(R.id.nickBox_ch);
-		final EditText nameBox = (EditText) findViewById(R.id.nameBox_ch);
-		final EditText surnameBox = (EditText) findViewById(R.id.surnameBox_ch);
-		final EditText phoneBox = (EditText) findViewById(R.id.phoneBox_ch);
-		final EditText emailBox = (EditText) findViewById(R.id.emailBox_ch);
-		final EditText oldPassBox = (EditText) findViewById(R.id.oldPassword_ch);
-		final EditText newPass1Box = (EditText) findViewById(R.id.newPassword1_ch);
-		final EditText newPass2Box = (EditText) findViewById(R.id.newPassword2_ch);
-
+		nickBox = (EditText) findViewById(R.id.nickBox_ch);
+		nameBox = (EditText) findViewById(R.id.nameBox_ch);
+		surnameBox = (EditText) findViewById(R.id.surnameBox_ch);
+		phoneBox = (EditText) findViewById(R.id.phoneBox_ch);
+		emailBox = (EditText) findViewById(R.id.emailBox_ch);
+		oldPassBox = (EditText) findViewById(R.id.oldPassword_ch);
+		newPass1Box = (EditText) findViewById(R.id.newPassword1_ch);
+		newPass2Box = (EditText) findViewById(R.id.newPassword2_ch);
+		
+		errList=new ArrayList<EditText>();
+		
 		Reset();
 
 		OnClickListener decline_click = new OnClickListener() {
@@ -84,12 +103,19 @@ public class ChangeUserInfoActivity extends Activity {
 					}
 								
 					String makingChangesRes;
-					if((SessionState.currentUser.changeNick(nickBox.getText().toString())||
-							SessionState.currentUser.changeName(nameBox.getText().toString())||
-							SessionState.currentUser.changeSurname(surnameBox.getText().toString())||
-							SessionState.currentUser.changeEmail(emailBox.getText().toString())||
-							SessionState.currentUser.changePhone(phoneBox.getText().toString()))||
-							(changePass&&SessionState.currentUser.changePassword(newPass1Box.getText().toString()))) {
+					Class[] paramTypes = new Class[] {String.class};
+					if (applyChanges(UserWithJSONskills.class.getMethod("changeNick", paramTypes), nickBox)|
+							applyChanges(UserWithJSONskills.class.getMethod("changeName", paramTypes), nameBox)|
+							applyChanges(UserWithJSONskills.class.getMethod("changeSurname", paramTypes), surnameBox)|
+							applyChanges(UserWithJSONskills.class.getMethod("changeEmail", paramTypes), emailBox)|
+							applyChanges(UserWithJSONskills.class.getMethod("changePhone", paramTypes), phoneBox))
+//					if((SessionState.currentUser.changeNick(nickBox.getText().toString())|
+//							SessionState.currentUser.changeName(nameBox.getText().toString())|
+//							SessionState.currentUser.changeSurname(surnameBox.getText().toString())|
+//							SessionState.currentUser.changeEmail(emailBox.getText().toString())|
+//							SessionState.currentUser.changePhone(phoneBox.getText().toString()))|
+//							(changePass&&SessionState.currentUser.changePassword(newPass1Box.getText().toString()))) 
+					{
 						makingChangesRes="Информация успешно изменена";
 					} else
 						makingChangesRes = "Вы не внесли изменений";
@@ -114,6 +140,7 @@ public class ChangeUserInfoActivity extends Activity {
 						Log.d("changeexc", ste[i].toString());						
 					}
 					ShowMessageBox(Common.translateToRu(e.getMessage()));
+					Reset();
 				}
 				catch (Exception e) {
 					Log.d("changeexc", e.toString());
@@ -122,22 +149,16 @@ public class ChangeUserInfoActivity extends Activity {
 						Log.d("changeexc", ste[i].toString());						
 					}
 					ShowMessageBox("Exception occured: " + e.toString());
+					Reset();
 				}
 			}
 		};
 		save.setOnClickListener(save_click);
 	}
 
+	// Reset method will reset all editbox but from errList
 	private void Reset() {
-		final EditText nickBox = (EditText) findViewById(R.id.nickBox_ch);
-		final EditText nameBox = (EditText) findViewById(R.id.nameBox_ch);
-		final EditText surnameBox = (EditText) findViewById(R.id.surnameBox_ch);
-		final EditText phoneBox = (EditText) findViewById(R.id.phoneBox_ch);
-		final EditText emailBox = (EditText) findViewById(R.id.emailBox_ch);
-		final EditText oldPassBox = (EditText) findViewById(R.id.oldPassword_ch);
-		final EditText newPass1Box = (EditText) findViewById(R.id.newPassword1_ch);
-		final EditText newPass2Box = (EditText) findViewById(R.id.newPassword2_ch);
-
+		
 		oldPassBox.setText("");
 		newPass1Box.setText("");
 		newPass2Box.setText("");
@@ -145,17 +166,29 @@ public class ChangeUserInfoActivity extends Activity {
 		try {
 			SessionState.currentUser.refresh();
 			
-			nickBox.setText(SessionState.currentUser.getNick());
-			phoneBox.setText(SessionState.currentUser.getPhone());
-			nameBox.setText(SessionState.currentUser.getName());
-			surnameBox.setText(SessionState.currentUser.getSurname());
-			emailBox.setText(SessionState.currentUser.getEmail());
+			if (!errList.contains(nickBox))
+				nickBox.setText(SessionState.currentUser.getNick());
+			if (!errList.contains(phoneBox))
+				phoneBox.setText(SessionState.currentUser.getPhone());
+			if (!errList.contains(nameBox))
+				nameBox.setText(SessionState.currentUser.getName());
+			if (!errList.contains(surnameBox))
+				surnameBox.setText(SessionState.currentUser.getSurname());
+			if (!errList.contains(emailBox))
+				emailBox.setText(SessionState.currentUser.getEmail());
+			
+			errList.clear();
 		} catch (Exception e) {
-			ShowMessageBox("Exception occured: " + e.getMessage());
+			ShowMessageBox("Exception occured: " + e.getMessage());			
 		}
 	}
 
 	public void ShowMessageBox(String msg) {
 		Common.ShowMessageBox(ChangeUserInfoActivity.this, msg);
+	}
+	
+	private boolean applyChanges(Method m, EditText et) throws InterruptedException, ExecutionException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+		return (Boolean) m.invoke(SessionState.currentUser, et);
+		 //SessionState.currentUser.changeName(et.getText().toString()); 
 	}
 }
