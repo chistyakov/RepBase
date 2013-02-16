@@ -71,7 +71,7 @@ public class ProfileActivity extends Activity
 					{
 						try
 						{
-							if (DBInterface.DeleteUser(SessionState.AuthorizedUser))
+							if (DBInterface.DeleteUser(SessionState.currentUser.getId()))
 							{
 								AlertDialog.Builder ad2 = new AlertDialog.Builder(ProfileActivity.this);
 								ad2.setTitle("Удаление пользователя");

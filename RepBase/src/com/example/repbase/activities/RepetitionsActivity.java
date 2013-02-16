@@ -54,7 +54,7 @@ public class RepetitionsActivity extends Activity
 	private void Refresh()
 			throws JSONException, InterruptedException, ExecutionException
 	{
-		JSONArray reps = DBInterface.GetActiveReptetitions(SessionState.AuthorizedUser);
+		JSONArray reps = DBInterface.GetActiveReptetitions(SessionState.currentUser.getId());
     	if (reps.length() == 0)
     		return;
     	else
@@ -147,7 +147,7 @@ public class RepetitionsActivity extends Activity
     				canc.setVisibility(4);
     			}
     			
-    			final String id = rep.getString("ID");
+    			final int id = rep.getInt("ID");
     			
     			Button cancelButton = (Button)item.findViewById(R.id.cancelRepButton_list);
     			OnClickListener cancelButton_click = new OnClickListener()

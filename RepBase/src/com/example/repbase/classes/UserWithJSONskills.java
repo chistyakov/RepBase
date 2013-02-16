@@ -13,7 +13,7 @@ import com.example.repbase.DBInterface;
 // TODO: check JSONObject, returned by DBInterface.CreateUser
 public class UserWithJSONskills extends User {
 	// private String URL;
-	private boolean actuality = false; // this artificial field shows that user
+	private boolean actuality = false; 	// this artificial field shows that user
 										// is "alive"
 										// can be used, for example, to expire
 										// user's session
@@ -65,13 +65,13 @@ public class UserWithJSONskills extends User {
 	
 	// private method fills all fields of user from JSON object
 	private void fillFields(JSONObject joUser) throws JSONException, InterruptedException, ExecutionException{
-		this.setId(Integer.valueOf(joUser.getString("ID")));
+		this.setId(joUser.getInt("ID"));
 		this.setPassword(joUser.getString("Password"));
 		this.setNick(joUser.getString("Nick"));
 		this.setPhone(joUser.getString("Phone"));
 		
 		// new JSON request is sent in DBInterface.DeEncryptPhone(String ID)
-		this.setPhone(DBInterface.DeEncryptPhone(joUser.getString("ID")));
+		this.setPhone(DBInterface.DeEncryptPhone(joUser.getInt("ID")));
 
 		// we can use Common.GetAttributesList() method with loop.
 		// Common.getSpecifiedAttribute() is more slowly
@@ -94,13 +94,9 @@ public class UserWithJSONskills extends User {
 
 	// refresh all values from server
 	public void refresh() throws ExecutionException, InterruptedException, JSONException{
-		Log.d("changeexc","nick before refresh (): "+getNick());
 		JSONObject jo = new JSONObject();
-		Log.d("changeexc", String.valueOf(getId()));
-		jo = DBInterface.GetUserByID(String.valueOf(getId()));
-		Log.d("changeexc",jo.optString("Nick",jo.toString()));
+		jo = DBInterface.GetUserByID(getId());
 		fillFields(jo);
-		Log.d("changeexc","nick after refresh (): "+getNick());
 	}
 	
 	public boolean isActual() {
@@ -118,7 +114,7 @@ public class UserWithJSONskills extends User {
 			return false;
 		else {
 			JSONObject joRespond=new JSONObject();
-			joRespond=DBInterface.ChangeUserName(String.valueOf(getId()), name);
+			joRespond=DBInterface.ChangeUserName(getId(), name);
 			if (joRespond.length()!=0 && joRespond.has("Exception"))
 				throw new JSONException(joRespond.getString("Exception"));
 			// refresh function exchanges data with server
@@ -133,7 +129,7 @@ public class UserWithJSONskills extends User {
 			return false;
 		else {
 			JSONObject joRespond=new JSONObject();
-			joRespond=DBInterface.ChangeUserSurname(String.valueOf(getId()), surname);
+			joRespond=DBInterface.ChangeUserSurname(getId(), surname);
 			if (joRespond.length()!=0 && joRespond.has("Exception"))
 				throw new JSONException(joRespond.getString("Exception"));
 			refresh();
@@ -147,7 +143,7 @@ public class UserWithJSONskills extends User {
 			return false;
 		else {
 			JSONObject joRespond=new JSONObject();
-			joRespond=DBInterface.ChangeUserNick(String.valueOf(getId()), nick);
+			joRespond=DBInterface.ChangeUserNick(getId(), nick);
 			if (joRespond.length()!=0 && joRespond.has("Exception"))
 				throw new JSONException(joRespond.getString("Exception"));
 			refresh();
@@ -160,7 +156,7 @@ public class UserWithJSONskills extends User {
 			return false;
 		else {
 			JSONObject joRespond=new JSONObject();
-			joRespond=DBInterface.ChangeUserEmail(String.valueOf(getId()), email);
+			joRespond=DBInterface.ChangeUserEmail(getId(), email);
 			if (joRespond.length()!=0 && joRespond.has("Exception"))
 				throw new JSONException(joRespond.getString("Exception"));
 			refresh();
@@ -173,7 +169,7 @@ public class UserWithJSONskills extends User {
 			return false;
 		else {
 			JSONObject joRespond=new JSONObject();
-			joRespond=DBInterface.ChangeUserPhone(String.valueOf(getId()), phone);
+			joRespond=DBInterface.ChangeUserPhone(getId(), phone);
 			if (joRespond.length()!=0 && joRespond.has("Exception"))
 				throw new JSONException(joRespond.getString("Exception"));
 			refresh();
@@ -187,12 +183,20 @@ public class UserWithJSONskills extends User {
 			return false;
 		else {
 			JSONObject joRespond = new JSONObject();
-			joRespond = DBInterface.ChangeUserPassword(String.valueOf(getId()), password);
+			joRespond = DBInterface.ChangeUserPassword(getId(), password);
 			if (joRespond.length() != 0 && joRespond.has("Exception"))
 				throw new JSONException(joRespond.getString("Exception"));
 			refresh();
 			return checkPassword(password);
 		}
+	}
+	
+	public boolean delete() throws InterruptedException, ExecutionException, JSONException{
+		if(DBInterface.DeleteUser(getId())){
+			refresh();
+			return (getDelStatus());
+		} else 
+			return false;
 	}
 
 }
