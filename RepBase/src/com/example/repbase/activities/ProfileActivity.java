@@ -124,6 +124,7 @@ public class ProfileActivity extends Activity
 	    
 	    try
         {
+	    	SessionState.currentUser.refresh();
 	    	nickText.setText(SessionState.currentUser.getNick());
 	    	phoneText.setText(SessionState.currentUser.getPhone());
 	    	nameText.setText(SessionState.currentUser.getName());
