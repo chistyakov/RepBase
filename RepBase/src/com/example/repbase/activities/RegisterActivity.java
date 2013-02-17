@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -90,6 +91,11 @@ public class RegisterActivity extends Activity {
 						ad.show();
 					}
 				} catch (JSONException e) {
+					Log.d("reg", e.toString());
+					StackTraceElement[] ste = e.getStackTrace();
+					for (int i = 0; i < ste.length; i++) {
+						Log.d("reg", ste[i].toString());						
+					}
 					ShowMessageBox(Common.translateToRu(e.getMessage()));
 				} catch (Exception e) {
 					ShowMessageBox(e.toString());

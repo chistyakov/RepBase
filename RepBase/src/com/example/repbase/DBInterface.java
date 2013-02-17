@@ -145,15 +145,20 @@ public class DBInterface
 	public static JSONObject ChangeUserName(int UserID, String Name)
 			throws InterruptedException, ExecutionException, JSONException {
 		String MethodURL = "User_ChangeName/";
-		JSONObject jo = new GetJSONFromUrl().execute(
+		Log.d("Auth", (URL
+						+ MethodURL
+						+ DBInterface.WrapParameter("ActionPerformerID",
+								SessionState.currentUser.getId()) + '&'
+						+ DBInterface.WrapParameter_("UserID", UserID) + '&'
+						+ DBInterface.WrapParameter_("Name", Name)));
+		
+		return new GetJSONFromUrl().execute(
 				URL
 						+ MethodURL
 						+ DBInterface.WrapParameter("ActionPerformerID",
 								SessionState.currentUser.getId()) + '&'
 						+ DBInterface.WrapParameter_("UserID", UserID) + '&'
 						+ DBInterface.WrapParameter_("Name", Name)).get();
-
-		return jo;
 	}
 	
 	public static JSONObject ChangeUserSurname(int UserID, String Surname)
