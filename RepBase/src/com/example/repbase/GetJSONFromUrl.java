@@ -19,6 +19,7 @@ import android.util.Log;
 public class GetJSONFromUrl extends AsyncTask<String, Integer, JSONObject> {
 	private final String magicExcStartStr = "The exception message is '";
 	private final String magicExcEndStr = "'. See server";
+	private final String fineServerError = "Invalid argument count for AddToLog function.";
 
 	protected JSONObject doInBackground(String... Urls) {
 		try {
@@ -69,11 +70,15 @@ public class GetJSONFromUrl extends AsyncTask<String, Integer, JSONObject> {
 					startIndex += magicExcStartStr.length();
 					endIndex -= 1;
 					
-					String substr=strBuffer.substring(startIndex, endIndex);
+					String substr = strBuffer.substring(startIndex, endIndex);
+					substr = substr.replace("\"", "\\\"");
 					Log.d("changeexc", "startIndex: " + String.valueOf(startIndex)
-					 + "; endIndex: " + String.valueOf(endIndex)+" " + substr+"; "+substr.replace("\"","\\\""));
-					result = new JSONObject("{\"Exception\":\""
-							+ strBuffer.substring(startIndex, endIndex).replace("\"","\\\"")
+					 + "; endIndex: " + String.valueOf(endIndex)+" " + substr);
+					
+					if (substr.contains(fineServerError))
+						return new JSONObject();
+					
+					result = new JSONObject("{\"Exception\":\"" + substr
 							+ "\"}");
 					Log.d("changeexc", result.toString());
 				} else {

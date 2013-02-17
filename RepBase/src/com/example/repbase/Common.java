@@ -25,6 +25,10 @@ public class Common {
 			Common.ShowMessageBox(context, failureMessage);
 			return false;
 		}
+		if (control.getText().toString().contains(" ")){
+			Common.ShowMessageBox(context, "Нельзя использовать пробелы");
+			return false;
+		}
 		return true;
 	}
 

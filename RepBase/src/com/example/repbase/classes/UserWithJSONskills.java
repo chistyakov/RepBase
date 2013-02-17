@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutionException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.bool;
 import android.util.Log;
 
 import com.example.repbase.Common;
@@ -189,6 +190,33 @@ public class UserWithJSONskills extends User {
 			refresh();
 			return checkPassword(password);
 		}
+	}
+	
+	public boolean multiChanges(String nick, String name, String surname, String email, String phone, String password) throws InterruptedException, ExecutionException, JSONException{
+		return (changeNick(nick) |
+				changeName(name) |
+				changeSurname(surname) |
+				changeEmail(email) |
+				changePhone(phone) |
+				checkPassword(password));
+	}
+	
+	public boolean multiChanges(String nick, String name, String surname, String email, String phone) throws InterruptedException, ExecutionException, JSONException{
+		return (changeNick(nick) |
+				changeName(name) |
+				changeSurname(surname) |
+				changeEmail(email) |
+				changePhone(phone));
+	}
+	
+	public boolean multiChanges(User u) throws InterruptedException, ExecutionException, JSONException{
+		return (changeNick(u.getNick()) | 
+				changeName(u.getName()) |
+				changeSurname(u.getSurname()) |
+				changeEmail(u.getEmail()) |
+				changePhone(u.getPhone()));
+		// we can't change password because User contains only encrypted password
+		// but DBInterface.ChangePassword requires non-encrypted passw 
 	}
 	
 	public boolean delete() throws InterruptedException, ExecutionException, JSONException{

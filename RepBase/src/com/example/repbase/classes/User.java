@@ -66,6 +66,22 @@ public class User {
 		this.BaseIDs = new ArrayList<Integer>();
 		this.RepIDs = new ArrayList<Integer>();
 	}
+	
+	public User(User u) {
+		this.ID = u.ID;
+		this.Nick = u.Nick;
+		this.Name = u.Name;
+		this.Surname = u.Surname;
+		this.Phone = u.Phone;
+		this.Password = u.Password;
+		this.Email = u.Email;
+		this.banned = u.banned;
+		this.deleted = u.deleted;
+		this.fullrights = u.fullrights;
+//		this.GroupIDs = new ArrayList<Integer>(u.GroupIDs);
+//		this.BaseIDs = new ArrayList<Integer>(u.BaseIDs);
+//		this.RepIDs = new ArrayList<Integer>(u.RepIDs);
+	}
 
 	// Name
 	public String getName() {

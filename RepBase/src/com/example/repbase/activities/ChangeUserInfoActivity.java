@@ -1,12 +1,6 @@
 package com.example.repbase.activities;
 
 //TODO: delete logging
-//import java.net.PasswordAuthentication;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
 
@@ -24,7 +18,7 @@ import android.widget.EditText;
 import com.example.repbase.Common;
 import com.example.repbase.R;
 import com.example.repbase.classes.SessionState;
-import com.example.repbase.classes.UserWithJSONskills;
+import com.example.repbase.classes.User;
 
 public class ChangeUserInfoActivity extends Activity {
 	
@@ -36,8 +30,9 @@ public class ChangeUserInfoActivity extends Activity {
 	private EditText oldPassBox;
 	private EditText newPass1Box;
 	private EditText newPass2Box;
-	private ArrayList<EditText> errList;
-
+	
+	User uBackup;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,7 +40,7 @@ public class ChangeUserInfoActivity extends Activity {
 
 		Button decline = (Button) findViewById(R.id.declineUserChangesButton);
 		Button save = (Button) findViewById(R.id.saveUserChangesButton);
-
+		
 		nickBox = (EditText) findViewById(R.id.nickBox_ch);
 		nameBox = (EditText) findViewById(R.id.nameBox_ch);
 		surnameBox = (EditText) findViewById(R.id.surnameBox_ch);
@@ -55,12 +50,27 @@ public class ChangeUserInfoActivity extends Activity {
 		newPass1Box = (EditText) findViewById(R.id.newPassword1_ch);
 		newPass2Box = (EditText) findViewById(R.id.newPassword2_ch);
 		
-		errList=new ArrayList<EditText>();
+		uBackup = new User(SessionState.currentUser);
+		
+		Log.d("user", "nick: " + uBackup.getNick());
+		Log.d("user", "password: " + uBackup.getPassword());
 		
 		Reset();
 
 		OnClickListener decline_click = new OnClickListener() {
 			public void onClick(View v) {
+				// recover date from uBackup if "decline" button is clicked
+				try {
+					// password can't be recovered.
+					SessionState.currentUser.refresh();
+					SessionState.currentUser.multiChanges(uBackup);
+				} catch (JSONException e) {
+					ShowMessageBox("Произошла ошибка при попытке восстановить данные: "
+							+ Common.translateToRu(e.getMessage()));
+				} catch (Exception e) {
+					ShowMessageBox("Произошла ошибка при попытке восстановить данные: "
+							+ e.toString());					
+				}
 				Intent intent = new Intent(ChangeUserInfoActivity.this, AuthorizedActivity.class);
 				startActivity(intent);
 			}
@@ -100,25 +110,24 @@ public class ChangeUserInfoActivity extends Activity {
 							ShowMessageBox("Введенные пароли не совпадают");
 							return;
 						}
+						if(newPass1Box.getText().toString().contains(" ")){
+							ShowMessageBox("Нелязя использовать пробел, введи нормальный пароль!");
+							return;
+						}
 					}
 								
 					String makingChangesRes;
-					Class[] paramTypes = new Class[] {String.class};
-					if (applyChanges(UserWithJSONskills.class.getMethod("changeNick", paramTypes), nickBox)|
-							applyChanges(UserWithJSONskills.class.getMethod("changeName", paramTypes), nameBox)|
-							applyChanges(UserWithJSONskills.class.getMethod("changeSurname", paramTypes), surnameBox)|
-							applyChanges(UserWithJSONskills.class.getMethod("changeEmail", paramTypes), emailBox)|
-							applyChanges(UserWithJSONskills.class.getMethod("changePhone", paramTypes), phoneBox))
-//					if((SessionState.currentUser.changeNick(nickBox.getText().toString())|
-//							SessionState.currentUser.changeName(nameBox.getText().toString())|
-//							SessionState.currentUser.changeSurname(surnameBox.getText().toString())|
-//							SessionState.currentUser.changeEmail(emailBox.getText().toString())|
-//							SessionState.currentUser.changePhone(phoneBox.getText().toString()))|
-//							(changePass&&SessionState.currentUser.changePassword(newPass1Box.getText().toString()))) 
-					{
+					if (SessionState.currentUser.multiChanges(nickBox.getText().toString(),
+							nameBox.getText().toString(),
+							surnameBox.getText().toString(),
+							emailBox.getText().toString(),
+							phoneBox.getText().toString()) |
+							(changePass&&
+									SessionState.currentUser.changePassword(newPass1Box.getText().toString())))
 						makingChangesRes="Информация успешно изменена";
-					} else
+					else
 						makingChangesRes = "Вы не внесли изменений";
+						
 					AlertDialog.Builder ad = new AlertDialog.Builder(ChangeUserInfoActivity.this);
 					ad.setTitle("Изменение информации");
 					ad.setMessage(makingChangesRes);
@@ -140,7 +149,6 @@ public class ChangeUserInfoActivity extends Activity {
 						Log.d("changeexc", ste[i].toString());						
 					}
 					ShowMessageBox(Common.translateToRu(e.getMessage()));
-					Reset();
 				}
 				catch (Exception e) {
 					Log.d("changeexc", e.toString());
@@ -149,7 +157,6 @@ public class ChangeUserInfoActivity extends Activity {
 						Log.d("changeexc", ste[i].toString());						
 					}
 					ShowMessageBox("Exception occured: " + e.toString());
-					Reset();
 				}
 			}
 		};
@@ -165,19 +172,13 @@ public class ChangeUserInfoActivity extends Activity {
 
 		try {
 			SessionState.currentUser.refresh();
-			
-			if (!errList.contains(nickBox))
-				nickBox.setText(SessionState.currentUser.getNick());
-			if (!errList.contains(phoneBox))
-				phoneBox.setText(SessionState.currentUser.getPhone());
-			if (!errList.contains(nameBox))
-				nameBox.setText(SessionState.currentUser.getName());
-			if (!errList.contains(surnameBox))
-				surnameBox.setText(SessionState.currentUser.getSurname());
-			if (!errList.contains(emailBox))
-				emailBox.setText(SessionState.currentUser.getEmail());
-			
-			errList.clear();
+
+			nickBox.setText(SessionState.currentUser.getNick());
+			phoneBox.setText(SessionState.currentUser.getPhone());
+			nameBox.setText(SessionState.currentUser.getName());
+			surnameBox.setText(SessionState.currentUser.getSurname());
+			emailBox.setText(SessionState.currentUser.getEmail());
+
 		} catch (Exception e) {
 			ShowMessageBox("Exception occured: " + e.getMessage());			
 		}
@@ -185,10 +186,5 @@ public class ChangeUserInfoActivity extends Activity {
 
 	public void ShowMessageBox(String msg) {
 		Common.ShowMessageBox(ChangeUserInfoActivity.this, msg);
-	}
-	
-	private boolean applyChanges(Method m, EditText et) throws InterruptedException, ExecutionException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		return (Boolean) m.invoke(SessionState.currentUser, et);
-		 //SessionState.currentUser.changeName(et.getText().toString()); 
 	}
 }
