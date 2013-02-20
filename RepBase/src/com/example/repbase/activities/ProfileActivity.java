@@ -71,33 +71,19 @@ public class ProfileActivity extends Activity
 					{
 						try
 						{
-							if (DBInterface.DeleteUser(SessionState.currentUser.getId()))
-							{
-								AlertDialog.Builder ad2 = new AlertDialog.Builder(ProfileActivity.this);
-								ad2.setTitle("Удаление пользователя");
-								ad2.setMessage("Пользователь успешно удален");
-								ad2.setPositiveButton("OK", new DialogInterface.OnClickListener()
-								{	
-									public void onClick(DialogInterface dialog, int which) 
-									{
-										Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
-										startActivity(intent);
-									}
-								});
-								ad2.show();
-							}
-							else
-							{
-								AlertDialog.Builder ad2 = new AlertDialog.Builder(ProfileActivity.this);
-								ad2.setTitle("Удаление пользователя");
-								ad2.setMessage("Не удалось удалить пользователя");
-								ad2.setPositiveButton("OK", new DialogInterface.OnClickListener()
-								{	
-									public void onClick(DialogInterface dialog, int which) 
-									{ }
-								});
-								ad2.show();
-							}
+							DBInterface.DeleteUser(SessionState.currentUser.getId());
+							AlertDialog.Builder ad2 = new AlertDialog.Builder(ProfileActivity.this);
+							ad2.setTitle("Удаление пользователя");
+							ad2.setMessage("Пользователь успешно удален");
+							ad2.setPositiveButton("OK", new DialogInterface.OnClickListener()
+							{	
+								public void onClick(DialogInterface dialog, int which) 
+								{
+									Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
+									startActivity(intent);
+								}
+							});
+							ad2.show();
 						}
 						catch(Exception e)
 						{

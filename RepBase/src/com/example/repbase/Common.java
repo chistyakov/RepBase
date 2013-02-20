@@ -14,6 +14,12 @@ import com.example.repbase.classes.Attribute;
 // TODO: think about i18n of application
 public class Common {
 	public static final int MAX_EMAIL_LENGTH=20;
+	public static final String JSON_TAG = "json";
+	public static final String EXC_TAG = "exc";
+	public static final String TIMEOUT_TAG = "exc";
+	public static final String TEMP_TAG = "temp";
+	
+	public static final String timeoutStr = "Не могу дождаться ответа от сервера. Пожалуйста, проверьте соединение.";
 	
 	public static void ShowMessageBox(Context context, String msg) {
 		Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
@@ -63,7 +69,7 @@ public class Common {
 			if (a.Type.equals(AttType))
 				return a.Value;
 		}
-		throw new JSONException("can't find key "+AttType+" in JSON array of attributes");
+		throw new JSONException("can't find key " + AttType + " in JSON array of attributes");
 	}
 	
 	// returns the value of required attribute and fallback if attribute is not exists

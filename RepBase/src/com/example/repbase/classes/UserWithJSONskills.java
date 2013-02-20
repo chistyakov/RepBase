@@ -1,11 +1,11 @@
 package com.example.repbase.classes;
 
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.R.bool;
 import android.util.Log;
 
 import com.example.repbase.Common;
@@ -28,44 +28,38 @@ public class UserWithJSONskills extends User {
 
 	public UserWithJSONskills(String Nick, String Password, String Phone,
 			String Name, String Surname, String Email)
-			throws ExecutionException, InterruptedException, JSONException {
+			throws ExecutionException, InterruptedException, JSONException,
+			TimeoutException {
 		JSONObject jo = new JSONObject();
 		jo = DBInterface
 				.CreateUser(Nick, Password, Name, Surname, Phone, Email);
-
-		if (jo.has("Exception"))
-			throw new JSONException(jo.getString("Exception"));
-		else {
 			fillFields(jo);
 			this.actuality = true;
 			// this.URL = URL;
-		}
 	}
 
 	public UserWithJSONskills(String Nick, String Password)
-			throws ExecutionException, InterruptedException, JSONException {
+			throws ExecutionException, InterruptedException, JSONException,
+			TimeoutException {
 		// DBInterface.CheckAuth() method returns JSONObject
 		// contains name "CheckAuthorizationResult" in case nick was found
 		// and name "Exception" otherwise
 		// see GetJSONFromUrl.java
 		JSONObject joCheckAuth = new JSONObject();
 		joCheckAuth = DBInterface.CheckAuth(Nick, Password);
-		if (joCheckAuth.has("Exception"))
-			throw new JSONException(joCheckAuth.getString("Exception"));
-		else {
-			if (joCheckAuth.getBoolean("CheckAuthorizationResult")) {
-				JSONObject jo = new JSONObject();
-				jo = DBInterface.GetUserByNickname(Nick);
-				fillFields(jo);
-				this.actuality = true;
-			} else
-				throw new JSONException(
-						"Authentication failed. The password is incorrect.");
-		}
+		if (joCheckAuth.getBoolean("CheckAuthorizationResult")) {
+			JSONObject jo = new JSONObject();
+			jo = DBInterface.GetUserByNickname(Nick);
+			fillFields(jo);
+			this.actuality = true;
+		} else
+			throw new JSONException(
+					"Authentication failed. The password is incorrect.");
 	}
 	
 	// private method fills all fields of user from JSON object
-	private void fillFields(JSONObject joUser) throws JSONException, InterruptedException, ExecutionException{
+	private void fillFields(JSONObject joUser) throws JSONException,
+			InterruptedException, ExecutionException, TimeoutException {
 		this.setId(joUser.getInt("ID"));
 		this.setPassword(joUser.getString("Password"));
 		this.setNick(joUser.getString("Nick"));
@@ -94,7 +88,8 @@ public class UserWithJSONskills extends User {
 	}
 
 	// refresh all values from server
-	public void refresh() throws ExecutionException, InterruptedException, JSONException{
+	public void refresh() throws ExecutionException, InterruptedException,
+			JSONException, TimeoutException {
 		JSONObject jo = new JSONObject();
 		jo = DBInterface.GetUserByID(getId());
 		fillFields(jo);
@@ -104,95 +99,86 @@ public class UserWithJSONskills extends User {
 		return actuality;
 	}
 		
-	public boolean checkPassword(String passw) throws ExecutionException, InterruptedException, JSONException{
+	public boolean checkPassword(String passw) throws ExecutionException,
+			InterruptedException, JSONException, TimeoutException {
 		JSONObject joCheckAuth = DBInterface.CheckAuth(getNick(), passw);
 		return joCheckAuth.getBoolean("CheckAuthorizationResult");
 	}
 
 	// returns true if the value was changed
-	public boolean changeName(String name) throws InterruptedException, ExecutionException, JSONException {
+	public boolean changeName(String name) throws InterruptedException,
+			ExecutionException, JSONException, TimeoutException {
 		if (name.equals(getName()))
 			return false;
 		else {
-			JSONObject joRespond=new JSONObject();
-			joRespond=DBInterface.ChangeUserName(getId(), name);
-			if (joRespond.length()!=0 && joRespond.has("Exception"))
-				throw new JSONException(joRespond.getString("Exception"));
+			DBInterface.ChangeUserName(getId(), name);
 			// refresh function exchanges data with server
-			// it will be better if DBInterface.ChangeUserName returns boolean
 			refresh();
 			return (name.equals(getName()));
 		}
 	}
 	
-	public boolean changeSurname(String surname) throws InterruptedException, ExecutionException, JSONException{
+	public boolean changeSurname(String surname) throws InterruptedException,
+			ExecutionException, JSONException, TimeoutException {
 		if (surname.equals(getSurname()))
 			return false;
 		else {
-			JSONObject joRespond=new JSONObject();
-			joRespond=DBInterface.ChangeUserSurname(getId(), surname);
-			if (joRespond.length()!=0 && joRespond.has("Exception"))
-				throw new JSONException(joRespond.getString("Exception"));
+			DBInterface.ChangeUserSurname(getId(), surname);
 			refresh();
 			return (surname.equals(getSurname()));
 		}
 	}
 	
-	public boolean changeNick(String nick) throws InterruptedException, ExecutionException, JSONException{
-		Log.d("changeexc", "changeNick method with parametr "+ nick+ " was called");
+	public boolean changeNick(String nick) throws InterruptedException,
+			ExecutionException, JSONException, TimeoutException {
+		Log.d(Common.TEMP_TAG, "changeNick method with parametr "+ nick+ " was called");
 		if (nick.equals(getNick()))
 			return false;
 		else {
-			JSONObject joRespond=new JSONObject();
-			joRespond=DBInterface.ChangeUserNick(getId(), nick);
-			if (joRespond.length()!=0 && joRespond.has("Exception"))
-				throw new JSONException(joRespond.getString("Exception"));
+			DBInterface.ChangeUserNick(getId(), nick);
 			refresh();
 			return (nick.equals(getNick()));
 		}
 	}
 	
-	public boolean changeEmail(String email) throws InterruptedException, ExecutionException, JSONException{
+	public boolean changeEmail(String email) throws InterruptedException,
+			ExecutionException, JSONException, TimeoutException {
 		if (email.equals(getEmail()))
 			return false;
 		else {
-			JSONObject joRespond=new JSONObject();
-			joRespond=DBInterface.ChangeUserEmail(getId(), email);
-			if (joRespond.length()!=0 && joRespond.has("Exception"))
-				throw new JSONException(joRespond.getString("Exception"));
+			DBInterface.ChangeUserEmail(getId(), email);
 			refresh();
 			return (email.equals(getEmail()));
 		}
 	}
 	
-	public boolean changePhone(String phone) throws InterruptedException, ExecutionException, JSONException {
+	public boolean changePhone(String phone) throws InterruptedException,
+			ExecutionException, JSONException, TimeoutException {
 		if (phone.equals(getPhone()))
 			return false;
 		else {
-			JSONObject joRespond=new JSONObject();
-			joRespond=DBInterface.ChangeUserPhone(getId(), phone);
-			if (joRespond.length()!=0 && joRespond.has("Exception"))
-				throw new JSONException(joRespond.getString("Exception"));
+			DBInterface.ChangeUserPhone(getId(), phone);
 			refresh();
 			return (phone.equals(getPhone()));
 		}
 	}
 	
-	public boolean changePassword(String password) throws ExecutionException, InterruptedException, JSONException{
-		Log.d("changeexc", "METHOD changePassword() was started");
+	public boolean changePassword(String password) throws ExecutionException,
+			InterruptedException, JSONException, TimeoutException {
+		Log.d(Common.TEMP_TAG, "METHOD changePassword() was started");
 		if (checkPassword(password))
 			return false;
 		else {
-			JSONObject joRespond = new JSONObject();
-			joRespond = DBInterface.ChangeUserPassword(getId(), password);
-			if (joRespond.length() != 0 && joRespond.has("Exception"))
-				throw new JSONException(joRespond.getString("Exception"));
+			DBInterface.ChangeUserPassword(getId(), password);
 			refresh();
 			return checkPassword(password);
 		}
 	}
 	
-	public boolean multiChanges(String nick, String name, String surname, String email, String phone, String password) throws InterruptedException, ExecutionException, JSONException{
+	public boolean multiChanges(String nick, String name, String surname,
+			String email, String phone, String password)
+			throws InterruptedException, ExecutionException, JSONException,
+			TimeoutException {
 		return (changeNick(nick) |
 				changeName(name) |
 				changeSurname(surname) |
@@ -201,7 +187,9 @@ public class UserWithJSONskills extends User {
 				checkPassword(password));
 	}
 	
-	public boolean multiChanges(String nick, String name, String surname, String email, String phone) throws InterruptedException, ExecutionException, JSONException{
+	public boolean multiChanges(String nick, String name, String surname,
+			String email, String phone) throws InterruptedException,
+			ExecutionException, JSONException, TimeoutException {
 		return (changeNick(nick) |
 				changeName(name) |
 				changeSurname(surname) |
@@ -209,7 +197,8 @@ public class UserWithJSONskills extends User {
 				changePhone(phone));
 	}
 	
-	public boolean multiChanges(User u) throws InterruptedException, ExecutionException, JSONException{
+	public boolean multiChanges(User u) throws InterruptedException,
+			ExecutionException, JSONException, TimeoutException {
 		return (changeNick(u.getNick()) | 
 				changeName(u.getName()) |
 				changeSurname(u.getSurname()) |
@@ -219,12 +208,11 @@ public class UserWithJSONskills extends User {
 		// but DBInterface.ChangePassword requires non-encrypted passw 
 	}
 	
-	public boolean delete() throws InterruptedException, ExecutionException, JSONException{
-		if(DBInterface.DeleteUser(getId())){
-			refresh();
-			return (getDelStatus());
-		} else 
-			return false;
+	public boolean delete() throws InterruptedException, ExecutionException,
+			JSONException, TimeoutException {
+		DBInterface.DeleteUser(getId());
+		refresh();
+		return (getDelStatus());
 	}
 
 }

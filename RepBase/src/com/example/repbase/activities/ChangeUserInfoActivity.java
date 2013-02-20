@@ -2,6 +2,8 @@ package com.example.repbase.activities;
 
 //TODO: delete logging
 
+import java.util.concurrent.TimeoutException;
+
 import org.json.JSONException;
 
 import android.app.Activity;
@@ -143,20 +145,14 @@ public class ChangeUserInfoActivity extends Activity {
 					ad.show();
 						
 				} catch (JSONException e){
-					Log.d("changeexc", e.toString());
-					StackTraceElement[] ste = e.getStackTrace();
-					for (int i = 0; i < ste.length; i++) {
-						Log.d("changeexc", ste[i].toString());						
-					}
+					Log.d(Common.JSON_TAG, this.getClass().toString(), e);
 					ShowMessageBox(Common.translateToRu(e.getMessage()));
-				}
-				catch (Exception e) {
-					Log.d("changeexc", e.toString());
-					StackTraceElement[] ste = e.getStackTrace();
-					for (int i = 0; i < ste.length; i++) {
-						Log.d("changeexc", ste[i].toString());						
-					}
-					ShowMessageBox("Exception occured: " + e.toString());
+				} catch (TimeoutException e) {
+					Log.d(Common.TIMEOUT_TAG, this.getClass().toString(), e);
+					ShowMessageBox(Common.timeoutStr);
+				} catch (Exception e) {
+					Log.d(Common.EXC_TAG, this.getClass().toString(), e);
+					ShowMessageBox(e.toString());
 				}
 			}
 		};

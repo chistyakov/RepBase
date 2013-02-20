@@ -3,6 +3,7 @@ package com.example.repbase.activities;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,7 +53,7 @@ public class RepetitionsActivity extends Activity
 	
 	@SuppressWarnings("deprecation")
 	private void Refresh()
-			throws JSONException, InterruptedException, ExecutionException
+			throws JSONException, InterruptedException, ExecutionException, TimeoutException
 	{
 		JSONArray reps = DBInterface.GetActiveReptetitions(SessionState.currentUser.getId());
     	if (reps.length() == 0)
@@ -186,6 +187,9 @@ public class RepetitionsActivity extends Activity
 												} 
 												catch (ExecutionException e)
 												{
+													e.printStackTrace();
+												} catch (TimeoutException e) {
+													// TODO Auto-generated catch block
 													e.printStackTrace();
 												}
 											}

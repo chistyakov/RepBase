@@ -3,6 +3,8 @@ package com.example.repbase;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,219 +53,202 @@ public class DBInterface
 	
 	
 	public static JSONObject CheckAuth(String Nick, String Password)
-			throws ExecutionException, InterruptedException
+			throws ExecutionException, InterruptedException, TimeoutException, JSONException
 	{
 		String MethodURL = "CheckAuthorization/";
 		// why not WrapParameter_() but WrapParameter() should be used???
 		// http://test-blabla.no-ip.org/DBService/DBService.svc/CheckAuthorization/?Nick=alexch&?Password=password1		
-		return new GetJSONFromUrl().execute(URL + MethodURL + 
-				DBInterface.WrapParameter("Nick", Nick) + "&" + 
-				DBInterface.WrapParameter("Password", Password)
-				).get();
+//		return new GetJSONFromUrl().execute(URL + MethodURL + 
+//				DBInterface.WrapParameter("Nick", Nick) + "&" + 
+//				DBInterface.WrapParameter("Password", Password)
+//				).get();
+		return getRespond(URL + MethodURL + 
+				WrapParameter("Nick", Nick) + "&" + 
+				WrapParameter("Password", Password));
 	}
 	
 	public static JSONObject GetUserByID(int ID)
-			throws ExecutionException, InterruptedException
+			throws ExecutionException, InterruptedException, TimeoutException, JSONException
 	{
 		String MethodURL = "GetUserByID/";
-		return new GetJSONFromUrl().execute(URL + MethodURL +
-				DBInterface.WrapParameter("ID", ID)
-				).get();
+		return getRespond(URL + MethodURL + WrapParameter("ID", ID));
 	}
 	
 	public static JSONObject GetUserByNickname(String Nick)
-			throws ExecutionException, InterruptedException
+			throws ExecutionException, InterruptedException, TimeoutException, JSONException
 	{
 		String MethodURL = "GetUserByNickname/";
-		return new GetJSONFromUrl().execute(URL + MethodURL +
-				DBInterface.WrapParameter("Nick", Nick)
-				).get();
+		return getRespond(URL + MethodURL + WrapParameter("Nick", Nick));
 	}
 	
 	public static JSONObject CreateUser(String Nick, String Password, String Name, String Surname, String Phone, String Email)
-			throws ExecutionException, InterruptedException, JSONException
+			throws ExecutionException, InterruptedException, JSONException, TimeoutException
 	{
 		String MethodURL = "CreateUser/";
-		return new GetJSONFromUrl().execute(URL + MethodURL +
-				DBInterface.WrapParameter("Phone", Phone) + '&' +
-				DBInterface.WrapParameter_("Password", Password) + '&' +
-				DBInterface.WrapParameter_("Nick", Nick) + '&' +
-				DBInterface.WrapParameter_("Name", Name) + '&' +
-				DBInterface.WrapParameter_("Surname", Surname) + '&' +
-				DBInterface.WrapParameter_("E_mail", Email)
-				).get();
+		return getRespond(URL + MethodURL
+				+ WrapParameter("Phone", Phone) + '&'
+				+ WrapParameter_("Password", Password) + '&'
+				+ WrapParameter_("Nick", Nick) + '&'
+				+ WrapParameter_("Name", Name) + '&'
+				+ WrapParameter_("Surname", Surname) + '&'
+				+ WrapParameter_("E_mail", Email));
 	}
 	
 	public static String DeEncryptPhone(int UserID) 
-			throws InterruptedException, ExecutionException, JSONException
+			throws InterruptedException, ExecutionException, JSONException, TimeoutException
 	{
 		String MethodURL = "DeEncryptPhone/";
-		JSONObject res = new GetJSONFromUrl().execute(URL + MethodURL + 
-				DBInterface.WrapParameter("UserID", UserID)
-				).get();
-		
+		JSONObject res = getRespond(URL + MethodURL
+				+ WrapParameter("UserID", UserID));		
 		return res.getString("DeEncryptPhoneResult");
 	}
 	
-	public static boolean DeleteUser(int UserID) throws InterruptedException,
-			ExecutionException, JSONException {
+	public static void DeleteUser(int UserID) throws InterruptedException,
+			ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "DeleteUser/";
-		JSONObject res = new GetJSONFromUrl().execute(
-				URL
-						+ MethodURL
-						+ DBInterface.WrapParameter("ActionPerformerID",
-								SessionState.currentUser.getId()) + '&'
-						+ DBInterface.WrapParameter_("ID", UserID)).get();
-		return !(res.has("Exception")); // temporary decision (should be deleted
-										// when GetJSONFromUrl will throw
-										// exception
+		getRespond(URL
+				+ MethodURL
+				+ WrapParameter("ActionPerformerID",
+						SessionState.currentUser.getId()) + '&'
+				+ WrapParameter_("ID", UserID));
 	}
 	
 	public static JSONObject ChangeUserNick(int UserID, String Nick)
-			throws InterruptedException, ExecutionException, JSONException {
+			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "User_ChangeNick/";
-		return new GetJSONFromUrl().execute(
-				URL
-						+ MethodURL
-						+ DBInterface.WrapParameter("ActionPerformerID", SessionState.currentUser.getId()) + '&'
-						+ DBInterface.WrapParameter_("UserID",UserID) + '&'
-						+ DBInterface.WrapParameter_("Nick", Nick)).get();
+		return getRespond(URL
+				+ MethodURL
+				+ WrapParameter("ActionPerformerID",
+						SessionState.currentUser.getId()) + '&'
+				+ WrapParameter_("UserID", UserID) + '&'
+				+ WrapParameter_("Nick", Nick));
 	}
 	
 	public static JSONObject ChangeUserPhone(int UserID, String Phone)
-			throws InterruptedException, ExecutionException, JSONException {
+			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "User_ChangePhone/";
-		return new GetJSONFromUrl().execute(
-				URL
-						+ MethodURL
-						+ DBInterface.WrapParameter("ActionPerformerID",
-								SessionState.currentUser.getId()) + '&'
-						+ DBInterface.WrapParameter_("UserID", UserID) + '&'
-						+ DBInterface.WrapParameter_("Phone", Phone)).get();
+		return getRespond(URL
+				+ MethodURL
+				+ WrapParameter("ActionPerformerID",
+						SessionState.currentUser.getId()) + '&'
+				+ WrapParameter_("UserID", UserID) + '&'
+				+ WrapParameter_("Phone", Phone));
 	}
 	
-	public static JSONObject ChangeUserName(int UserID, String Name)
-			throws InterruptedException, ExecutionException, JSONException {
+	public static void ChangeUserName(int UserID, String Name)
+			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "User_ChangeName/";
-		Log.d("Auth", (URL
-						+ MethodURL
-						+ DBInterface.WrapParameter("ActionPerformerID",
-								SessionState.currentUser.getId()) + '&'
-						+ DBInterface.WrapParameter_("UserID", UserID) + '&'
-						+ DBInterface.WrapParameter_("Name", Name)));
-		
-		return new GetJSONFromUrl().execute(
-				URL
-						+ MethodURL
-						+ DBInterface.WrapParameter("ActionPerformerID",
-								SessionState.currentUser.getId()) + '&'
-						+ DBInterface.WrapParameter_("UserID", UserID) + '&'
-						+ DBInterface.WrapParameter_("Name", Name)).get();
+		getRespond(URL
+				+ MethodURL
+				+ WrapParameter("ActionPerformerID",
+						SessionState.currentUser.getId()) + '&'
+				+ WrapParameter_("UserID", UserID) + '&'
+				+ WrapParameter_("Name", Name));
 	}
 	
 	public static JSONObject ChangeUserSurname(int UserID, String Surname)
-			throws InterruptedException, ExecutionException, JSONException {
+			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "User_ChangeSurname/";
-		return new GetJSONFromUrl().execute(
-				URL
-						+ MethodURL
-						+ DBInterface.WrapParameter("ActionPerformerID",
-								SessionState.currentUser.getId()) + '&'
-						+ DBInterface.WrapParameter_("UserID", UserID) + '&'
-						+ DBInterface.WrapParameter_("Surname", Surname)).get();
+		return getRespond(URL
+				+ MethodURL
+				+ WrapParameter("ActionPerformerID",
+						SessionState.currentUser.getId()) + '&'
+				+ WrapParameter_("UserID", UserID) + '&'
+				+ WrapParameter_("Surname", Surname));
 	}
 	
 	public static JSONObject ChangeUserEmail(int UserID, String Email)
-			throws InterruptedException, ExecutionException, JSONException {
+			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "User_ChangeEmail/";
-		return new GetJSONFromUrl().execute(
-				URL
-						+ MethodURL
-						+ DBInterface.WrapParameter("ActionPerformerID",
-								SessionState.currentUser.getId()) + '&'
-						+ DBInterface.WrapParameter_("UserID", UserID) + '&'
-						+ DBInterface.WrapParameter_("Email", Email)).get();
+		return getRespond(URL
+				+ MethodURL
+				+ WrapParameter("ActionPerformerID",
+						SessionState.currentUser.getId()) + '&'
+				+ WrapParameter_("UserID", UserID) + '&'
+				+ WrapParameter_("Email", Email));
 	}
 	
 	public static JSONObject ChangeUserPassword(int UserID, String Password)
-			throws InterruptedException, ExecutionException, JSONException {
+			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "User_ChangePassword/";
-		return new GetJSONFromUrl().execute(
-				URL
-						+ MethodURL
-						+ DBInterface.WrapParameter("ActionPerformerID",
-								SessionState.currentUser.getId()) + '&'
-						+ DBInterface.WrapParameter_("UserID", UserID) + '&'
-						+ DBInterface.WrapParameter_("Password", Password))
-				.get();
+		return getRespond(URL
+				+ MethodURL
+				+ WrapParameter("ActionPerformerID",
+						SessionState.currentUser.getId()) + '&'
+				+ WrapParameter_("UserID", UserID) + '&'
+				+ WrapParameter_("Password", Password));
 	}
 	
 	public static JSONArray GetActiveReptetitions(int UserID)
-			throws InterruptedException, ExecutionException, JSONException {
+			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "UserGetRepetitions/";
-		JSONObject reps = new GetJSONFromUrl().execute(
-				URL + MethodURL + DBInterface.WrapParameter("UserID", UserID))
-				.get();
+		JSONObject reps = getRespond(URL + MethodURL
+				+ WrapParameter("UserID", UserID));
 		return reps.getJSONArray("User_GetRepetitionsResult");
 	}
 	
 	public static JSONObject GetRoomByID(int RoomID)
-			throws InterruptedException, ExecutionException, JSONException {
+			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "GetRoomByID/";
-		return new GetJSONFromUrl().execute(
-				URL + MethodURL + DBInterface.WrapParameter("RoomID", RoomID))
-				.get();
+		return getRespond(URL + MethodURL + WrapParameter("RoomID", RoomID));
 	}
 	
 	public static JSONObject GetRepTimeByID(int RepTimeID)
-			throws InterruptedException, ExecutionException, JSONException {
+			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "GetRepTimeByID/";
-		return new GetJSONFromUrl().execute(
-				URL + MethodURL
-						+ DBInterface.WrapParameter("RepTimeID", RepTimeID))
-				.get();
+		return getRespond(URL + MethodURL
+				+ WrapParameter("RepTimeID", RepTimeID));
 	}
 
 	public static JSONObject GetGroupByID(int GroupID)
-			throws InterruptedException, ExecutionException, JSONException {
+			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "GetGroupByID/";
-		return new GetJSONFromUrl().execute(
-				URL + MethodURL + DBInterface.WrapParameter("ID", GroupID))
-				.get();
+		return getRespond(URL + MethodURL + WrapParameter("ID", GroupID));
 	}
 	
 	public static JSONObject GetRepetitionByID(int RepID)
-			throws InterruptedException, ExecutionException, JSONException {
+			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "GetRepetitionByID/";
-		return new GetJSONFromUrl().execute(
-				URL + MethodURL
-						+ DBInterface.WrapParameter("RepetitionID", RepID))
-				.get();
+		return getRespond(URL + MethodURL
+				+ WrapParameter("RepetitionID", RepID));
 	}
 	
 	public static boolean CancelRepetition(int RepID)
-			throws InterruptedException, ExecutionException, JSONException
+			throws InterruptedException, ExecutionException, JSONException, TimeoutException
 	{
 		String MethodURL = "CancelRepetition/";
-		JSONObject res = new GetJSONFromUrl().execute(URL + MethodURL + 
-				DBInterface.WrapParameter("ActionPerformerID", SessionState.AuthorizedUser) + '&' + 
-				DBInterface.WrapParameter("RepetitionID", RepID)
-				).get();
-		if(res.has("Exception")) // temporary decision
-			return false;
-		else
+		getRespond(URL
+				+ MethodURL
+				+ WrapParameter("ActionPerformerID",
+						SessionState.AuthorizedUser) + '&'
+				+ WrapParameter("RepetitionID", RepID));
+
 			return GetRepetitionByID(RepID).getBoolean("Cancelled");
 	}
 	
 	public JSONArray GetAvailableTimes(int BaseID, Date Begin, Date End)
-			throws InterruptedException, ExecutionException, JSONException {
+			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "GetAvailableTimes/";
-		JSONObject res = new GetJSONFromUrl().execute(
-				URL + MethodURL + DBInterface.WrapParameter("BaseID", BaseID)
-						+ '&' + DBInterface.WrapDateParameter("Begin", Begin)
-						+ '&' + DBInterface.WrapDateParameter("End", End))
-				.get();
+		JSONObject res = getRespond(URL + MethodURL
+				+ WrapParameter("BaseID", BaseID) + '&'
+				+ WrapDateParameter("Begin", Begin) + '&'
+				+ WrapDateParameter("End", End));
 		return res.getJSONArray("GetAvailableTimesResult");
+	}
+	
+	private static JSONObject getRespond(String URL) throws InterruptedException, ExecutionException, TimeoutException, JSONException {
+		Log.d(Common.JSON_TAG, URL);
+		GetJSONFromUrl gjfu = new GetJSONFromUrl();
+		JSONObject jo = new JSONObject();
+		
+		gjfu.execute(URL);
+		jo = gjfu.get(1, TimeUnit.MINUTES);
+
+		if (gjfu.getException() != null)
+			throw gjfu.getException();
+		if (jo == null)
+			throw new NullPointerException("exception wasn't triggered, but JSON object is null");
+		return jo;
 	}
 	
 }
