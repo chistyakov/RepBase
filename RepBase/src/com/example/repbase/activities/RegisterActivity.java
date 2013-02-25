@@ -22,8 +22,6 @@ import com.example.repbase.classes.UserWithJSONskills;
 
 public class RegisterActivity extends Activity {
 	
-	// TODO: test new code
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

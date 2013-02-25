@@ -13,14 +13,16 @@ import android.util.Log;
 import com.example.repbase.Common;
 import com.example.repbase.DBInterface;
 
-// TODO: check JSONObject, returned by DBInterface.CreateUser
 public class UserWithJSONskills extends User {
 	// private String URL;
-	private boolean actuality = false; 	// this artificial field shows that user
-										// is "alive"
-										// can be used, for example, to expire
-										// user's session
-										// also is used in MainActivity.java
+	
+	/**
+	 * this artificial field shows that user is "alive" can be used, for
+	 * example, to expire user's session
+	 * 
+	 * @see MainActivity.java
+	 */
+	private boolean actuality = false; 	
 
 	public UserWithJSONskills() {
 		super();
@@ -59,7 +61,9 @@ public class UserWithJSONskills extends User {
 					"Authentication failed. The password is incorrect.");
 	}
 	
-	// private method fills all fields of user from JSON object
+	/**
+	 * private method fills all fields of user from JSON object
+	 */
 	private void fillFields(JSONObject joUser) throws JSONException,
 			InterruptedException, ExecutionException, TimeoutException {
 		this.setId(joUser.getInt("ID"));
@@ -77,10 +81,12 @@ public class UserWithJSONskills extends User {
 		this.setSurname(Common.getSpecifiedAttribute(joUser, "Surname"));
 		this.setEmail(Common.getSpecifiedAttribute(joUser, "E-mail"));
 
+		// Common.OPTspecifiedAttribute is used instead of Common.getSpecifiedAttribute
+		// because "Full Rights" attribute can be missed
 		if (Boolean.parseBoolean(Common.optSpecifiedAttribute(joUser,
 				"Full Rights", "FALSE")))
-			this.markAsAdmin(); // Common.OPTspecifiedAttribute is used instead of Common.getSpecifiedAttribute
-								// because "Full Rights" attribute can be missed
+			this.markAsAdmin(); 
+		// Common.GETspecifiedAttribute is used 
 		if (Boolean.parseBoolean(Common.getSpecifiedAttribute(joUser,
 				"Deleted")))
 			this.markAsDeleted();
@@ -92,7 +98,13 @@ public class UserWithJSONskills extends User {
 		this.setBaseIDList(convJSONArrToIntArrL(joUser.getJSONArray("BaseIDs")));		
 	}
 
-	// refresh all values from server
+	/**
+	 *  refresh all values from server
+	 * @throws ExecutionException
+	 * @throws InterruptedException
+	 * @throws JSONException
+	 * @throws TimeoutException
+	 */
 	public void refresh() throws ExecutionException, InterruptedException,
 			JSONException, TimeoutException {
 		JSONObject jo = new JSONObject();
@@ -110,7 +122,15 @@ public class UserWithJSONskills extends User {
 		return joCheckAuth.getBoolean("CheckAuthorizationResult");
 	}
 
-	// returns true if the value was changed
+	/**
+	 * @return true if the value was changed
+	 * @param name
+	 * @return
+	 * @throws InterruptedException
+	 * @throws ExecutionException
+	 * @throws JSONException
+	 * @throws TimeoutException
+	 */
 	public boolean changeName(String name) throws InterruptedException,
 			ExecutionException, JSONException, TimeoutException {
 		if (name.equals(getName()))
@@ -202,6 +222,15 @@ public class UserWithJSONskills extends User {
 				changePhone(phone));
 	}
 	
+	/** 
+	 * method doesn't change the password!!
+	 * @param u User to set profile data
+	 * @return true if something was changed
+	 * @throws InterruptedException
+	 * @throws ExecutionException
+	 * @throws JSONException
+	 * @throws TimeoutException
+	 */
 	public boolean changeProfileContent(User u) throws InterruptedException,
 			ExecutionException, JSONException, TimeoutException {
 		return (changeNick(u.getNick()) | 

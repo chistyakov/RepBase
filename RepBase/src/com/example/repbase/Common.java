@@ -60,8 +60,9 @@ public class Common {
 		return result;
 	}
 
-	// method returns the value of attribute from the list
-	// with specified name
+	/**
+	 * @return the value of attribute from the list with specified name
+	 */
 	public static String getSpecifiedAttribute(JSONObject object, String AttType)
 			throws JSONException {
 		ArrayList<Attribute> attList = new ArrayList<Attribute>();
@@ -73,7 +74,10 @@ public class Common {
 		throw new JSONException("can't find key " + AttType + " in JSON array of attributes");
 	}
 	
-	// returns the value of required attribute and fallback if attribute is not exists
+	/**
+	 * @return the value of required attribute and fallback if attribute is not
+	 *         exists
+	 */
 	public static String optSpecifiedAttribute(JSONObject object, String AttType, String fallback)
 			throws JSONException {
 		ArrayList<Attribute> attList = new ArrayList<Attribute>();
@@ -85,15 +89,15 @@ public class Common {
 		return fallback;
 	}
 
-	// this function is not the best i18n approach :)
-	// IT'S DREADFUL !!!
-	// it should be renamed to terribleTranslateToRu()
+	/**
+	 * this function is not the best i18n approach :) IT'S DREADFUL !!! it
+	 * should be renamed to terribleTranslateToRu()
+	 */
 	public static String translateToRu(String engStr) {
-		// Actually switch statement for Strings was added in jdk 7
-		// see:
-		// http://stackoverflow.com/questions/338206/switch-statement-with-strings-in-java
-		// we use ancient if-then-elseif approach because
-		// afaik, Android does not currently support java7
+		/*Actually switch statement for Strings was added in jdk 7
+		* @see http://stackoverflow.com/questions/338206/switch-statement-with-strings-in-java
+		* we use ancient if-then-elseif approach because
+		* afaik, Android does not currently support java7 */
 
 		if (engStr
 				.equals("Invalid argument. Invalid \"Nickname\" argument - length")) {

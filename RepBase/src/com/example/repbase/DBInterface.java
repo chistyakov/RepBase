@@ -56,12 +56,6 @@ public class DBInterface
 			throws ExecutionException, InterruptedException, TimeoutException, JSONException
 	{
 		String MethodURL = "CheckAuthorization/";
-		// why not WrapParameter_() but WrapParameter() should be used???
-		// http://test-blabla.no-ip.org/DBService/DBService.svc/CheckAuthorization/?Nick=alexch&?Password=password1		
-//		return new GetJSONFromUrl().execute(URL + MethodURL + 
-//				DBInterface.WrapParameter("Nick", Nick) + "&" + 
-//				DBInterface.WrapParameter("Password", Password)
-//				).get();
 		return getRespond(URL + MethodURL + 
 				WrapParameter("Nick", Nick) + "&" + 
 				WrapParameter("Password", Password));

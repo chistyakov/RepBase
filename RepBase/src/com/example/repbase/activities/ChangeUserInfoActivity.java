@@ -156,7 +156,9 @@ public class ChangeUserInfoActivity extends Activity {
 		save.setOnClickListener(save_click);
 	}
 
-	// Reset method will reset all editbox but from errList
+	/** 
+	 * Reset method will reset all editbox but from errList
+	 */
 	private void Reset() {
 		
 		oldPassBox.setText("");
