@@ -220,7 +220,7 @@ public class DBInterface
 		getRespond(URL
 				+ MethodURL
 				+ WrapParameter("ActionPerformerID",
-						SessionState.AuthorizedUser) + '&'
+						SessionState.currentUser.getId()) + '&'
 				+ WrapParameter("RepetitionID", RepID));
 
 			return GetRepetitionByID(RepID).getBoolean("Cancelled");

@@ -54,9 +54,6 @@ public class ChangeUserInfoActivity extends Activity {
 		
 		uBackup = new User(SessionState.currentUser);
 		
-		Log.d("user", "nick: " + uBackup.getNick());
-		Log.d("user", "password: " + uBackup.getPassword());
-		
 		Reset();
 
 		OnClickListener decline_click = new OnClickListener() {
@@ -65,7 +62,7 @@ public class ChangeUserInfoActivity extends Activity {
 				try {
 					// password can't be recovered.
 					SessionState.currentUser.refresh();
-					SessionState.currentUser.multiChanges(uBackup);
+					SessionState.currentUser.changeProfileContent(uBackup);
 				} catch (JSONException e) {
 					ShowMessageBox("Произошла ошибка при попытке восстановить данные: "
 							+ Common.translateToRu(e.getMessage()));
@@ -119,7 +116,7 @@ public class ChangeUserInfoActivity extends Activity {
 					}
 								
 					String makingChangesRes;
-					if (SessionState.currentUser.multiChanges(nickBox.getText().toString(),
+					if (SessionState.currentUser.changeProfileContent(nickBox.getText().toString(),
 							nameBox.getText().toString(),
 							surnameBox.getText().toString(),
 							emailBox.getText().toString(),
@@ -149,7 +146,7 @@ public class ChangeUserInfoActivity extends Activity {
 					ShowMessageBox(Common.translateToRu(e.getMessage()));
 				} catch (TimeoutException e) {
 					Log.d(Common.TIMEOUT_TAG, this.getClass().toString(), e);
-					ShowMessageBox(Common.timeoutStr);
+					ShowMessageBox(Common.TIMEOUTSTR);
 				} catch (Exception e) {
 					Log.d(Common.EXC_TAG, this.getClass().toString(), e);
 					ShowMessageBox(e.toString());

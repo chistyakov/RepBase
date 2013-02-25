@@ -3,6 +3,8 @@ package com.example.repbase.classes;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.repbase.Common;
+
 import android.util.Log;
 
 public class User {
@@ -16,55 +18,48 @@ public class User {
 	private String Nick="";
 	private String Password="";
 	private String Phone="";
-	private List<Integer> GroupIDs ;//= new ArrayList<Integer>();
-	private List<Integer> BaseIDs ;//= new ArrayList<Integer>();
-	private List<Integer> RepIDs ;//= new ArrayList<Integer>();
+	private List<Integer> GroupIDs = new ArrayList<Integer>();
+	private List<Integer> BaseIDs = new ArrayList<Integer>();
+	private List<Integer> RepIDs = new ArrayList<Integer>();
 
 	// private fields added by Sasha
 	// I guess user~person
 	// I mean "user" has got name, surname, email, etc.
-	private String Name="";
-	private String Surname="";
-	private String Email="";
-	private boolean deleted=false;
-	private boolean banned=false;
-	private boolean fullrights=false;
+	private String Name = "";
+	private String Surname = "";
+	private String Email = "";
+	private boolean deleted = false;
+	private boolean banned = false;
+	private boolean fullrights = false;
 
-	public User(int id, String Nick, String Password, String Phone) {
-		this.ID = id;
-		this.Nick = Nick;
-		this.Password = Password;
-		this.Phone = Phone;
-
-//		this.Name = "";
-//		this.Surname = "";
-//		this.Email = "";
-//		this.fullrights = false;
-//		this.deleted = false;
-		this.GroupIDs = new ArrayList<Integer>();
-		this.BaseIDs = new ArrayList<Integer>();
-		this.RepIDs = new ArrayList<Integer>();
-	}
+//	public User(int id, String Nick, String Password, String Phone) {
+//		this.ID = id;
+//		this.Nick = Nick;
+//		this.Password = Password;
+//		this.Phone = Phone;
+//	}
 	
 	public User(){
-		Log.d("Auth", "default constructor for User class was called.");
+		Log.d(Common.TEMP_TAG, "default constructor for User class was called.");
 	}
 
-	public User(int id, String Nick, String Password, String Phone,
-			String Name, String Surname, String Email, boolean fullrights) {
+	public User(int id, String Nick, String Password, String Name,
+			String Surname, String Phone, String Email, boolean deleted,
+			boolean banned, boolean fullrights, ArrayList<Integer> GroupsIDs,
+			ArrayList<Integer> BaseIDs, ArrayList<Integer> RepIDs) {
 		this.ID = id;
 		this.Nick = Nick;
 		this.Password = Password;
-		this.Phone = Phone;
 		this.Name = Name;
 		this.Surname = Surname;
 		this.Email = Email;
+		this.Phone = Phone;
+		this.deleted = deleted;
+		this.banned = banned;
 		this.fullrights = fullrights;
-//		this.banned = false;
-//		this.deleted = false;
-		this.GroupIDs = new ArrayList<Integer>();
-		this.BaseIDs = new ArrayList<Integer>();
-		this.RepIDs = new ArrayList<Integer>();
+		this.GroupIDs = GroupsIDs;
+		this.BaseIDs = BaseIDs;
+		this.RepIDs = RepIDs;
 	}
 	
 	public User(User u) {
@@ -81,6 +76,9 @@ public class User {
 //		this.GroupIDs = new ArrayList<Integer>(u.GroupIDs);
 //		this.BaseIDs = new ArrayList<Integer>(u.BaseIDs);
 //		this.RepIDs = new ArrayList<Integer>(u.RepIDs);
+		this.GroupIDs = u.GroupIDs;
+		this.RepIDs = u.RepIDs;
+		this.BaseIDs = u.BaseIDs;
 	}
 
 	// Name
@@ -182,19 +180,30 @@ public class User {
 		this.Phone = phone;
 	}
 
-	// I suck in generic programming (collections, etc.) :(
 	// GroupIDs
-	public List<Integer> getGroupsIdList() {
+	public List<Integer> getGroupsIDList() {
 		return GroupIDs;
+	}
+	
+	protected void setGroupsIDList(ArrayList<Integer> GroupsIDs){
+		this.GroupIDs = GroupsIDs;
 	}
 
 	// BaseIDs
 	public List<Integer> getBaseIDList() {
 		return BaseIDs;
 	}
+	
+	protected void setBaseIDList(ArrayList<Integer> BaseIDs){
+		this.BaseIDs = BaseIDs;
+	}
 
 	// RepIDs
 	public List<Integer> getRepIDList() {
 		return RepIDs;
+	}
+	
+	protected void setRepIDList(ArrayList<Integer> RepIDs){
+		this.RepIDs = RepIDs;
 	}
 }

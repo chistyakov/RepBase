@@ -26,12 +26,11 @@ public class GetJSONFromUrl extends AsyncTask<String, Void, JSONObject> {
 		jse = null;
 	}
 
-	// doInBackground method returns JSONObject with respond
-	// if respond is empty method returns empty JSONObject
-	// if respond contains error from server in html method tries to parse it
-	// and sets jse field in JSONException with either server's error text
-	// or with text "Error occurred. Can't parse error's text from server's respond"
-	
+	/** doInBackground method returns JSONObject with respond
+	/* if respond is empty method returns empty JSONObject
+	/* if respond contains error from server in html method tries to parse it
+	/* and sets jse field in JSONException with either server's error text
+	/* or with text "Error occurred. Can't parse error's text from server's respond" */
 	protected JSONObject doInBackground(String... Urls) {
 		try {
 			HttpGet request = new HttpGet(Urls[0]);
@@ -106,7 +105,7 @@ public class GetJSONFromUrl extends AsyncTask<String, Void, JSONObject> {
 			}
 			String jseStr = (jse == null) ? "null" : jse.toString();
 			String resultStr = (result == null) ? "null" : result.toString();
-			Log.d(Common.JSON_TAG, "execution finished; jse =" + jseStr
+			Log.d(Common.JSON_TAG, "execution finished; Exception =" + jseStr
 					+ "; result = " + resultStr);
 			return result;
 		} catch (Exception e) {

@@ -1,6 +1,7 @@
 package com.example.repbase;
 
 import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,12 +15,12 @@ import com.example.repbase.classes.Attribute;
 // TODO: think about i18n of application
 public class Common {
 	public static final int MAX_EMAIL_LENGTH=20;
-	public static final String JSON_TAG = "json";
+	public static final String JSON_TAG = "exc_json";
 	public static final String EXC_TAG = "exc";
 	public static final String TIMEOUT_TAG = "exc";
 	public static final String TEMP_TAG = "temp";
 	
-	public static final String timeoutStr = "Не могу дождаться ответа от сервера. Пожалуйста, проверьте соединение.";
+	public static final String TIMEOUTSTR = "Не могу дождаться ответа от сервера. Пожалуйста, проверьте соединение.";
 	
 	public static void ShowMessageBox(Context context, String msg) {
 		Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();

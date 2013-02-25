@@ -54,21 +54,20 @@ public class MainActivity extends Activity {
 					// so UserWithJSONskills.actuality was created :(
 					if (SessionState.currentUser.isActual()) {
 						Log.d(Common.TEMP_TAG, "user was created. Without any exception.");
-						
-						// deprecated strings						
-       					JSONObject uobj = DBInterface.GetUserByNickname(nicknameBox.getText().toString());
-       					SessionState.AuthorizedUser = Integer.toString(uobj.getInt("ID"));
-
-						// goto AuthorizedActivity
-						Intent intent = new Intent(MainActivity.this,AuthorizedActivity.class);
-						startActivity(intent);
+						if (!SessionState.currentUser.getDelStatus()) {
+							// goto AuthorizedActivity
+							Intent intent = new Intent(MainActivity.this,
+									AuthorizedActivity.class);
+							startActivity(intent);
+						}
+						else ShowMessageBox("User was deleted.");
 					}
 				} catch (JSONException e) {
 					Log.d(Common.JSON_TAG, this.getClass().getName(), e);
 					ShowMessageBox(Common.translateToRu(e.getMessage()));
 				} catch (TimeoutException e) {
 					Log.d(Common.TIMEOUT_TAG, this.getClass().getName(), e);
-					ShowMessageBox(Common.timeoutStr);
+					ShowMessageBox(Common.TIMEOUTSTR);
 				} catch (Exception e) {
 					Log.d(Common.EXC_TAG, this.getClass().getName(), e);
 					ShowMessageBox(e.toString());

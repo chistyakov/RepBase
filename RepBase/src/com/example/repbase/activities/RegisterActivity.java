@@ -70,13 +70,12 @@ public class RegisterActivity extends Activity {
 					SessionState.currentUser = new UserWithJSONskills(
 							nicknameBox.getText().toString(),
 							passwdBox1.getText().toString(),
-							phoneBox.getText().toString(),
 							nameBox.getText().toString(),
 							surnameBox.getText().toString(),
+							phoneBox.getText().toString(),
 							emailBox.getText().toString());
 
 					if (SessionState.currentUser.isActual()) {
-						SessionState.AuthorizedUser = String.valueOf(SessionState.currentUser.getId()); // deprecated
 						AlertDialog.Builder ad = new AlertDialog.Builder(RegisterActivity.this);
 						ad.setTitle("Пользователь создан");
 						ad.setMessage("Пользователь успешно создан");

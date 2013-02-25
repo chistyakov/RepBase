@@ -1,8 +1,10 @@
 package com.example.repbase.classes;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,8 +28,8 @@ public class UserWithJSONskills extends User {
 		// this.URL = "http://test-blabla.no-ip.org/DBService/DBService.svc/";
 	};
 
-	public UserWithJSONskills(String Nick, String Password, String Phone,
-			String Name, String Surname, String Email)
+	public UserWithJSONskills(String Nick, String Password, String Name,
+			String Surname,  String Phone, String Email)
 			throws ExecutionException, InterruptedException, JSONException,
 			TimeoutException {
 		JSONObject jo = new JSONObject();
@@ -84,7 +86,10 @@ public class UserWithJSONskills extends User {
 			this.markAsDeleted();
 		if (Boolean.parseBoolean(Common.getSpecifiedAttribute(joUser,
 				"Banned")))
-			this.markAsBanned();	
+			this.markAsBanned();
+		
+		this.setGroupsIDList(convJSONArrToIntArrL(joUser.getJSONArray("GroupIDs")));
+		this.setBaseIDList(convJSONArrToIntArrL(joUser.getJSONArray("BaseIDs")));		
 	}
 
 	// refresh all values from server
@@ -175,7 +180,7 @@ public class UserWithJSONskills extends User {
 		}
 	}
 	
-	public boolean multiChanges(String nick, String name, String surname,
+	public boolean changeProfileContent(String nick, String name, String surname,
 			String email, String phone, String password)
 			throws InterruptedException, ExecutionException, JSONException,
 			TimeoutException {
@@ -187,7 +192,7 @@ public class UserWithJSONskills extends User {
 				checkPassword(password));
 	}
 	
-	public boolean multiChanges(String nick, String name, String surname,
+	public boolean changeProfileContent(String nick, String name, String surname,
 			String email, String phone) throws InterruptedException,
 			ExecutionException, JSONException, TimeoutException {
 		return (changeNick(nick) |
@@ -197,7 +202,7 @@ public class UserWithJSONskills extends User {
 				changePhone(phone));
 	}
 	
-	public boolean multiChanges(User u) throws InterruptedException,
+	public boolean changeProfileContent(User u) throws InterruptedException,
 			ExecutionException, JSONException, TimeoutException {
 		return (changeNick(u.getNick()) | 
 				changeName(u.getName()) |
@@ -213,6 +218,17 @@ public class UserWithJSONskills extends User {
 		DBInterface.DeleteUser(getId());
 		refresh();
 		return (getDelStatus());
+	}
+	
+	private static ArrayList<Integer> convJSONArrToIntArrL(JSONArray ja)
+			throws JSONException {
+		ArrayList<Integer> al = new ArrayList<Integer>();
+		if (ja != null){
+			for (int i = 0; i<ja.length(); i++){
+				al.add(ja.getInt(i));
+			}
+		}
+		return al;
 	}
 
 }

@@ -1,11 +1,7 @@
 package com.example.repbase.activities;
 
-import org.json.JSONObject;
-
 import com.example.repbase.Common;
-import com.example.repbase.DBInterface;
 import com.example.repbase.R;
-//import com.example.repbase.classes.Attribute;
 import com.example.repbase.classes.SessionState;
 
 import android.app.Activity;
@@ -38,7 +34,6 @@ public class ProfileActivity extends Activity
 	    {
 	    	public void onClick(View v)
 	    	{
-	    		SessionState.AuthorizedUser = "";
 	    		SessionState.currentUser=null;
 	    		Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
 	    		startActivity(intent);
@@ -71,7 +66,8 @@ public class ProfileActivity extends Activity
 					{
 						try
 						{
-							DBInterface.DeleteUser(SessionState.currentUser.getId());
+							if (!SessionState.currentUser.delete())
+								throw new Exception();
 							AlertDialog.Builder ad2 = new AlertDialog.Builder(ProfileActivity.this);
 							ad2.setTitle("Удаление пользователя");
 							ad2.setMessage("Пользователь успешно удален");
