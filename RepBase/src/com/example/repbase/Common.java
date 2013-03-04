@@ -1,6 +1,7 @@
 package com.example.repbase;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -144,5 +145,20 @@ public class Common {
 			}
 		}
 		return al;
+	}
+	
+	public static Date parseJSONStringToDate(String jsonDateStr){
+		String str = jsonDateStr.replaceAll("[^0-9]", "").substring(0, 8);
+		return new Date(Long.parseLong(str));		
+	}
+	
+	public static String parseJSONStringToString(String jsonDateStr){
+		Date dt = parseJSONStringToDate(jsonDateStr);
+		return Integer.toString(dt.getHours() + 4)
+				+ ':'
+				+ (Integer.toString(dt.getMinutes()).equals("0") ? "00"
+						: Integer.toString(dt.getMinutes()).length() == 1 ? "0"
+								+ Integer.toString(dt.getMinutes())
+								: Integer.toString(dt.getMinutes()));	
 	}
 }

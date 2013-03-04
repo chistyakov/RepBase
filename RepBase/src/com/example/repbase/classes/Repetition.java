@@ -9,10 +9,26 @@ public class Repetition {
 	private int timeId;
 	private int payed;
 	private Date payedDate;
-	private Date d_date;
 	private boolean confirmed;
 	private boolean cancelled;
 	private List<Integer> servicesIds;
+	
+	public Repetition(){
+		
+	}
+	
+	public Repetition(int id, int groupId, int timeId, int payed,
+			Date payedDate, boolean confirmed, boolean cancelled,
+			List<Integer> servicesIds) {
+		this.id = id;
+		this.groupId = groupId;
+		this.timeId = timeId;
+		this.payed = payed;
+		this.payedDate = payedDate;
+		this.confirmed = confirmed;
+		this.cancelled = cancelled;
+		this.servicesIds = servicesIds;
+	}
 	
 	public int getId() {
 		return id;
@@ -47,13 +63,6 @@ public class Repetition {
 	}
 	protected void setPayedDate(Date payedDate) {
 		this.payedDate = payedDate;
-	}
-	
-	public Date getD_date() {
-		return d_date;
-	}
-	protected void setD_date(Date d_date) {
-		this.d_date = d_date;
 	}
 	
 	public boolean isConfirmed() {
