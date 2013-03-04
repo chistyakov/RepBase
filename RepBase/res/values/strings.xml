@@ -17,7 +17,7 @@
     <string name="btnOkText">Ок</string>
     <string name="btnCancelText">Отмена</string>
     <string name="tvAccCodePromptText">Код доступа</string>
-    <string name="wrongAccCode">Не верный код</string>
+    <string name="wrongAccCode">Неверный код</string>
     <string name="successEnterIntoGroup">Вы вошли в группу: </string>
     <string name="successLeaveGroup">Вы вышли из группы: </string>
     <string name="successDelGroup">Группа удалена</string>

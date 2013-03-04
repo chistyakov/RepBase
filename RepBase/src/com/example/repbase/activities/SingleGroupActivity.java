@@ -41,6 +41,8 @@ public class SingleGroupActivity extends Activity implements OnClickListener{
 	private Button btnBack;
 	
 	GroupWithJSONSkills group;
+	// TODO: implement Group_LoadUsers/?GroupID={GroupID} (single request)
+	
 	List<UserWithJSONSkills> lUsers = new ArrayList<UserWithJSONSkills>();
 	
 	
