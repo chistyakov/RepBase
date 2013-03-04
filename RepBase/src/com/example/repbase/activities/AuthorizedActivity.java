@@ -21,10 +21,17 @@ public class AuthorizedActivity extends TabActivity
         
         tabHost.setup();
         
+        
         //Таб "Профиль"
         TabHost.TabSpec spec = tabHost.newTabSpec("tag1");
         spec.setContent(new Intent(AuthorizedActivity.this, ProfileActivity.class));
         spec.setIndicator("Профиль");
+        tabHost.addTab(spec);
+
+        //Tab "Groups"
+        spec = tabHost.newTabSpec("tag0");
+        spec.setContent(new Intent(AuthorizedActivity.this, GroupsActivity.class));
+        spec.setIndicator(getString(R.string.groups_tab));
         tabHost.addTab(spec);
         
         //Таб "Репетиции"

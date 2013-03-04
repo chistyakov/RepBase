@@ -5,5 +5,26 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">Authorization</string>
     <string name="application">Rep Base</string>
+    <string name="groups_tab">группы</string>
+    <string name="btnEnterIntoGroupText">Вступить в группу</string>
+    <string name="btnCreateNewGroupText">Создать новую группу</string>
+    <string name="tvGroupsGreetingText">Вы состоите в группах:</string>
+    <string name="tvGroupsGreetingTextFail">Вы не состоите ни в одной группе</string>
+    <string name="btnGenerateAccCodeText">Сгенерировать новый код доступа</string>
+    <string name="btnLeaveGroupText">Выйти из группы</string>
+    <string name="btnDeleteGroupText">Удалить группу</string>
+    <string name="btnBackText">Назад</string>
+    <string name="btnOkText">Ок</string>
+    <string name="btnCancelText">Отмена</string>
+    <string name="tvAccCodePromptText">Код доступа</string>
+    <string name="wrongAccCode">Не верный код</string>
+    <string name="successEnterIntoGroup">Вы вошли в группу: </string>
+    <string name="successLeaveGroup">Вы вышли из группы: </string>
+    <string name="successDelGroup">Группа удалена</string>
+    <string name="successCreateGroup">Группа создана</string>
+    <string name="dlgAccCodeTitle">группа </string>
+    <string name="tvGroupMemberHeder">участники:</string>
+    <string name="tvGroupMemberEmptyHeder">в группе нет участников</string>
+    <string name="tvNewGroup">введите название группы</string>
 
 </resources>

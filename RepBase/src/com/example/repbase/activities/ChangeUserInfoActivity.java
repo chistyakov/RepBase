@@ -61,7 +61,7 @@ public class ChangeUserInfoActivity extends Activity {
 				// recover date from uBackup if "decline" button is clicked
 				try {
 					// password can't be recovered.
-					SessionState.currentUser.refresh();
+					SessionState.currentUser.refreshFromServer();
 					SessionState.currentUser.changeProfileContent(uBackup);
 				} catch (JSONException e) {
 					ShowMessageBox("Произошла ошибка при попытке восстановить данные: "
@@ -166,7 +166,7 @@ public class ChangeUserInfoActivity extends Activity {
 		newPass2Box.setText("");
 
 		try {
-			SessionState.currentUser.refresh();
+			SessionState.currentUser.refreshFromServer();
 
 			nickBox.setText(SessionState.currentUser.getNick());
 			phoneBox.setText(SessionState.currentUser.getPhone());

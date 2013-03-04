@@ -1,10 +1,8 @@
 package com.example.repbase.classes;
 
-import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,7 +11,8 @@ import android.util.Log;
 import com.example.repbase.Common;
 import com.example.repbase.DBInterface;
 
-public class UserWithJSONskills extends User {
+// TODO: spyke - remove parseJSONObjOnFields()
+public class UserWithJSONSkills extends User {
 	// private String URL;
 	
 	/**
@@ -24,37 +23,52 @@ public class UserWithJSONskills extends User {
 	 */
 	private boolean actuality = false; 	
 
-	public UserWithJSONskills() {
+	public UserWithJSONSkills() {
 		super();
 		actuality = false;
 		// this.URL = "http://test-blabla.no-ip.org/DBService/DBService.svc/";
 	};
-
-	public UserWithJSONskills(String Nick, String Password, String Name,
-			String Surname,  String Phone, String Email)
-			throws ExecutionException, InterruptedException, JSONException,
-			TimeoutException {
-		JSONObject jo = new JSONObject();
-		jo = DBInterface
-				.CreateUser(Nick, Password, Name, Surname, Phone, Email);
-			fillFields(jo);
-			this.actuality = true;
-			// this.URL = URL;
+	
+	public UserWithJSONSkills(JSONObject jo) throws JSONException, InterruptedException, ExecutionException, TimeoutException{
+		super(jo.getInt("ID"),
+				jo.getString("Nick"),
+				jo.getString("Password"),
+				Common.getSpecifiedAttribute(jo, "Name"),
+				Common.getSpecifiedAttribute(jo, "Surname"),
+				DBInterface.deEncryptPhone(jo.getInt("ID")),
+				Common.getSpecifiedAttribute(jo, "E-mail"),
+				Boolean.parseBoolean(Common.getSpecifiedAttribute(jo, "Deleted")),
+				Boolean.parseBoolean(Common.getSpecifiedAttribute(jo, "Banned")),
+				Boolean.parseBoolean(Common.optSpecifiedAttribute(jo, "Full Rights", "FALSE")),
+				Common.convJSONArrToIntArrL(jo.getJSONArray("GroupIDs")),
+				Common.convJSONArrToIntArrL(jo.getJSONArray("BaseIDs"))/*,
+				Common.convJSONArrToIntArrL(jo.getJSONArray("RepIDs"))*/);
+		actuality = true;
+	}
+	
+	public UserWithJSONSkills(int id) throws JSONException,
+			InterruptedException, ExecutionException, TimeoutException {
+		this(DBInterface.getUserByID(id));
 	}
 
-	public UserWithJSONskills(String Nick, String Password)
+	public UserWithJSONSkills(String Nick, String Password, String Name,
+			String Surname, String Phone, String Email)
 			throws ExecutionException, InterruptedException, JSONException,
 			TimeoutException {
+		this(DBInterface
+				.createUser(Nick, Password, Name, Surname, Phone, Email));
+	}
+
+	public UserWithJSONSkills(String Nick, String Password)
+			throws ExecutionException, InterruptedException, JSONException,
+			TimeoutException {
+		
 		// DBInterface.CheckAuth() method returns JSONObject
 		// contains name "CheckAuthorizationResult" in case nick was found
 		// and name "Exception" otherwise
 		// see GetJSONFromUrl.java
-		JSONObject joCheckAuth = new JSONObject();
-		joCheckAuth = DBInterface.CheckAuth(Nick, Password);
-		if (joCheckAuth.getBoolean("CheckAuthorizationResult")) {
-			JSONObject jo = new JSONObject();
-			jo = DBInterface.GetUserByNickname(Nick);
-			fillFields(jo);
+		if (DBInterface.checkAuth(Nick, Password).getBoolean("CheckAuthorizationResult")) {
+			parseJSONObjOnFields(DBInterface.getUserByNickname(Nick));
 			this.actuality = true;
 		} else
 			throw new JSONException(
@@ -64,15 +78,14 @@ public class UserWithJSONskills extends User {
 	/**
 	 * private method fills all fields of user from JSON object
 	 */
-	private void fillFields(JSONObject joUser) throws JSONException,
+	private void parseJSONObjOnFields(JSONObject joUser) throws JSONException,
 			InterruptedException, ExecutionException, TimeoutException {
 		this.setId(joUser.getInt("ID"));
 		this.setPassword(joUser.getString("Password"));
 		this.setNick(joUser.getString("Nick"));
-		this.setPhone(joUser.getString("Phone"));
 		
 		// new JSON request is sent in DBInterface.DeEncryptPhone(String ID)
-		this.setPhone(DBInterface.DeEncryptPhone(joUser.getInt("ID")));
+		this.setPhone(DBInterface.deEncryptPhone(joUser.getInt("ID")));
 
 		// we can use Common.GetAttributesList() method with loop.
 		// Common.getSpecifiedAttribute() is more slowly
@@ -94,8 +107,8 @@ public class UserWithJSONskills extends User {
 				"Banned")))
 			this.markAsBanned();
 		
-		this.setGroupsIDList(convJSONArrToIntArrL(joUser.getJSONArray("GroupIDs")));
-		this.setBaseIDList(convJSONArrToIntArrL(joUser.getJSONArray("BaseIDs")));		
+		this.setGroupsIDList(Common.convJSONArrToIntArrL(joUser.getJSONArray("GroupIDs")));
+		this.setBaseIDList(Common.convJSONArrToIntArrL(joUser.getJSONArray("BaseIDs")));
 	}
 
 	/**
@@ -105,11 +118,9 @@ public class UserWithJSONskills extends User {
 	 * @throws JSONException
 	 * @throws TimeoutException
 	 */
-	public void refresh() throws ExecutionException, InterruptedException,
+	public void refreshFromServer() throws ExecutionException, InterruptedException,
 			JSONException, TimeoutException {
-		JSONObject jo = new JSONObject();
-		jo = DBInterface.GetUserByID(getId());
-		fillFields(jo);
+		parseJSONObjOnFields(DBInterface.getUserByID(getId()));
 	}
 	
 	public boolean isActual() {
@@ -118,7 +129,7 @@ public class UserWithJSONskills extends User {
 		
 	public boolean checkPassword(String passw) throws ExecutionException,
 			InterruptedException, JSONException, TimeoutException {
-		JSONObject joCheckAuth = DBInterface.CheckAuth(getNick(), passw);
+		JSONObject joCheckAuth = DBInterface.checkAuth(getNick(), passw);
 		return joCheckAuth.getBoolean("CheckAuthorizationResult");
 	}
 
@@ -136,9 +147,9 @@ public class UserWithJSONskills extends User {
 		if (name.equals(getName()))
 			return false;
 		else {
-			DBInterface.ChangeUserName(getId(), name);
+			DBInterface.changeUserName(getId(), name);
 			// refresh function exchanges data with server
-			refresh();
+			refreshFromServer();
 			return (name.equals(getName()));
 		}
 	}
@@ -148,8 +159,8 @@ public class UserWithJSONskills extends User {
 		if (surname.equals(getSurname()))
 			return false;
 		else {
-			DBInterface.ChangeUserSurname(getId(), surname);
-			refresh();
+			DBInterface.changeUserSurname(getId(), surname);
+			refreshFromServer();
 			return (surname.equals(getSurname()));
 		}
 	}
@@ -160,8 +171,8 @@ public class UserWithJSONskills extends User {
 		if (nick.equals(getNick()))
 			return false;
 		else {
-			DBInterface.ChangeUserNick(getId(), nick);
-			refresh();
+			DBInterface.changeUserNick(getId(), nick);
+			refreshFromServer();
 			return (nick.equals(getNick()));
 		}
 	}
@@ -171,8 +182,8 @@ public class UserWithJSONskills extends User {
 		if (email.equals(getEmail()))
 			return false;
 		else {
-			DBInterface.ChangeUserEmail(getId(), email);
-			refresh();
+			DBInterface.changeUserEmail(getId(), email);
+			refreshFromServer();
 			return (email.equals(getEmail()));
 		}
 	}
@@ -182,8 +193,8 @@ public class UserWithJSONskills extends User {
 		if (phone.equals(getPhone()))
 			return false;
 		else {
-			DBInterface.ChangeUserPhone(getId(), phone);
-			refresh();
+			DBInterface.changeUserPhone(getId(), phone);
+			refreshFromServer();
 			return (phone.equals(getPhone()));
 		}
 	}
@@ -194,8 +205,8 @@ public class UserWithJSONskills extends User {
 		if (checkPassword(password))
 			return false;
 		else {
-			DBInterface.ChangeUserPassword(getId(), password);
-			refresh();
+			DBInterface.ñhangeUserPassword(getId(), password);
+			refreshFromServer();
 			return checkPassword(password);
 		}
 	}
@@ -244,20 +255,8 @@ public class UserWithJSONskills extends User {
 	
 	public boolean delete() throws InterruptedException, ExecutionException,
 			JSONException, TimeoutException {
-		DBInterface.DeleteUser(getId());
-		refresh();
+		DBInterface.deleteUser(getId());
+		refreshFromServer();
 		return (getDelStatus());
 	}
-	
-	private static ArrayList<Integer> convJSONArrToIntArrL(JSONArray ja)
-			throws JSONException {
-		ArrayList<Integer> al = new ArrayList<Integer>();
-		if (ja != null){
-			for (int i = 0; i<ja.length(); i++){
-				al.add(ja.getInt(i));
-			}
-		}
-		return al;
-	}
-
 }

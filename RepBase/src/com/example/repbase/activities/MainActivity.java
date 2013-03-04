@@ -20,7 +20,7 @@ import com.example.repbase.DBInterface;
 //import com.example.repbase.DBInterface;
 import com.example.repbase.R;
 import com.example.repbase.classes.SessionState;
-import com.example.repbase.classes.UserWithJSONskills;
+import com.example.repbase.classes.UserWithJSONSkills;
 
 public class MainActivity extends Activity {
 
@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
 							"¬ведите пароль"))
 						return;
 
-					SessionState.currentUser = new UserWithJSONskills(
+					SessionState.currentUser = new UserWithJSONSkills(
 							nicknameBox.getText().toString(), passwdBox
 									.getText().toString());
 					// exception will be thrown in case credentials are wrong

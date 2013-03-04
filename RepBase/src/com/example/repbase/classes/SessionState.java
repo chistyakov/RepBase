@@ -2,5 +2,5 @@ package com.example.repbase.classes;
 
 public class SessionState
 {
-	public static UserWithJSONskills currentUser;
+	public static UserWithJSONSkills currentUser;
 }

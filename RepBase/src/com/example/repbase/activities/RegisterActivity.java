@@ -18,7 +18,7 @@ import com.example.repbase.Common;
 import com.example.repbase.DBInterface;
 import com.example.repbase.R;
 import com.example.repbase.classes.SessionState;
-import com.example.repbase.classes.UserWithJSONskills;
+import com.example.repbase.classes.UserWithJSONSkills;
 
 public class RegisterActivity extends Activity {
 	
@@ -65,7 +65,7 @@ public class RegisterActivity extends Activity {
 						ShowMessageBox("Максимальная длина e-mail: " + Common.MAX_EMAIL_LENGTH);
 						return;
 					}
-					SessionState.currentUser = new UserWithJSONskills(
+					SessionState.currentUser = new UserWithJSONSkills(
 							nicknameBox.getText().toString(),
 							passwdBox1.getText().toString(),
 							nameBox.getText().toString(),

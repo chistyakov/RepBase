@@ -2,6 +2,7 @@ package com.example.repbase;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -11,30 +12,33 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.util.Log;
+import android.widget.SeekBar;
 
 import com.example.repbase.classes.Attribute;
+import com.example.repbase.classes.Group;
+import com.example.repbase.classes.GroupWithJSONSkills;
 import com.example.repbase.classes.SessionState;
 
-// TODO: 
 // TODO: spyke: mark class as static
 // (all methods are static but GetAvailableTimes())
 
 public class DBInterface
 {
 	public static String URL = "http://test-blabla.no-ip.org/DBService/DBService.svc/";
+	private static final String wrongAccCode = "AccessCode";
 	
 	// generic method is used
 	// exchange its with overloaded method if it doesn't work
-	public static <T> String WrapParameter(String ParameterName, T Parameter)
+	private static <T> String wrapParameter(String ParameterName, T Parameter)
 	{
 		return "?" + ParameterName + "=" + String.valueOf(Parameter);
 	}
-	public static <T> String WrapParameter_(String ParameterName, T Parameter)
+	private static <T> String wrapParameter_(String ParameterName, T Parameter)
 	{
 		return ParameterName + "=" + String.valueOf(Parameter);
 	}
 	@SuppressWarnings("deprecation")
-	public static String WrapDateParameter(String ParameterName, Date Parameter)
+	public static String wrapDateParameter(String ParameterName, Date Parameter)
 	{
 		return '?' + ParameterName + '=' + 
 				Integer.toString(Parameter.getYear()) + '.' + 
@@ -42,7 +46,7 @@ public class DBInterface
 				Integer.toString(Parameter.getDate());
 	}
 	@SuppressWarnings("deprecation")
-	public static String WrapDateParameter_(String ParameterName, Date Parameter)
+	public static String wrapDateParameter_(String ParameterName, Date Parameter)
 	{
 		return ParameterName + '=' + 
 				Integer.toString(Parameter.getYear()) + '.' + 
@@ -52,197 +56,301 @@ public class DBInterface
 
 	
 	
-	public static JSONObject CheckAuth(String Nick, String Password)
+	public static JSONObject checkAuth(String Nick, String Password)
 			throws ExecutionException, InterruptedException, TimeoutException, JSONException
 	{
 		String MethodURL = "CheckAuthorization/";
-		return getRespond(URL + MethodURL + 
-				WrapParameter("Nick", Nick) + "&" + 
-				WrapParameter("Password", Password));
+		return getObjectRespond(URL + MethodURL + 
+				wrapParameter("Nick", Nick) + "&" + 
+				wrapParameter("Password", Password));
 	}
 	
-	public static JSONObject GetUserByID(int ID)
+	public static JSONObject getUserByID(int ID)
 			throws ExecutionException, InterruptedException, TimeoutException, JSONException
 	{
 		String MethodURL = "GetUserByID/";
-		return getRespond(URL + MethodURL + WrapParameter("ID", ID));
+		return getObjectRespond(URL + MethodURL + wrapParameter("ID", ID));
 	}
 	
-	public static JSONObject GetUserByNickname(String Nick)
+	public static JSONObject getUserByNickname(String Nick)
 			throws ExecutionException, InterruptedException, TimeoutException, JSONException
 	{
 		String MethodURL = "GetUserByNickname/";
-		return getRespond(URL + MethodURL + WrapParameter("Nick", Nick));
+		return getObjectRespond(URL + MethodURL + wrapParameter("Nick", Nick));
 	}
 	
-	public static JSONObject CreateUser(String Nick, String Password, String Name, String Surname, String Phone, String Email)
+	public static JSONObject createUser(String Nick, String Password, String Name, String Surname, String Phone, String Email)
 			throws ExecutionException, InterruptedException, JSONException, TimeoutException
 	{
 		String MethodURL = "CreateUser/";
-		return getRespond(URL + MethodURL
-				+ WrapParameter("Phone", Phone) + '&'
-				+ WrapParameter_("Password", Password) + '&'
-				+ WrapParameter_("Nick", Nick) + '&'
-				+ WrapParameter_("Name", Name) + '&'
-				+ WrapParameter_("Surname", Surname) + '&'
-				+ WrapParameter_("E_mail", Email));
+		return getObjectRespond(URL + MethodURL
+				+ wrapParameter("Phone", Phone) + '&'
+				+ wrapParameter_("Password", Password) + '&'
+				+ wrapParameter_("Nick", Nick) + '&'
+				+ wrapParameter_("Name", Name) + '&'
+				+ wrapParameter_("Surname", Surname) + '&'
+				+ wrapParameter_("E_mail", Email));
 	}
 	
-	public static String DeEncryptPhone(int UserID) 
+	public static String deEncryptPhone(int UserID) 
 			throws InterruptedException, ExecutionException, JSONException, TimeoutException
 	{
 		String MethodURL = "DeEncryptPhone/";
-		JSONObject res = getRespond(URL + MethodURL
-				+ WrapParameter("UserID", UserID));		
+		JSONObject res = getObjectRespond(URL + MethodURL
+				+ wrapParameter("UserID", UserID));		
 		return res.getString("DeEncryptPhoneResult");
 	}
 	
-	public static void DeleteUser(int UserID) throws InterruptedException,
+	public static void deleteUser(int UserID) throws InterruptedException,
 			ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "DeleteUser/";
-		getRespond(URL
+		getObjectRespond(URL
 				+ MethodURL
-				+ WrapParameter("ActionPerformerID",
+				+ wrapParameter("ActionPerformerID",
 						SessionState.currentUser.getId()) + '&'
-				+ WrapParameter_("ID", UserID));
+				+ wrapParameter_("ID", UserID));
 	}
 	
-	public static JSONObject ChangeUserNick(int UserID, String Nick)
+	public static JSONObject changeUserNick(int UserID, String Nick)
 			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "User_ChangeNick/";
-		return getRespond(URL
+		return getObjectRespond(URL
 				+ MethodURL
-				+ WrapParameter("ActionPerformerID",
+				+ wrapParameter("ActionPerformerID",
 						SessionState.currentUser.getId()) + '&'
-				+ WrapParameter_("UserID", UserID) + '&'
-				+ WrapParameter_("Nick", Nick));
+				+ wrapParameter_("UserID", UserID) + '&'
+				+ wrapParameter_("Nick", Nick));
 	}
 	
-	public static JSONObject ChangeUserPhone(int UserID, String Phone)
+	public static JSONObject changeUserPhone(int UserID, String Phone)
 			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "User_ChangePhone/";
-		return getRespond(URL
+		return getObjectRespond(URL
 				+ MethodURL
-				+ WrapParameter("ActionPerformerID",
+				+ wrapParameter("ActionPerformerID",
 						SessionState.currentUser.getId()) + '&'
-				+ WrapParameter_("UserID", UserID) + '&'
-				+ WrapParameter_("Phone", Phone));
+				+ wrapParameter_("UserID", UserID) + '&'
+				+ wrapParameter_("Phone", Phone));
 	}
 	
-	public static void ChangeUserName(int UserID, String Name)
+	public static void changeUserName(int UserID, String Name)
 			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "User_ChangeName/";
-		getRespond(URL
+		getObjectRespond(URL
 				+ MethodURL
-				+ WrapParameter("ActionPerformerID",
+				+ wrapParameter("ActionPerformerID",
 						SessionState.currentUser.getId()) + '&'
-				+ WrapParameter_("UserID", UserID) + '&'
-				+ WrapParameter_("Name", Name));
+				+ wrapParameter_("UserID", UserID) + '&'
+				+ wrapParameter_("Name", Name));
 	}
 	
-	public static JSONObject ChangeUserSurname(int UserID, String Surname)
+	public static JSONObject changeUserSurname(int UserID, String Surname)
 			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "User_ChangeSurname/";
-		return getRespond(URL
+		return getObjectRespond(URL
 				+ MethodURL
-				+ WrapParameter("ActionPerformerID",
+				+ wrapParameter("ActionPerformerID",
 						SessionState.currentUser.getId()) + '&'
-				+ WrapParameter_("UserID", UserID) + '&'
-				+ WrapParameter_("Surname", Surname));
+				+ wrapParameter_("UserID", UserID) + '&'
+				+ wrapParameter_("Surname", Surname));
 	}
 	
-	public static JSONObject ChangeUserEmail(int UserID, String Email)
+	public static JSONObject changeUserEmail(int UserID, String Email)
 			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "User_ChangeEmail/";
-		return getRespond(URL
+		return getObjectRespond(URL
 				+ MethodURL
-				+ WrapParameter("ActionPerformerID",
+				+ wrapParameter("ActionPerformerID",
 						SessionState.currentUser.getId()) + '&'
-				+ WrapParameter_("UserID", UserID) + '&'
-				+ WrapParameter_("Email", Email));
+				+ wrapParameter_("UserID", UserID) + '&'
+				+ wrapParameter_("Email", Email));
 	}
 	
-	public static JSONObject ChangeUserPassword(int UserID, String Password)
+	public static JSONObject ñhangeUserPassword(int UserID, String Password)
 			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "User_ChangePassword/";
-		return getRespond(URL
+		return getObjectRespond(URL
 				+ MethodURL
-				+ WrapParameter("ActionPerformerID",
+				+ wrapParameter("ActionPerformerID",
 						SessionState.currentUser.getId()) + '&'
-				+ WrapParameter_("UserID", UserID) + '&'
-				+ WrapParameter_("Password", Password));
+				+ wrapParameter_("UserID", UserID) + '&'
+				+ wrapParameter_("Password", Password));
 	}
 	
-	public static JSONArray GetActiveReptetitions(int UserID)
+	public static JSONArray getActiveReptetitions(int UserID)
 			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "UserGetRepetitions/";
-		JSONObject reps = getRespond(URL + MethodURL
-				+ WrapParameter("UserID", UserID));
+		JSONObject reps = getObjectRespond(URL + MethodURL
+				+ wrapParameter("UserID", UserID));
 		return reps.getJSONArray("User_GetRepetitionsResult");
 	}
 	
-	public static JSONObject GetRoomByID(int RoomID)
+	public static JSONObject getRoomByID(int RoomID)
 			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "GetRoomByID/";
-		return getRespond(URL + MethodURL + WrapParameter("RoomID", RoomID));
+		return getObjectRespond(URL + MethodURL + wrapParameter("RoomID", RoomID));
 	}
 	
-	public static JSONObject GetRepTimeByID(int RepTimeID)
+	public static JSONObject getRepTimeByID(int RepTimeID)
 			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "GetRepTimeByID/";
-		return getRespond(URL + MethodURL
-				+ WrapParameter("RepTimeID", RepTimeID));
+		return getObjectRespond(URL + MethodURL
+				+ wrapParameter("RepTimeID", RepTimeID));
 	}
 
-	public static JSONObject GetGroupByID(int GroupID)
-			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
-		String MethodURL = "GetGroupByID/";
-		return getRespond(URL + MethodURL + WrapParameter("ID", GroupID));
-	}
 	
-	public static JSONObject GetRepetitionByID(int RepID)
+	public static JSONObject getRepetitionByID(int RepID)
 			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "GetRepetitionByID/";
-		return getRespond(URL + MethodURL
-				+ WrapParameter("RepetitionID", RepID));
+		return getObjectRespond(URL + MethodURL
+				+ wrapParameter("RepetitionID", RepID));
 	}
 	
-	public static boolean CancelRepetition(int RepID)
+	public static boolean cancelRepetition(int RepID)
 			throws InterruptedException, ExecutionException, JSONException, TimeoutException
 	{
 		String MethodURL = "CancelRepetition/";
-		getRespond(URL
+		getObjectRespond(URL
 				+ MethodURL
-				+ WrapParameter("ActionPerformerID",
+				+ wrapParameter("ActionPerformerID",
 						SessionState.currentUser.getId()) + '&'
-				+ WrapParameter("RepetitionID", RepID));
+				+ wrapParameter("RepetitionID", RepID));
 
-			return GetRepetitionByID(RepID).getBoolean("Cancelled");
+			return getRepetitionByID(RepID).getBoolean("Cancelled");
 	}
 	
-	public JSONArray GetAvailableTimes(int BaseID, Date Begin, Date End)
+	public JSONArray getAvailableTimes(int BaseID, Date Begin, Date End)
 			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "GetAvailableTimes/";
-		JSONObject res = getRespond(URL + MethodURL
-				+ WrapParameter("BaseID", BaseID) + '&'
-				+ WrapDateParameter("Begin", Begin) + '&'
-				+ WrapDateParameter("End", End));
+		JSONObject res = getObjectRespond(URL + MethodURL
+				+ wrapParameter("BaseID", BaseID) + '&'
+				+ wrapDateParameter("Begin", Begin) + '&'
+				+ wrapDateParameter("End", End));
 		return res.getJSONArray("GetAvailableTimesResult");
 	}
 	
-	private static JSONObject getRespond(String URL) throws InterruptedException, ExecutionException, TimeoutException, JSONException {
+	public static List<GroupWithJSONSkills> getAllGroups() throws InterruptedException, ExecutionException, TimeoutException, JSONException{
+		String MethodURL = "GetAllGroups";
+		JSONArray resp = getArrayRespond(URL + MethodURL);
+		Log.d(Common.TEMP_TAG, resp.toString());
+		List<GroupWithJSONSkills> retList = new ArrayList<GroupWithJSONSkills>();
+		for (int i = 0; i<resp.length(); i++){
+			GroupWithJSONSkills group = new GroupWithJSONSkills(resp.getJSONObject(i));
+			retList.add(group);
+			Log.d(Common.TEMP_TAG, "DBInterface. List size: " +retList.size() + " "+ retList.get(i).getName());
+		}
+		return retList;
+	}
+	
+	public static JSONObject getGroupByID(int GroupID)
+			throws InterruptedException, ExecutionException, JSONException,
+			TimeoutException {
+		String MethodURL = "GetGroupByID/";
+		return getObjectRespond(URL + MethodURL + wrapParameter("ID", GroupID));
+	}
+	
+	public static JSONObject getGroupByName(String name)
+			throws InterruptedException, ExecutionException, TimeoutException,
+			JSONException {
+		String MethodURL = "GetGroupByName/";
+		return getObjectRespond(URL + MethodURL + wrapParameter("Name", name));
+	}
+	
+	/** method doesn'r returns String with new code because server doesn't provide it
+	 * 
+	 * @param groupId to change AccessCode
+	 * @throws InterruptedException
+	 * @throws ExecutionException
+	 * @throws TimeoutException
+	 * @throws JSONException
+	 */
+	public static void generateNewAccessCode(int groupId) throws InterruptedException, ExecutionException, TimeoutException, JSONException{
+		String MethodURL = "GenerateNewAccessCod/";
+		getObjectRespond(URL + MethodURL
+				+ wrapParameter("ActionPerformerID", SessionState.currentUser.getId()) + '&'
+				+ wrapParameter_("GroupID", groupId));
+	}
+	
+	public static boolean addUserToGroup(int userId, int groupId,
+			String accessCode) throws InterruptedException, ExecutionException,
+			TimeoutException, JSONException {
+		String MethodURL = "AddUserToGroup/";
+		try {
+			getObjectRespond(URL
+					+ MethodURL
+					+ wrapParameter("ActionPerformerID", SessionState.currentUser.getId()) + '&'
+					+ wrapParameter_("UserID", userId) + '&'
+					+ wrapParameter_("GroupID", groupId) + '&'
+					+ wrapParameter_("AccessCode", accessCode));
+		} catch (JSONException e) {
+			// return FALSE if server respond error about wrong AccessCode
+			if (e.getMessage().contains(wrongAccCode))
+				return false;
+			else
+				throw e;
+		}
+		return true;
+	}
+
+	public static void deleteUserFromGroup(int userId, int groupId) throws InterruptedException, ExecutionException, TimeoutException, JSONException{
+		String MethodURL = "DeleteUserFromGroup/";
+		getObjectRespond(URL + MethodURL
+				+ wrapParameter("ActionPerformerID", SessionState.currentUser.getId()) + '&'
+				+ wrapParameter_("UserID", userId) + '&'
+				+ wrapParameter_("GroupID", groupId));
+	}
+	
+	public static JSONObject createGroup(String name)
+			throws InterruptedException, ExecutionException, TimeoutException,
+			JSONException {
+		String MethodURL = "CreateGroup/";
+		return getObjectRespond(URL + MethodURL
+				+ wrapParameter("ActionPerformerID", SessionState.currentUser.getId()) + '&'
+				+ wrapParameter_("Name", name));
+	}
+	
+	public static void deleteGroup(int groupId) throws InterruptedException,
+			ExecutionException, TimeoutException, JSONException {
+		String MethodURL = "DeleteGroup/";
+		getObjectRespond(URL + MethodURL
+				+ wrapParameter("ActionPerformerID", SessionState.currentUser.getId()) + '&'
+				+ wrapParameter_("GroupID", groupId));
+	}	
+	
+	
+	
+	
+	
+	
+	private static JSONObject getObjectRespond(String URL) throws InterruptedException, ExecutionException, TimeoutException, JSONException {
 		Log.d(Common.JSON_TAG, URL);
 		GetJSONFromUrl gjfu = new GetJSONFromUrl();
 		JSONObject jo = new JSONObject();
 		
 		gjfu.execute(URL);
-		jo = gjfu.get(1, TimeUnit.MINUTES);
+		jo = gjfu.get(30, TimeUnit.SECONDS);
 
 		if (gjfu.getException() != null)
 			throw gjfu.getException();
 		if (jo == null)
 			throw new NullPointerException("exception wasn't triggered, but JSON object is null");
 		return jo;
+	}
+	
+	// copypasted method :(
+	private static JSONArray getArrayRespond(String URL) throws InterruptedException, ExecutionException, TimeoutException, JSONException {
+		Log.d(Common.JSON_TAG, URL);
+		GetJSONArrayFromUrl gjfu = new GetJSONArrayFromUrl();
+		JSONArray ja = new JSONArray();
+		
+		gjfu.execute(URL);
+		ja = gjfu.get(30, TimeUnit.SECONDS);
+		
+		if (gjfu.getException() != null)
+			throw gjfu.getException();
+		if (ja == null)
+			throw new NullPointerException("exception wasn't triggered, but JSON array is null");
+		return ja;
 	}
 	
 }

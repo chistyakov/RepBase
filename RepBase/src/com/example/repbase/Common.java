@@ -23,7 +23,7 @@ public class Common {
 	public static final String TIMEOUTSTR = "Не могу дождаться ответа от сервера. Пожалуйста, проверьте соединение.";
 	
 	public static void ShowMessageBox(Context context, String msg) {
-		Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+		Toast.makeText(context, translateToRu(msg), Toast.LENGTH_SHORT).show();
 	}
 
 	public static boolean CheckControl(Context context, EditText control,
@@ -133,5 +133,16 @@ public class Common {
 		}
 		else
 			return engStr;
+	}
+	
+	public static ArrayList<Integer> convJSONArrToIntArrL(JSONArray ja)
+			throws JSONException {
+		ArrayList<Integer> al = new ArrayList<Integer>();
+		if (ja != null){
+			for (int i = 0; i<ja.length(); i++){
+				al.add(ja.getInt(i));
+			}
+		}
+		return al;
 	}
 }

@@ -27,10 +27,10 @@ public class GetJSONFromUrl extends AsyncTask<String, Void, JSONObject> {
 	}
 
 	/**
-	 * doInBackground method returns JSONObject with respond /* if respond is
-	 * empty method returns empty JSONObject /* if respond contains error from
-	 * server in html method tries to parse it /* and sets jse field in
-	 * JSONException with either server's error text /* or with text
+	 * doInBackground method returns JSONObject with respond if respond is
+	 * empty method returns empty JSONObject if respond contains error from
+	 * server in html method tries to parse it and sets jse field in
+	 * JSONException with either server's error text or with text
 	 * "Error occurred. Can't parse error's text from server's respond"
 	 */
 	protected JSONObject doInBackground(String... Urls) {

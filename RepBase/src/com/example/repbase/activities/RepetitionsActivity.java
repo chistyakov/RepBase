@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -42,7 +43,7 @@ public class RepetitionsActivity extends Activity
         }
         catch(Exception e)
         {
-        	ShowMessageBox("Exception occured");
+        	ShowMessageBox("Exception occured: " + e);
         }
 	}
 	
@@ -55,7 +56,7 @@ public class RepetitionsActivity extends Activity
 	private void Refresh()
 			throws JSONException, InterruptedException, ExecutionException, TimeoutException
 	{
-		JSONArray reps = DBInterface.GetActiveReptetitions(SessionState.currentUser.getId());
+		JSONArray reps = DBInterface.getActiveReptetitions(SessionState.currentUser.getId());
     	if (reps.length() == 0)
     		return;
     	else
@@ -136,10 +137,14 @@ public class RepetitionsActivity extends Activity
     			else
     				conf.setText("нет");
     			item.getLayoutParams().width = LayoutParams.MATCH_PARENT;
-    			if (color)
-    				item.setBackgroundColor(Color.parseColor("#559966CC"));
-    			else
-    				item.setBackgroundColor(Color.parseColor("#55336699"));
+    			Resources res = getResources();
+				int iColor = color ? res.getColor(R.color.purple_item) : 
+					res.getColor(R.color.blue_item);
+    			item.setBackgroundColor(iColor);
+//    			if (color)
+//    				item.setBackgroundColor(res.getColor(R.color.purple_item));
+//    			else
+//    				item.setBackgroundColor(res.getColor(R.color.blue_item));
     			color = !color;
     			
     			if (Long.parseLong(rep.getString("Begin").replaceAll("[^0-9]", "").substring(0, 8)) <= Long.parseLong(Long.toString(new Date().getTime()).substring(0, 8)))
@@ -164,7 +169,7 @@ public class RepetitionsActivity extends Activity
 							{
 								try
 								{
-									if (DBInterface.CancelRepetition(id))
+									if (DBInterface.cancelRepetition(id))
 									{
 										AlertDialog.Builder ad2 = new AlertDialog.Builder(RepetitionsActivity.this);
 										ad2.setTitle("Отмена репетиции");

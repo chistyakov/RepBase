@@ -1,5 +1,8 @@
 package com.example.repbase.classes;
 
+// TODO: rename methods get...Status() to is...ed
+// TODO: Lists encapsulation
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,118 +12,118 @@ import android.util.Log;
 
 public class User {
 
-	private int ID=0;
-	private String Nick="";
-	private String Password="";
-	private String Name = "";
-	private String Surname = "";
-	private String Phone="";
-	private String Email = "";
+	private int id=0;
+	private String nick="";
+	private String password="";
+	private String name = "";
+	private String surname = "";
+	private String phone="";
+	private String email = "";
 	private boolean deleted = false;
 	private boolean banned = false;
 	private boolean fullrights = false;
-	private List<Integer> GroupIDs = new ArrayList<Integer>();
-	private List<Integer> BaseIDs = new ArrayList<Integer>();
-	private List<Integer> RepIDs = new ArrayList<Integer>();
+	private List<Integer> groupIDs = new ArrayList<Integer>();
+	private List<Integer> baseIDs = new ArrayList<Integer>();
+//	private List<Integer> repIDs = new ArrayList<Integer>();
 
 	public User(){
 		Log.d(Common.TEMP_TAG, "default constructor for User class was called.");
 	}
 
-	public User(int id, String Nick, String Password, String Name,
-			String Surname, String Phone, String Email, boolean deleted,
-			boolean banned, boolean fullrights, ArrayList<Integer> GroupsIDs,
-			ArrayList<Integer> BaseIDs, ArrayList<Integer> RepIDs) {
-		this.ID = id;
-		this.Nick = Nick;
-		this.Password = Password;
-		this.Name = Name;
-		this.Surname = Surname;
-		this.Phone = Phone;
-		this.Email = Email;
+	public User(int id, String nick, String password, String name,
+			String surname, String phone, String email, boolean deleted,
+			boolean banned, boolean fullrights, ArrayList<Integer> groupsIDs,
+			ArrayList<Integer> baseIDs/*, ArrayList<Integer> repIDs*/) {
+		this.id = id;
+		this.nick = nick;
+		this.password = password;
+		this.name = name;
+		this.surname = surname;
+		this.phone = phone;
+		this.email = email;
 		this.deleted = deleted;
 		this.banned = banned;
 		this.fullrights = fullrights;
-		this.GroupIDs = GroupsIDs;
-		this.BaseIDs = BaseIDs;
-		this.RepIDs = RepIDs;
+		this.groupIDs = groupsIDs;
+		this.baseIDs = baseIDs;
+//		this.repIDs = repIDs;
 	}
 	
 	public User(User u) {
-		this.ID = u.ID;
-		this.Nick = u.Nick;
-		this.Password = u.Password;
-		this.Name = u.Name;
-		this.Surname = u.Surname;
-		this.Phone = u.Phone;
-		this.Email = u.Email;
+		this.id = u.id;
+		this.nick = u.nick;
+		this.password = u.password;
+		this.name = u.name;
+		this.surname = u.surname;
+		this.phone = u.phone;
+		this.email = u.email;
 		this.banned = u.banned;
 		this.deleted = u.deleted;
 		this.fullrights = u.fullrights;
-		this.GroupIDs = u.GroupIDs;
-		this.RepIDs = u.RepIDs;
-		this.BaseIDs = u.BaseIDs;
+		this.groupIDs = u.groupIDs;
+//		this.repIDs = u.repIDs;
+		this.baseIDs = u.baseIDs;
 	}
 
 	// ID
 	public int getId() {
-		return ID;
+		return id;
 	}
 	protected void setId(int id) {
-		this.ID=id;
+		this.id=id;
 	}
 
 	// Nick
 	public String getNick() {
-		return Nick;
+		return nick;
 	}
 	protected void setNick(String nick) {
-		this.Nick=nick;
+		this.nick=nick;
 	}
 
 	// Password
 	public String getPassword() {
-		return Password;
+		return password;
 	}
 
 	protected void setPassword(String password) {
-		this.Password = password;
+		this.password = password;
 	}
 
 	// Name
 	public String getName() {
-		return Name;
+		return name;
 	}
 	
 	protected void setName(String name) {
-		this.Name = name;
+		this.name = name;
 	}
 	
 	// Surname
 	public String getSurname() {
-		return Surname;
+		return surname;
 	}
 	
 	protected void setSurname(String surname) {
-		this.Surname = surname;
+		this.surname = surname;
 	}
 
 	// Phone
 	public String getPhone() {
-		return Phone;
+		return phone;
 	}
 
 	protected void setPhone(String phone) {
-		this.Phone = phone;
+		this.phone = phone;
 	}
 	
 	// Email
 	public String getEmail() {
-		return Email;
+		return email;
 	}
 	
 	protected void setEmail(String email) {
-		this.Email = email;
+		this.email = email;
 	}
 
 	// deleted
@@ -162,28 +165,28 @@ public class User {
 
 	// GroupIDs
 	public List<Integer> getGroupsIDList() {
-		return GroupIDs;
+		return groupIDs;
 	}
 	
-	protected void setGroupsIDList(ArrayList<Integer> GroupsIDs){
-		this.GroupIDs = GroupsIDs;
+	protected void setGroupsIDList(ArrayList<Integer> groupsIDs){
+		this.groupIDs = groupsIDs;
 	}
 
 	// BaseIDs
 	public List<Integer> getBaseIDList() {
-		return BaseIDs;
+		return baseIDs;
 	}
 	
-	protected void setBaseIDList(ArrayList<Integer> BaseIDs){
-		this.BaseIDs = BaseIDs;
+	protected void setBaseIDList(ArrayList<Integer> baseIDs){
+		this.baseIDs = baseIDs;
 	}
 
-	// RepIDs
-	public List<Integer> getRepIDList() {
-		return RepIDs;
-	}
-	
-	protected void setRepIDList(ArrayList<Integer> RepIDs){
-		this.RepIDs = RepIDs;
-	}
+//	// RepIDs
+//	public List<Integer> getRepIDList() {
+//		return repIDs;
+//	}
+//	
+//	protected void setRepIDList(ArrayList<Integer> repIDs){
+//		this.repIDs = repIDs;
+//	}
 }
