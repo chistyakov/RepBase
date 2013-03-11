@@ -131,9 +131,6 @@ public class GroupsActivity extends ListActivity implements OnClickListener{
 	
 	private void refresh() {
 		try {
-			// list with user's groups
-			List<GroupWithJSONSkills> lGroups = new ArrayList<GroupWithJSONSkills>();
-			// lvGroups = getListView();
 
 			// create header for the list from xml
 			// inflate EnterIntoGroup button
@@ -150,6 +147,11 @@ public class GroupsActivity extends ListActivity implements OnClickListener{
 			btnCreateGroup.setText(getString(R.string.btnCreateNewGroupText));
 			btnCreateGroup.setOnClickListener(this);
 
+			// refresh user's info from server (groups list can be modified by
+			// other user)
+			SessionState.currentUser.refreshFromServer();
+			// list with user's groups
+			List<GroupWithJSONSkills> lGroups = new ArrayList<GroupWithJSONSkills>();
 			// set text for case when user doesn't have groups
 			String greating = getString(R.string.tvGroupsGreetingTextFail);
 			// check user's groups
@@ -168,7 +170,8 @@ public class GroupsActivity extends ListActivity implements OnClickListener{
 					setListAdapter(adapter);
 					// set greeting text: "You exist in those groups:"
 					greating = getString(R.string.tvGroupsGreetingText);
-				}
+				} else
+					setListAdapter(null);
 			}
 
 			tvGreeting = (TextView) vHeader.findViewById(R.id.tvGroupsGreeting);
