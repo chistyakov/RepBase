@@ -1,13 +1,18 @@
 package com.example.repbase;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -20,6 +25,9 @@ public class Common {
 	public static final String EXC_TAG = "exc";
 	public static final String TIMEOUT_TAG = "exc";
 	public static final String TEMP_TAG = "temp";
+	
+	public static final Locale loc = new Locale("ru", "RU");
+	public static final TimeZone tZone = TimeZone.getTimeZone("GMT+0400");
 	
 	public static final String TIMEOUTSTR = "Не могу дождаться ответа от сервера. Пожалуйста, проверьте соединение.";
 	
@@ -147,13 +155,29 @@ public class Common {
 		return al;
 	}
 	
-	public static Date parseJSONStringToDate(String jsonDateStr){
-		String str = jsonDateStr.replaceAll("[^0-9]", "").substring(0, 8);
-		return new Date(Long.parseLong(str));		
+	public static Date convJSONStringToDate(String jsonDateStr){
+		Log.d(Common.TEMP_TAG, jsonDateStr);
+		if(jsonDateStr.equals("null"))
+			return null;
+		// the example of date from server: \/Date(1363201200000+0400)\/
+		String strTimeMills = jsonDateStr.split("\\(|\\+|\\-")[1];
+		Date d = new Date(Long.parseLong(strTimeMills));
+		return d;
 	}
 	
-	public static String parseJSONStringToString(String jsonDateStr){
-		Date dt = parseJSONStringToDate(jsonDateStr);
+//	public static Calendar convJSONStringToCal(String jsonDateStr){
+//		// the example of date from server: \/Date(1363201200000+0400)\/
+//		String strTimeMills = jsonDateStr.split("[(+]")[1];
+//		Calendar cal = new GregorianCalendar();
+//		cal.setTimeInMillis(Long.parseLong(strTimeMills));
+//		return cal;		
+//	}
+	
+	public static String convJSONStringToString(String jsonDateStr){
+		Log.d(Common.TEMP_TAG, jsonDateStr);
+		if(jsonDateStr == null)
+			return null;
+		Date dt = convJSONStringToDate(jsonDateStr);
 		return Integer.toString(dt.getHours() + 4)
 				+ ':'
 				+ (Integer.toString(dt.getMinutes()).equals("0") ? "00"

@@ -1,6 +1,6 @@
 package com.example.repbase.activities;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -12,9 +12,8 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,7 +25,12 @@ import android.widget.TextView;
 import com.example.repbase.Common;
 import com.example.repbase.DBInterface;
 import com.example.repbase.R;
-import com.example.repbase.classes.Attribute;
+import com.example.repbase.classes.BaseWithJSONSkills;
+import com.example.repbase.classes.Group;
+import com.example.repbase.classes.GroupWithJSONSkills;
+import com.example.repbase.classes.RepTimeWithJSONSkills;
+import com.example.repbase.classes.RepetitionWithJSONSkills;
+import com.example.repbase.classes.RoomWithJSONSkills;
 import com.example.repbase.classes.SessionState;
 
 public class RepetitionsActivity extends Activity
@@ -43,6 +47,7 @@ public class RepetitionsActivity extends Activity
         }
         catch(Exception e)
         {
+        	Log.d(Common.EXC_TAG, this.getClass().getName(), e);
         	ShowMessageBox("Exception occured: " + e);
         }
 	}
@@ -52,7 +57,6 @@ public class RepetitionsActivity extends Activity
     	Common.ShowMessageBox(RepetitionsActivity.this, msg);
     }
 	
-	@SuppressWarnings("deprecation")
 	private void Refresh()
 			throws JSONException, InterruptedException, ExecutionException, TimeoutException
 	{
@@ -68,92 +72,85 @@ public class RepetitionsActivity extends Activity
     		
     		for (int i = 0; i < reps.length(); i++)
     		{
+    			JSONObject jRep = reps.getJSONObject(i);
+    			
+    			RepetitionWithJSONSkills testRep = new RepetitionWithJSONSkills(jRep);
+    			Log.d(Common.TEMP_TAG, "REPETITION: " + testRep.toStringFullInfo());
+    			RepTimeWithJSONSkills testTime = new RepTimeWithJSONSkills(jRep.getJSONObject("Time"));
+    			Log.d(Common.TEMP_TAG, "REPTIME: " + testTime.toStringFullInfo());
+    			RoomWithJSONSkills testRoom = new RoomWithJSONSkills(jRep.getJSONObject("RepRoom"));
+    			Log.d(Common.TEMP_TAG, "ROOM: " + testRoom.toStringFullInfo());
+    			BaseWithJSONSkills testBase = new BaseWithJSONSkills(jRep.getJSONObject("RepBase"));
+    			Log.d(Common.TEMP_TAG, "BASE: " + testBase.toStringFullInfo());
+
     			View item = inflater.inflate(R.layout.replist_item, layout, false);
-    			JSONObject rep = reps.getJSONObject(i);
+    			
+    			// display base name and room name
     			TextView basename = (TextView)item.findViewById(R.id.baseNameText_list);
-    			ArrayList<Attribute> baseattrs = Common.GetAttributesList(rep.getJSONObject("RepBase"));
-    			for (Attribute attr: baseattrs)
-    			{
-    				if (attr.Type.equals("Name"))
-    				{
-    					basename.setText(attr.Value);
-    					break;
-    				}
-    			}
+    			basename.setText(testBase.getName());
     			TextView roomname = (TextView)item.findViewById(R.id.repRoomText_list);
-    			ArrayList<Attribute> room = Common.GetAttributesList(rep.getJSONObject("RepRoom"));
-    			for (Attribute atr: room)
-    			{
-    				if (atr.Type.equals("Name"))
-    				{
-    					roomname.setText(atr.Value);
-    					break;
-    				}
-    			}
+    			roomname.setText(testRoom.getName());
+    			
+    			// display date
     			TextView from = (TextView)item.findViewById(R.id.repFromText_list);
     			TextView until = (TextView)item.findViewById(R.id.repUntilText_list);
-    			JSONObject reptime = rep.getJSONObject("Time"); 
-    			String From = reptime.getString("Begin");
-    			From = From.replaceAll("[^0-9]", "").substring(0, 8);
-    			Date dt = new Date(Long.parseLong(From));
-    			From = Integer.toString(dt.getHours() + 4) + ':' + (Integer.toString(dt.getMinutes()).equals("0") ? "00" : Integer.toString(dt.getMinutes()).length()==1 ? "0" + Integer.toString(dt.getMinutes()) : Integer.toString(dt.getMinutes()));
-    			from.setText(From);
-    			String Until = reptime.getString("End");
-    			Until = Until.replaceAll("[^0-9]", "").substring(0, 8);
-    			dt = new Date(Long.parseLong(Until));
-    			Until = Integer.toString(dt.getHours() + 4) + ':' + (Integer.toString(dt.getMinutes()).equals("0") ? "00" : Integer.toString(dt.getMinutes()).length()==1 ? "0" + Integer.toString(dt.getMinutes()) : Integer.toString(dt.getMinutes()));
-    			until.setText(Until);
+    			SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm", Common.loc);
+    			sdfTime.setTimeZone(Common.tZone);
+    			from.setText(sdfTime.format(testTime.getBegin()));
+    			until.setText(sdfTime.format(testTime.getEnd()));
+    			
+    			// display group
     			TextView group = (TextView)item.findViewById(R.id.groupNameText_list);
-    			if (rep.getString("GroupID") == null || rep.getString("GroupID").equals("null"))
+    			if (testRep.getGroupId() == null)
     				group.setText("Нет группы");
-    			else
-    			{
-    				for (Attribute atr: Common.GetAttributesList(rep.getJSONObject("RepGroup")))
-    					if (atr.Type.equals("Name"))
-    					{
-    						group.setText(atr.Value);
-    						break;
-    					}
+    			else {
+        			Group testGroup = new GroupWithJSONSkills(jRep.getJSONObject("RepGroup"));
+        			Log.d(Common.TEMP_TAG, "GROUP: " + testGroup.toStringFullInfo());
+        			group.setText(testGroup.getName());
     			}
+    			
+    			// display date
     			TextView date = (TextView)item.findViewById(R.id.repDateText_list);
-    			String repdate = rep.getString("Begin").replaceAll("[^0-9]", "").substring(0, 13);
-    			dt = new Date(Long.parseLong(repdate));
-    			date.setText(Integer.toString(dt.getDate() + 1) + '.' + Integer.toString(dt.getMonth() + 1) + '.' + Integer.toString(dt.getYear() + 1900));
+    			SimpleDateFormat sdfDate = new SimpleDateFormat("dd.MM.yyyy", Common.loc);
+    			sdfDate.setTimeZone(Common.tZone);
+    			date.setText(sdfDate.format(testTime.getBegin()));
+    			
+    			// display money info
     			TextView conf = (TextView)item.findViewById(R.id.repConfirmedText_list);
-    			if (rep.getBoolean("Confirmed"))
+    			if (testRep.isConfirmed())
     			{
     				conf.setText("да");
     				TextView repcostlabel = (TextView)item.findViewById(R.id.repCostLabel_list);
     				repcostlabel.setVisibility(0);
     				TextView repcosttext = (TextView)item.findViewById(R.id.repCostText_list);
     				repcosttext.setVisibility(0);
-    				repcosttext.setText(rep.getString("Cost"));
+    				repcosttext.setText(String.valueOf(testTime.getCost()));
+ 
     				TextView reppayedlabel = (TextView)item.findViewById(R.id.repPayedLabel_list);
     				reppayedlabel.setVisibility(0);
     				TextView reppayedtext = (TextView)item.findViewById(R.id.repPayedText_list);
     				reppayedtext.setVisibility(0);
-    				reppayedtext.setText(rep.getString("Payed"));
+    				reppayedtext.setText(String.valueOf(testRep.getPayed()));
     			}
     			else
     				conf.setText("нет");
+    			
+    			
     			item.getLayoutParams().width = LayoutParams.MATCH_PARENT;
-    			Resources res = getResources();
-				int iColor = color ? res.getColor(R.color.purple_item) : 
-					res.getColor(R.color.blue_item);
-    			item.setBackgroundColor(iColor);
-//    			if (color)
-//    				item.setBackgroundColor(res.getColor(R.color.purple_item));
-//    			else
-//    				item.setBackgroundColor(res.getColor(R.color.blue_item));
+    			if (color)
+    				item.setBackgroundColor(getResources().getColor(R.color.purple_item));
+    			else
+    				item.setBackgroundColor(getResources().getColor(R.color.blue_item));
     			color = !color;
     			
-    			if (Long.parseLong(rep.getString("Begin").replaceAll("[^0-9]", "").substring(0, 8)) <= Long.parseLong(Long.toString(new Date().getTime()).substring(0, 8)))
+    			// display cancel button
+    			if(testTime.getBegin().before(new Date()))
     			{
     				Button canc = (Button)item.findViewById(R.id.cancelRepButton_list);
     				canc.setVisibility(4);
     			}
     			
-    			final int id = rep.getInt("ID");
+    			final int id = testRep.getId();
     			
     			Button cancelButton = (Button)item.findViewById(R.id.cancelRepButton_list);
     			OnClickListener cancelButton_click = new OnClickListener()

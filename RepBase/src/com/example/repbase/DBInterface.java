@@ -15,6 +15,7 @@ import android.util.Log;
 import android.widget.SeekBar;
 
 import com.example.repbase.classes.Attribute;
+import com.example.repbase.classes.BaseWithJSONSkills;
 import com.example.repbase.classes.Group;
 import com.example.repbase.classes.GroupWithJSONSkills;
 import com.example.repbase.classes.SessionState;
@@ -317,9 +318,33 @@ public class DBInterface
 				+ wrapParameter_("GroupID", groupId));
 	}	
 	
+	public static JSONObject getBaseById(int id) throws InterruptedException,
+			ExecutionException, TimeoutException, JSONException {
+		String MethodURL = "GetBaseByID/";
+		return getObjectRespond(URL + MethodURL
+				+wrapParameter("ID", id));
+	}
 	
+	public static JSONObject getBaseByName(String name)
+			throws InterruptedException, ExecutionException, TimeoutException,
+			JSONException {
+		String MethodURL = "GetBaseByName/";
+		return getObjectRespond(URL + MethodURL
+				+ wrapParameter("Name", name)); 
+	}
 	
-	
+	public static List<BaseWithJSONSkills> getAllBases()
+			throws InterruptedException, ExecutionException, TimeoutException,
+			JSONException {
+		String MethodURL = "GetAllBases";
+		JSONArray respond = getArrayRespond(URL + MethodURL);
+		List<BaseWithJSONSkills> retList = new ArrayList<BaseWithJSONSkills>();
+		for (int i = 0; i<respond.length(); i++){
+			BaseWithJSONSkills base = new BaseWithJSONSkills(respond.getJSONObject(i));
+			retList.add(base);
+		}
+		return retList;
+	}
 	
 	
 	private static JSONObject getObjectRespond(String URL) throws InterruptedException, ExecutionException, TimeoutException, JSONException {
@@ -352,5 +377,4 @@ public class DBInterface
 			throw new NullPointerException("exception wasn't triggered, but JSON array is null");
 		return ja;
 	}
-	
 }

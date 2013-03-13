@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Repetition {
 	private int id;
-	private int groupId;
+	private Integer groupId;
 	private int timeId;
 	private int payed;
 	private Date payedDate;
@@ -17,10 +17,12 @@ public class Repetition {
 		
 	}
 	
-	public Repetition(int id, int groupId, int timeId, int payed,
+	public Repetition(int id, Integer groupId, int timeId, int payed,
 			Date payedDate, boolean confirmed, boolean cancelled,
 			List<Integer> servicesIds) {
 		this.id = id;
+//		this.groupId = (groupId != null) ? groupId : -1;
+//		this.groupId = new Integer(groupId);
 		this.groupId = groupId;
 		this.timeId = timeId;
 		this.payed = payed;
@@ -37,11 +39,11 @@ public class Repetition {
 		this.id = id;
 	}
 	
-	public int getGroupId() {
+	public Integer getGroupId() {
 		return groupId;
 	}
 	protected void setGroupId(int groupId) {
-		this.groupId = groupId;
+		this.groupId = Integer.valueOf(groupId);
 	}
 	
 	public int getTimeId() {
@@ -88,5 +90,26 @@ public class Repetition {
 	public void setServicesIds(List<Integer> servicesIds) {
 		this.servicesIds = servicesIds;
 	} 
+	
+	
+	public String toStringFullInfo() {
+		String strCommonInfo = "id: " + this.id 
+				+ ", groupId: " + this.groupId
+				+ ", timeId: " + this.timeId
+				+ ", payed: " + this.payed
+				+ ", payed date: " + this.payedDate
+				+ ", confirmed: " + this.confirmed 
+				+ ", cancelled: " + this.cancelled;
+		StringBuilder sbServices = new StringBuilder();
+		sbServices.append("rooms: [");
+		for (Integer i : servicesIds)
+		{
+			sbServices.append(i);
+			sbServices.append("; ");
+		}
+		sbServices.append("]");
+
+		return strCommonInfo+", "+sbServices;
+	}
 
 }

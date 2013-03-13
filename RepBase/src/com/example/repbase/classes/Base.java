@@ -9,18 +9,25 @@ public class Base {
 	private String city;
 	private String address;
 	private String description;
-	private List<Integer> rooms = new ArrayList<Integer>();
+	private boolean deleted;
+	private List<Integer> roomIds = new ArrayList<Integer>();
+	private List<Integer> userIds = new ArrayList<Integer>();
 	
 	public Base(){
 		
 	}
-	public Base(int id, String name, String city, String address, String description, List<Integer> rooms){
+
+	public Base(int id, String name, String city, String address,
+			String description, boolean deleted, List<Integer> roomIds,
+			List<Integer> userIds) {
 		this.id = id;
 		this.name = name;
 		this.city = city;
 		this.address = address;
 		this.description = description;
-		this.rooms = rooms;
+		this.deleted = deleted;
+		this.roomIds = roomIds;
+		this.userIds = userIds;
 	}
 
 	public int getId() {
@@ -63,12 +70,58 @@ public class Base {
 		this.description = description;
 	}
 
-	public List<Integer> getRooms() {
-		return rooms;
+	public List<Integer> getRoomIds() {
+		return roomIds;
 	}
 
-	public void setRooms(List<Integer> rooms) {
-		this.rooms = rooms;
+	public void setRoomIds(List<Integer> rooms) {
+		this.roomIds = rooms;
+	}
+
+	public List<Integer> getUserIds() {
+		return userIds;
+	}
+
+	protected void setUserIds(List<Integer> userIds) {
+		this.userIds = userIds;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	protected void markAsDeleted() {
+		this.deleted = true;
+	}
+	
+	protected void unMarkAsDeleted() {
+		this.deleted = false;
+	}
+
+	public String toStringFullInfo() {
+		String strCommonInfo = "id: " + this.id + ", name: " + this.name
+				+ ", city: " + this.city + ", address: " + this.address
+				+ ", description: " + this.description + ", deleted: "
+				+ this.deleted;
+		StringBuilder sbRooms = new StringBuilder();
+		sbRooms.append("rooms: [");
+		for (Integer i:roomIds)
+		{
+			sbRooms.append(i);
+			sbRooms.append("; ");
+		}
+		sbRooms.append("]");
+
+		StringBuilder sbUsers = new StringBuilder();
+		sbUsers.append("users: [");
+		for (Integer i:roomIds)
+		{
+			sbUsers.append(i);
+			sbUsers.append("; ");
+		}
+		sbUsers.append("]");
+		
+		return strCommonInfo+", "+sbRooms+", "+sbUsers;
 	}
 	
 }

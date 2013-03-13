@@ -1,5 +1,6 @@
 package com.example.repbase.classes;
 
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -18,12 +19,33 @@ public class RepetitionWithJSONSkills extends Repetition {
 
 	public RepetitionWithJSONSkills(JSONObject jo) throws JSONException{
 		super(jo.getInt("ID"),
-				jo.getInt("GroupID"),
+//				(Integer)checkForNull(jo, "GroupID"),
+				(Integer)convJSONNullToNull(jo.get("GroupID")),
 				jo.getInt("RepTimeID"),
 				jo.getInt("Payed"),
-				Common.parseJSONStringToDate(jo.getString("PayedDate")),
+				Common.convJSONStringToDate(jo.getString("PayedDate")),
 				jo.getBoolean("Confirmed"),
 				jo.getBoolean("Cancelled"),
 				Common.convJSONArrToIntArrL(jo.getJSONArray("Services")));
 	}
+	
+	private static Object checkForNull(JSONObject jo, String param)
+			throws JSONException {
+		return jo.isNull(param) ? null : jo.get(param);
+//		if(jo.isNull(param))
+//			return null;
+//		else
+//			return jo.get(param);
+	}
+	
+	private static Object convJSONNullToNull(Object o) {
+//		if (JSONObject.NULL.equals(o))
+//			return null;
+//		else
+//			return o;
+		
+		return o.equals(JSONObject.NULL) ? null : o;
+	}
+	
+	
 }

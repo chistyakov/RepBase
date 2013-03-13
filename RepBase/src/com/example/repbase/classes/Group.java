@@ -73,4 +73,22 @@ public class Group {
 	public void setUserIds(List<Integer> userIds) {
 		this.userIds = userIds;
 	}
+	
+	public String toStringFullInfo() {
+		String strCommonInfo = "id: " + this.id 
+				+ ", name: " + this.name
+				+ ", accessCode: " + this.accessCode
+				+ ", accessCode num: " + this.accessCode_Num
+				+ ", deleted: " + this.deleted;
+		StringBuilder sbUsers = new StringBuilder();
+		sbUsers.append("rooms: [");
+		for (Integer i : userIds)
+		{
+			sbUsers.append(i);
+			sbUsers.append("; ");
+		}
+		sbUsers.append("]");
+
+		return strCommonInfo+", "+sbUsers;
+	}
 }
