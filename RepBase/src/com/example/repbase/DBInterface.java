@@ -18,6 +18,7 @@ import com.example.repbase.classes.Attribute;
 import com.example.repbase.classes.BaseWithJSONSkills;
 import com.example.repbase.classes.Group;
 import com.example.repbase.classes.GroupWithJSONSkills;
+import com.example.repbase.classes.RepTimeWithJSONSkills;
 import com.example.repbase.classes.SessionState;
 
 // TODO: spyke: mark class as static
@@ -207,7 +208,7 @@ public class DBInterface
 				+ wrapParameter("RepetitionID", RepID));
 	}
 	
-	public static boolean cancelRepetition(int RepID)
+	public static void cancelRepetition(int RepID)
 			throws InterruptedException, ExecutionException, JSONException, TimeoutException
 	{
 		String MethodURL = "CancelRepetition/";
@@ -216,8 +217,6 @@ public class DBInterface
 				+ wrapParameter("ActionPerformerID",
 						SessionState.currentUser.getId()) + '&'
 				+ wrapParameter("RepetitionID", RepID));
-
-			return getRepetitionByID(RepID).getBoolean("Cancelled");
 	}
 	
 	public JSONArray getAvailableTimes(int BaseID, Date Begin, Date End)
@@ -345,6 +344,24 @@ public class DBInterface
 		}
 		return retList;
 	}
+	
+	public static List<RepTimeWithJSONSkills> getRepTimesListByRoom(int roomId)
+			throws InterruptedException, ExecutionException, TimeoutException,
+			JSONException {
+		String MethodURL = "GetRoomTimes/";
+		List<RepTimeWithJSONSkills> retList = new ArrayList<RepTimeWithJSONSkills>();
+		for (int i = 1; i <= 7; i++) {
+			JSONArray respond = getArrayRespond(URL + MethodURL
+					+ wrapParameter("RoomID", roomId) + '&'
+					+ wrapParameter_("DayOfWeek", i));
+			for (int j = 0; j < respond.length(); j++) {
+				RepTimeWithJSONSkills repTime = new RepTimeWithJSONSkills(
+						respond.getJSONObject(j));
+				retList.add(repTime);
+			}
+		}
+		return retList;
+	}	
 	
 	
 	private static JSONObject getObjectRespond(String URL) throws InterruptedException, ExecutionException, TimeoutException, JSONException {

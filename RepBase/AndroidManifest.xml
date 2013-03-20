@@ -31,6 +31,8 @@
         <activity android:name=".activities.SingleGroupActivity"></activity>
         <activity android:name=".activities.AllGroupsListActivity"></activity>
         <activity android:name=".activities.CreateNewGroupActivity"></activity>
+        <activity android:name=".activities.AllBasesListActivity"></activity>
+        <activity android:name=".activities.ReserveRepTimeActivity"></activity>
     </application>
 
 </manifest>

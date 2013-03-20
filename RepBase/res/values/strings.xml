@@ -10,7 +10,7 @@
     <string name="btnCreateNewGroupText">Создать новую группу</string>
     <string name="tvGroupsGreetingText">Вы состоите в группах:</string>
     <string name="tvGroupsGreetingTextFail">Вы не состоите ни в одной группе</string>
-    <string name="btnGenerateAccCodeText">Сгенерировать новый код доступа</string>
+    <string name="btnGenerateAccCodeText">Сгенерировать новый</string>
     <string name="btnLeaveGroupText">Выйти из группы</string>
     <string name="btnDeleteGroupText">Удалить группу</string>
     <string name="btnBackText">Назад</string>
@@ -26,5 +26,12 @@
     <string name="tvGroupMemberHeder">участники:</string>
     <string name="tvGroupMemberEmptyHeder">в группе нет участников</string>
     <string name="tvNewGroup">введите название группы</string>
+    <string name="errCancelRep">Не удалось отменить репетицию</string>
+    <string name="okCancelRep">Репетиция успешно отменена</string>
+    <string name="tvBaseRoomsCount">Комнат: </string>
+    <string name="tvNoData">Нет данных</string>
+    <string name="tvChoseBase">Выберите репитиционную базу: </string>
+    <string name="tvBaseRepCost">Стоимость за час: </string>
+    <string name="tvChoseRepTime">Выберите время</string>
 
 </resources>

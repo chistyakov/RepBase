@@ -1,6 +1,12 @@
 package com.example.repbase.classes;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+
+import android.util.Log;
+
+import com.example.repbase.Common;
 
 public class RepTime {
 	private int id = 0;
@@ -137,6 +143,33 @@ public class RepTime {
 				+ ", cost: " + this.cost
 				+ ", roomId: " + this.roomId;
 		return strCommonInfo;
+	}
+	
+	/**
+	 * get cost per hour for repetition
+	 * @return double cost/(end-begin), -1.0 if end<=begin
+	 */
+	public double getCostPerHour() {
+
+			double diffHours = 0.0;
+			Calendar calendarBegin = new GregorianCalendar(Common.TZONE, Common.LOC);
+			calendarBegin.setTime(begin);
+			Calendar calendarEnd = new GregorianCalendar(Common.TZONE, Common.LOC);
+			calendarEnd.setTime(end);
+			
+//			// repTime can't start on one day and finish on other
+//			if (calendarEnd.get(Calendar.DAY_OF_YEAR) != calendarBegin.get(Calendar.DAY_OF_YEAR))
+//				return -1.0;
+			
+			diffHours = calendarEnd.get(Calendar.HOUR_OF_DAY) - calendarBegin.get(Calendar.HOUR_OF_DAY);
+			diffHours += ((calendarEnd.get(Calendar.MINUTE) - calendarBegin.get(Calendar.MINUTE))/60);
+			diffHours += ((calendarEnd.get(Calendar.SECOND) - calendarBegin.get(Calendar.SECOND))/(60*60));
+			
+			Log.d(Common.TEMP_TAG, "diffHours: " + diffHours);
+			
+			if (diffHours <= 0.0)
+				return -1.0;
+			return cost / diffHours;
 	}
 	
 }

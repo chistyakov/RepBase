@@ -24,11 +24,10 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+// TODO: add clarification dialogs for leaving the group and deleting the group
 public class SingleGroupActivity extends Activity implements OnClickListener{
 
-	private TextView tvGroupId;
 	private TextView tvGroupName;
 	private TextView tvAccCode;
 	
@@ -63,7 +62,6 @@ public class SingleGroupActivity extends Activity implements OnClickListener{
 				}
 			}
 			
-			tvGroupId = (TextView) findViewById(R.id.tvGroupId);
 			tvGroupName = (TextView) findViewById(R.id.tvGroupName);
 			tvAccCode = (TextView) findViewById(R.id.tvAccCode);
 			
@@ -79,7 +77,7 @@ public class SingleGroupActivity extends Activity implements OnClickListener{
 					View item = li.inflate(R.layout.group_member_box_item, llMemberGroup, false);
 					TextView tvName = (TextView) item.findViewById(R.id.tvGroupMember);
 					tvName.setText(user.getName() + " " + user.getSurname());
-					// mark current user with special color
+					// mark current user
 					if (user.getId() == SessionState.currentUser.getId()) {
 						tvName.setText(tvName.getText() + "(Вы)");
 					}
@@ -99,9 +97,6 @@ public class SingleGroupActivity extends Activity implements OnClickListener{
 			btnDeleteGroup.setOnClickListener(this);
 			btnBack.setOnClickListener(this);
 
-//			tvGroupId.setText(String.valueOf(intent.getIntExtra("groupId", 0)));
-
-			tvGroupId.setText(String.valueOf(group.getId()));
 			tvGroupName.setText(group.getName());
 			tvAccCode.setText(group.getAccessCode());
 

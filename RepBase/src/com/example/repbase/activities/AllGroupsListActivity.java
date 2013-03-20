@@ -47,11 +47,7 @@ public class AllGroupsListActivity extends ListActivity
 				if(group.getDelStatus() || group.getUserIds().contains(SessionState.currentUser.getId()))
 					itr.remove();
 			}
-//			for (GroupWithJSONSkills group : lAllGroups){
-//				if(group.getDelStatus() || group.getUserIds().contains(SessionState.currentUser.getId()))
-//					lAllGroups.remove(group);
-//			}
-
+			
 			// add "back" button to the header
 			ll = (LinearLayout) findViewById(R.id.llHeader);
 			LayoutParams lpButton = new LayoutParams(LayoutParams.MATCH_PARENT,

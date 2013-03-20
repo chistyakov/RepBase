@@ -21,13 +21,13 @@ import com.example.repbase.classes.Attribute;
 // TODO: think about i18n of application
 public class Common {
 	public static final int MAX_EMAIL_LENGTH=20;
-	public static final String JSON_TAG = "exc_json";
+	public static final String JSON_TAG = "json";
 	public static final String EXC_TAG = "exc";
 	public static final String TIMEOUT_TAG = "exc";
 	public static final String TEMP_TAG = "temp";
 	
-	public static final Locale loc = new Locale("ru", "RU");
-	public static final TimeZone tZone = TimeZone.getTimeZone("GMT+0400");
+	public static final Locale LOC = new Locale("ru", "RU");
+	public static final TimeZone TZONE = TimeZone.getTimeZone("GMT+0400");
 	
 	public static final String TIMEOUTSTR = "Не могу дождаться ответа от сервера. Пожалуйста, проверьте соединение.";
 	

@@ -30,4 +30,9 @@ public class BaseWithJSONSkills extends Base {
 				Common.convJSONArrToIntArrL(jo.getJSONArray("RoomIDs")),
 				Common.convJSONArrToIntArrL(jo.getJSONArray("UserIDs")));
 	}
+	
+	@Override
+	public String toString() {
+		return this.getName();
+	}
 }
