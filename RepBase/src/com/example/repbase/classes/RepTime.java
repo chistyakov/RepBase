@@ -7,6 +7,7 @@ import java.util.GregorianCalendar;
 import android.util.Log;
 
 import com.example.repbase.Common;
+import com.example.repbase.WrongTimeRangeException;
 
 public class RepTime {
 	private int id = 0;
@@ -147,9 +148,10 @@ public class RepTime {
 	
 	/**
 	 * get cost per hour for repetition
-	 * @return double cost/(end-begin), -1.0 if end<=begin
+	 * @return double cost/(end-begin) 
+	 * @throws WrongTimeRangeException if end<=begin
 	 */
-	public double getCostPerHour() {
+	public double getCostPerHour() throws WrongTimeRangeException {
 
 			double diffHours = 0.0;
 			Calendar calendarBegin = new GregorianCalendar(Common.TZONE, Common.LOC);
@@ -168,7 +170,7 @@ public class RepTime {
 			Log.d(Common.TEMP_TAG, "diffHours: " + diffHours);
 			
 			if (diffHours <= 0.0)
-				return -1.0;
+				throw new WrongTimeRangeException();
 			return cost / diffHours;
 	}
 	

@@ -32,7 +32,7 @@
         <activity android:name=".activities.AllGroupsListActivity"></activity>
         <activity android:name=".activities.CreateNewGroupActivity"></activity>
         <activity android:name=".activities.AllBasesListActivity"></activity>
-        <activity android:name=".activities.ReserveRepTimeActivity"></activity>
+        <activity android:name="com.example.repbase.activities.RoomsListActivity"></activity>
     </application>
 
 </manifest>

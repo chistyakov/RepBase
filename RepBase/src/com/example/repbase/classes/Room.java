@@ -122,7 +122,7 @@ public class Room {
 				+ ", deleted: " + this.deleted
 				+ ", descriptiond: " + this.description;
 		StringBuilder sbConditions = new StringBuilder();
-		sbConditions.append("rooms: [");
+		sbConditions.append("conditions: [");
 		for (Integer i : conditionIds)
 		{
 			sbConditions.append(i);

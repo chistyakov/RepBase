@@ -156,7 +156,6 @@ public class Common {
 	}
 	
 	public static Date convJSONStringToDate(String jsonDateStr){
-		Log.d(Common.TEMP_TAG, jsonDateStr);
 		if(jsonDateStr.equals("null"))
 			return null;
 		// the example of date from server: \/Date(1363201200000+0400)\/
@@ -165,24 +164,4 @@ public class Common {
 		return d;
 	}
 	
-//	public static Calendar convJSONStringToCal(String jsonDateStr){
-//		// the example of date from server: \/Date(1363201200000+0400)\/
-//		String strTimeMills = jsonDateStr.split("[(+]")[1];
-//		Calendar cal = new GregorianCalendar();
-//		cal.setTimeInMillis(Long.parseLong(strTimeMills));
-//		return cal;		
-//	}
-	
-	public static String convJSONStringToString(String jsonDateStr){
-		Log.d(Common.TEMP_TAG, jsonDateStr);
-		if(jsonDateStr == null)
-			return null;
-		Date dt = convJSONStringToDate(jsonDateStr);
-		return Integer.toString(dt.getHours() + 4)
-				+ ':'
-				+ (Integer.toString(dt.getMinutes()).equals("0") ? "00"
-						: Integer.toString(dt.getMinutes()).length() == 1 ? "0"
-								+ Integer.toString(dt.getMinutes())
-								: Integer.toString(dt.getMinutes()));	
-	}
 }
