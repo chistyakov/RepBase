@@ -15,7 +15,6 @@ import com.example.repbase.R;
 import com.example.repbase.WrongTimeRangeException;
 import com.example.repbase.classes.Base;
 import com.example.repbase.classes.BaseWithJSONSkills;
-import com.example.repbase.classes.RepTimeWithJSONSkills;
 import com.example.repbase.classes.RoomWithJSONSkills;
 
 import android.app.ListActivity;
@@ -44,7 +43,7 @@ public class AllBasesListActivity extends ListActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_all_bases_list);
+		setContentView(R.layout.activity_baseslist);
 
 		btnBack = (Button) findViewById(R.id.btnBack);
 		btnBack.setOnClickListener(this);

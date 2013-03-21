@@ -31,6 +31,9 @@ public class RoomsListActivity extends ListActivity implements OnClickListener {
 	private BaseWithJSONSkills base;
 	private Button btnBack;
 	private TextView tvBaseName;
+	private TextView tvBaseCity;
+	private TextView tvBaseAddress;
+	private TextView tvBaseDescription;
 
 	private final String ATTRIBUTE_NAME_NAME = "name";
 	private final String ATTRIBUTE_NAME_SQUARE = "square";
@@ -54,6 +57,14 @@ public class RoomsListActivity extends ListActivity implements OnClickListener {
 
 			tvBaseName = (TextView) findViewById(R.id.tvBaseName);
 			tvBaseName.setText(base.getName());
+			tvBaseCity = (TextView) findViewById(R.id.tvBaseCity);
+			tvBaseCity.setText(getString(R.string.city) + base.getCity());
+			tvBaseAddress = (TextView) findViewById(R.id.tvBaseAddress);
+			tvBaseAddress.setText(getString(R.string.adderss) + base.getAddress());
+			tvBaseDescription = (TextView) findViewById(R.id.tvBaseDescription);
+			tvBaseDescription.setText(getString(R.string.description) + base.getDescription());
+			if (base.getDescription().equals("null"))
+				tvBaseDescription.setVisibility(android.view.View.INVISIBLE);
 
 			if (base.getRoomIds().size() != 0) {
 				// generate room's list for the base
@@ -73,7 +84,8 @@ public class RoomsListActivity extends ListActivity implements OnClickListener {
 					for (RoomWithJSONSkills room : lRooms) {
 						m = new HashMap<String, Object>();
 						m.put(ATTRIBUTE_NAME_NAME, room.getName());
-						m.put(ATTRIBUTE_NAME_SQUARE, room.getSquare());
+						m.put(ATTRIBUTE_NAME_SQUARE, getString(R.string.square)
+								+ String.valueOf(room.getSquare()));
 						m.put(ATTRIBUTE_NAME_COSTS_RANGE,
 								getString(R.string.repCost)
 										+ convCostsRangeToString(room,

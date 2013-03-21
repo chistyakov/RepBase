@@ -18,19 +18,13 @@ public class RepetitionWithJSONSkills extends Repetition {
 
 	public RepetitionWithJSONSkills(JSONObject jo) throws JSONException{
 		super(jo.getInt("ID"),
-//				(Integer)checkForNull(jo, "GroupID"),
-				(Integer)convJSONNullToNull(jo.get("GroupID")),
+				(Integer)Common.convJSONNullToNull(jo.get("GroupID")),
 				jo.getInt("RepTimeID"),
 				jo.getInt("Payed"),
 				Common.convJSONStringToDate(jo.getString("PayedDate")),
 				jo.getBoolean("Confirmed"),
 				jo.getBoolean("Cancelled"),
 				Common.convJSONArrToIntArrL(jo.getJSONArray("Services")));
-	}
-	
-	
-	private static Object convJSONNullToNull(Object ob) {
-		return ob.equals(JSONObject.NULL) ? null : ob;
 	}
 	
 	public void cancel() throws InterruptedException, ExecutionException, JSONException, TimeoutException {

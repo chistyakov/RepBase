@@ -28,10 +28,14 @@
     <string name="tvNewGroup">введите название группы</string>
     <string name="errCancelRep">Не удалось отменить репетицию</string>
     <string name="okCancelRep">Репетиция успешно отменена</string>
-    <string name="tvBaseRoomsCount">Помещений: </string>
+    <string name="tvBaseRoomsCount">Залов: </string>
     <string name="tvNoData">Нет данных</string>
     <string name="tvChoseBase">Выберите репитиционную базу: </string>
     <string name="repCost">Стоимость за час: </string>
-    <string name="tvChoseRoom">Выберите помещение</string>
+    <string name="tvChoseRoom">Выберите зал: </string>
+    <string name="square">Площадь: </string>
+    <string name="city">Город: </string>
+    <string name="adderss">Адрес: </string>
+    <string name="description">Описание: </string>
 
 </resources>

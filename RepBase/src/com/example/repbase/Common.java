@@ -164,4 +164,8 @@ public class Common {
 		return d;
 	}
 	
+	public static Object convJSONNullToNull(Object ob) {
+		return ob.equals(JSONObject.NULL) ? null : ob;
+	}
+	
 }
