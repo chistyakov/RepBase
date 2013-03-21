@@ -1,17 +1,9 @@
 package com.example.repbase.activities;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
-
-import org.json.JSONException;
 
 import com.example.repbase.Common;
-import com.example.repbase.DBInterface;
-import com.example.repbase.PaintedSimpleAdapter;
 import com.example.repbase.R;
 import com.example.repbase.classes.GroupWithJSONSkills;
 import com.example.repbase.classes.SessionState;
@@ -22,11 +14,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 

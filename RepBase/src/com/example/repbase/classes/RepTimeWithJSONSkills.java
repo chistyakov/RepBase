@@ -6,8 +6,6 @@ import java.util.concurrent.TimeoutException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
-
 import com.example.repbase.Common;
 import com.example.repbase.DBInterface;
 

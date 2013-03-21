@@ -1,7 +1,6 @@
 package com.example.repbase.activities;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.repbase.Common;
-import com.example.repbase.DBInterface;
 import com.example.repbase.R;
 import com.example.repbase.classes.SessionState;
 import com.example.repbase.classes.UserWithJSONSkills;

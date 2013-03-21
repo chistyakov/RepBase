@@ -3,7 +3,6 @@ package com.example.repbase.activities;
 import java.util.Iterator;
 import java.util.List;
 
-import com.example.repbase.AllGroupsArrayAdapter;
 import com.example.repbase.Common;
 import com.example.repbase.DBInterface;
 import com.example.repbase.R;
@@ -14,7 +13,6 @@ import com.example.repbase.classes.SessionState;
 import android.app.FragmentManager;
 //import android.R;
 import android.app.ListActivity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;

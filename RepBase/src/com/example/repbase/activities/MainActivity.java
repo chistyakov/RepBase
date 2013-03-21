@@ -3,7 +3,6 @@ package com.example.repbase.activities;
 import java.util.concurrent.TimeoutException;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,7 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.repbase.Common;
-import com.example.repbase.DBInterface;
 //import com.example.repbase.DBInterface;
 import com.example.repbase.R;
 import com.example.repbase.classes.SessionState;

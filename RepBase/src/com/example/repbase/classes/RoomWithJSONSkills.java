@@ -7,7 +7,6 @@ import java.util.concurrent.TimeoutException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
 import android.util.Pair;
 
 import com.example.repbase.Common;

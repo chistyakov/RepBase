@@ -12,11 +12,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.util.Log;
-import android.widget.SeekBar;
 
-import com.example.repbase.classes.Attribute;
 import com.example.repbase.classes.BaseWithJSONSkills;
-import com.example.repbase.classes.Group;
 import com.example.repbase.classes.GroupWithJSONSkills;
 import com.example.repbase.classes.RepTimeWithJSONSkills;
 import com.example.repbase.classes.SessionState;
