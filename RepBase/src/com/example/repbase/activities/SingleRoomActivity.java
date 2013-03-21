@@ -128,6 +128,10 @@ public class SingleRoomActivity extends Activity implements OnClickListener {
 			finish();
 			break;
 		case R.id.btnReserve:
+			Intent intent = new Intent(getApplicationContext(),
+					ReserveRepActivity.class);
+			intent.putExtra("roomId", room.getId());
+			startActivity(intent);
 			break;
 		}
 
