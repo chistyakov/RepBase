@@ -65,8 +65,6 @@ public class UserWithJSONSkills extends User {
 		
 		// DBInterface.CheckAuth() method returns JSONObject
 		// contains name "CheckAuthorizationResult" in case nick was found
-		// and name "Exception" otherwise
-		// see GetJSONFromUrl.java
 		if (DBInterface.checkAuth(Nick, Password).getBoolean("CheckAuthorizationResult")) {
 			parseJSONObjOnFields(DBInterface.getUserByNickname(Nick));
 			this.actuality = true;

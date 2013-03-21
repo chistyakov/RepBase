@@ -23,6 +23,7 @@ import android.util.Pair;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -38,6 +39,7 @@ public class RoomsListActivity extends ListActivity implements OnClickListener {
 	private final String ATTRIBUTE_NAME_NAME = "name";
 	private final String ATTRIBUTE_NAME_SQUARE = "square";
 	private final String ATTRIBUTE_NAME_COSTS_RANGE = "costsRange";
+	private final String ATTRIBUTE_NAME_ID = "id";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +92,7 @@ public class RoomsListActivity extends ListActivity implements OnClickListener {
 								getString(R.string.repCost)
 										+ convCostsRangeToString(room,
 												getString(R.string.tvNoData)));
+						m.put(ATTRIBUTE_NAME_ID, room.getId());
 						data.add(m);
 					}
 					String[] from = { ATTRIBUTE_NAME_NAME,
@@ -101,7 +104,7 @@ public class RoomsListActivity extends ListActivity implements OnClickListener {
 							R.layout.roomslist_item, from, to);
 					setListAdapter(sAdapter);
 				}
-
+				
 			}
 		} catch (Exception e) {
 			Log.d(Common.EXC_TAG, this.getClass().getName(), e);
@@ -129,6 +132,20 @@ public class RoomsListActivity extends ListActivity implements OnClickListener {
 		} catch (WrongTimeRangeException e) {
 			return strNoData;
 		}
+	}
+
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		Map<String, Object> m = (Map<String, Object>) l
+				.getItemAtPosition(position);
+		Log.i(Common.TEMP_TAG,
+				"onListItemClick: " + position + "; "
+						+ m.get(ATTRIBUTE_NAME_ID));
+
+		Intent intent = new Intent(getApplicationContext(),
+				SingleRoomActivity.class);
+		intent.putExtra("roomId", (Integer) m.get(ATTRIBUTE_NAME_ID));
+		startActivity(intent);		
 	}
 
 }
