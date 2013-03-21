@@ -342,20 +342,29 @@ public class DBInterface
 		return retList;
 	}
 	
+	public static List<RepTimeWithJSONSkills> getRepTimesListByRoom(int roomId,
+			int dayOfweek) throws InterruptedException, ExecutionException,
+			TimeoutException, JSONException {
+		String MethodURL = "GetRoomTimes/";
+		List<RepTimeWithJSONSkills> retList = new ArrayList<RepTimeWithJSONSkills>();
+		JSONArray respond = getArrayRespond(URL + MethodURL
+				+ wrapParameter("RoomID", roomId) + '&'
+				+ wrapParameter_("DayOfWeek", dayOfweek));
+		for (int j = 0; j < respond.length(); j++) {
+			RepTimeWithJSONSkills repTime = new RepTimeWithJSONSkills(
+					respond.getJSONObject(j));
+			if (!repTime.isDeleted())
+				retList.add(repTime);
+		}
+		return retList;
+	}
+	
 	public static List<RepTimeWithJSONSkills> getRepTimesListByRoom(int roomId)
 			throws InterruptedException, ExecutionException, TimeoutException,
 			JSONException {
-		String MethodURL = "GetRoomTimes/";
 		List<RepTimeWithJSONSkills> retList = new ArrayList<RepTimeWithJSONSkills>();
 		for (int i = 1; i <= 7; i++) {
-			JSONArray respond = getArrayRespond(URL + MethodURL
-					+ wrapParameter("RoomID", roomId) + '&'
-					+ wrapParameter_("DayOfWeek", i));
-			for (int j = 0; j < respond.length(); j++) {
-				RepTimeWithJSONSkills repTime = new RepTimeWithJSONSkills(
-						respond.getJSONObject(j));
-				retList.add(repTime);
-			}
+			retList.addAll(getRepTimesListByRoom(roomId, i));
 		}
 		return retList;
 	}	

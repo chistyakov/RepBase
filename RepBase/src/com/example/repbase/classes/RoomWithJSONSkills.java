@@ -70,4 +70,16 @@ public class RoomWithJSONSkills extends Room {
 		else
 			return new Pair<Double, Double>(minCost, maxCost);
 	}
+	
+	public List<RepTimeWithJSONSkills> getRepsList()
+			throws InterruptedException, ExecutionException, TimeoutException,
+			JSONException {
+		return DBInterface.getRepTimesListByRoom(this.getId());
+	}
+
+	public List<RepTimeWithJSONSkills> getRepsList(int dayOfWeek)
+			throws InterruptedException, ExecutionException, TimeoutException,
+			JSONException {
+		return DBInterface.getRepTimesListByRoom(this.getId(), dayOfWeek);
+	}
 }

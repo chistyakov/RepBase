@@ -66,10 +66,11 @@ public class AllBasesListActivity extends ListActivity implements
 				// getting information about max and min cost of repTimes for a
 				// base is very heavy operation
 				// TODO: transfer this logic to the server
-				m.put(ATTRIBUTE_NAME_COST,
-						getString(R.string.repCost)
-								+ convCostsRangeToString(base,
-										getString(R.string.tvNoData)));
+// DO NOT DELETE THIS COMMENTS
+//				m.put(ATTRIBUTE_NAME_COST,
+//						getString(R.string.repCost)
+//								+ convCostsRangeToString(base,
+//										getString(R.string.tvNoData)));
 				m.put(ATTRIBUTE_NAME_ID, base.getId());
 				data.add(m);
 			}

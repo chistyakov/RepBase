@@ -88,10 +88,11 @@ public class RoomsListActivity extends ListActivity implements OnClickListener {
 						m.put(ATTRIBUTE_NAME_NAME, room.getName());
 						m.put(ATTRIBUTE_NAME_SQUARE, getString(R.string.square)
 								+ String.valueOf(room.getSquare()));
-						m.put(ATTRIBUTE_NAME_COSTS_RANGE,
-								getString(R.string.repCost)
-										+ convCostsRangeToString(room,
-												getString(R.string.tvNoData)));
+//	DO NOT DELETE THIS COMMENTS
+//						m.put(ATTRIBUTE_NAME_COSTS_RANGE,
+//								getString(R.string.repCost)
+//										+ convCostsRangeToString(room,
+//												getString(R.string.tvNoData)));
 						m.put(ATTRIBUTE_NAME_ID, room.getId());
 						data.add(m);
 					}

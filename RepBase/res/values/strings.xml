@@ -37,5 +37,10 @@
     <string name="city">Город: </string>
     <string name="adderss">Адрес: </string>
     <string name="description">Описание: </string>
-
+    <string name="room">Зал: </string>
+    <string name="base">Точка: </string>
+    <string name="btnReserveText">Забронировать репетицию</string>
+    <string name="schedule">Расписание</string>
+    <string name="rub">руб.</string>
+    <string name="meter">м</string>
 </resources>

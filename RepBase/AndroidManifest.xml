@@ -33,6 +33,7 @@
         <activity android:name=".activities.CreateNewGroupActivity"></activity>
         <activity android:name=".activities.AllBasesListActivity"></activity>
         <activity android:name="com.example.repbase.activities.RoomsListActivity"></activity>
+        <activity android:name=".activities.SingleRoomActivity"></activity>
     </application>
 
 </manifest>
