@@ -9,7 +9,7 @@ import java.util.Map;
 import com.example.repbase.Common;
 import com.example.repbase.R;
 import com.example.repbase.classes.BaseWithJSONSkills;
-import com.example.repbase.classes.RepTimeWithJSONSkills;
+import com.example.repbase.classes.RoomTimeWithJSONSkills;
 import com.example.repbase.classes.RoomWithJSONSkills;
 
 import android.app.Activity;
@@ -75,22 +75,22 @@ public class SingleRoomActivity extends Activity implements OnClickListener {
 			childData = new ArrayList<List<Map<String, String>>>();
 
 			for (int i = 1; i <= 7; i++) {
-				List<RepTimeWithJSONSkills> lRepTimes = room.getRepsList(i);
+				List<RoomTimeWithJSONSkills> lRepTimes = room.getRepsList(i);
 				if (!lRepTimes.isEmpty()) {
 					m = new HashMap<String, String>();
 					m.put(ATTRIBUTE_NAME_DAY, days[i - 1]);
 					lDayOfWeek.add(m);
 
 					childDataItem = new ArrayList<Map<String, String>>();
-					for (RepTimeWithJSONSkills repTime : lRepTimes) {
+					for (RoomTimeWithJSONSkills repTime : lRepTimes) {
 						m = new HashMap<String, String>();
 
 						SimpleDateFormat sdfTime = new SimpleDateFormat(
 								"HH:mm", Common.LOC);
 						sdfTime.setTimeZone(Common.TZONE);
 						m.put(ATTRIBUTE_NAME_TIME,
-								sdfTime.format(repTime.getBegin()) + " - "
-										+ sdfTime.format(repTime.getEnd()));
+								sdfTime.format(repTime.getStartTime()) + " - "
+										+ sdfTime.format(repTime.getEndTime()));
 						m.put(ATTRIBUTE_NAME_COST,
 								String.valueOf(repTime.getCost()) + " "
 										+ getString(R.string.rub));

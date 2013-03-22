@@ -20,6 +20,7 @@ public class RepetitionWithJSONSkills extends Repetition {
 		super(jo.getInt("ID"),
 				(Integer)Common.convJSONNullToNull(jo.get("GroupID")),
 				jo.getInt("RepTimeID"),
+				Common.convJSONStringToDate(jo.getString("Begin")),
 				jo.getInt("Payed"),
 				Common.convJSONStringToDate(jo.getString("PayedDate")),
 				jo.getBoolean("Confirmed"),

@@ -1,7 +1,10 @@
 package com.example.repbase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -15,7 +18,7 @@ import android.util.Log;
 
 import com.example.repbase.classes.BaseWithJSONSkills;
 import com.example.repbase.classes.GroupWithJSONSkills;
-import com.example.repbase.classes.RepTimeWithJSONSkills;
+import com.example.repbase.classes.RoomTimeWithJSONSkills;
 import com.example.repbase.classes.SessionState;
 
 // TODO: spyke: mark class as static
@@ -26,8 +29,8 @@ public class DBInterface
 	public static String URL = "http://test-blabla.no-ip.org/DBService/DBService.svc/";
 	private static final String wrongAccCode = "AccessCode";
 	
-	// generic method is used
-	// exchange its with overloaded method if it doesn't work
+	// generic methods is used
+	// substitute they with overloaded method if it doesn't work
 	private static <T> String wrapParameter(String ParameterName, T Parameter)
 	{
 		return "?" + ParameterName + "=" + String.valueOf(Parameter);
@@ -36,24 +39,21 @@ public class DBInterface
 	{
 		return ParameterName + "=" + String.valueOf(Parameter);
 	}
-	@SuppressWarnings("deprecation")
-	public static String wrapDateParameter(String ParameterName, Date Parameter)
+
+	private static String wrapDateParameter(String ParameterName, Date Parameter)
 	{
-		return '?' + ParameterName + '=' + 
-				Integer.toString(Parameter.getYear()) + '.' + 
-				Integer.toString(Parameter.getMonth()) + '.' + 
-				Integer.toString(Parameter.getDate());
-	}
-	@SuppressWarnings("deprecation")
-	public static String wrapDateParameter_(String ParameterName, Date Parameter)
-	{
-		return ParameterName + '=' + 
-				Integer.toString(Parameter.getYear()) + '.' + 
-				Integer.toString(Parameter.getMonth()) + '.' + 
-				Integer.toString(Parameter.getDate());
+		return '?' + wrapDateParameter_(ParameterName, Parameter);
 	}
 
-	
+	// TODO: substitute returned String with SimpleDateFormating
+	private static String wrapDateParameter_(String ParameterName, Date Parameter)
+	{
+		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy.MM.dd HH:mm", Common.LOC);
+		sdfDate.setTimeZone(Common.TZONE);
+		
+		return ParameterName + '=' + sdfDate.format(Parameter);
+	}
+
 	
 	public static JSONObject checkAuth(String Nick, String Password)
 			throws ExecutionException, InterruptedException, TimeoutException, JSONException
@@ -178,7 +178,7 @@ public class DBInterface
 	
 	public static JSONArray getActiveReptetitions(int UserID)
 			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
-		String MethodURL = "UserGetRepetitions/";
+		String MethodURL = "User_GetRepetitions/";
 		JSONObject reps = getObjectRespond(URL + MethodURL
 				+ wrapParameter("UserID", UserID));
 		return reps.getJSONArray("User_GetRepetitionsResult");
@@ -190,7 +190,7 @@ public class DBInterface
 		return getObjectRespond(URL + MethodURL + wrapParameter("RoomID", RoomID));
 	}
 	
-	public static JSONObject getRepTimeByID(int RepTimeID)
+	public static JSONObject getRoomTimeByID(int RepTimeID)
 			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
 		String MethodURL = "GetRepTimeByID/";
 		return getObjectRespond(URL + MethodURL
@@ -342,16 +342,16 @@ public class DBInterface
 		return retList;
 	}
 	
-	public static List<RepTimeWithJSONSkills> getRepTimesListByRoom(int roomId,
+	public static List<RoomTimeWithJSONSkills> getRoomTimesList(int roomId,
 			int dayOfweek) throws InterruptedException, ExecutionException,
 			TimeoutException, JSONException {
 		String MethodURL = "GetRoomTimes/";
-		List<RepTimeWithJSONSkills> retList = new ArrayList<RepTimeWithJSONSkills>();
+		List<RoomTimeWithJSONSkills> retList = new ArrayList<RoomTimeWithJSONSkills>();
 		JSONArray respond = getArrayRespond(URL + MethodURL
 				+ wrapParameter("RoomID", roomId) + '&'
 				+ wrapParameter_("DayOfWeek", dayOfweek));
 		for (int j = 0; j < respond.length(); j++) {
-			RepTimeWithJSONSkills repTime = new RepTimeWithJSONSkills(
+			RoomTimeWithJSONSkills repTime = new RoomTimeWithJSONSkills(
 					respond.getJSONObject(j));
 			if (!repTime.isDeleted())
 				retList.add(repTime);
@@ -359,12 +359,12 @@ public class DBInterface
 		return retList;
 	}
 	
-	public static List<RepTimeWithJSONSkills> getRepTimesListByRoom(int roomId)
+	public static List<RoomTimeWithJSONSkills> getRoomTimesList(int roomId)
 			throws InterruptedException, ExecutionException, TimeoutException,
 			JSONException {
-		List<RepTimeWithJSONSkills> retList = new ArrayList<RepTimeWithJSONSkills>();
+		List<RoomTimeWithJSONSkills> retList = new ArrayList<RoomTimeWithJSONSkills>();
 		for (int i = 1; i <= 7; i++) {
-			retList.addAll(getRepTimesListByRoom(roomId, i));
+			retList.addAll(getRoomTimesList(roomId, i));
 		}
 		return retList;
 	}	

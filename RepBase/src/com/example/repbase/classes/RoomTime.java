@@ -9,24 +9,24 @@ import android.util.Log;
 import com.example.repbase.Common;
 import com.example.repbase.WrongTimeRangeException;
 
-public class RepTime {
+public class RoomTime {
 	private int id = 0;
-	private Date begin = new Date();
-	private Date end = new Date();
+	private Date startTime = new Date();
+	private Date endTime = new Date();
 	private boolean deleted = false;
 	private int dayOfWeek = 1;
 	private int cost = 0;
 	private int roomId = 0;
 	
-	public RepTime(){
+	public RoomTime(){
 		
 	}
 	
-	public RepTime(int id, Date begin, Date end, boolean deleted,
+	public RoomTime(int id, Date startTime, Date endTime, boolean deleted,
 			int dayOfWeek, int cost, int roomId) {
 		this.id = id;
-		this.begin = begin;
-		this.end = end;
+		this.startTime = startTime;
+		this.endTime = endTime;
 		this.deleted = deleted;
 		this.dayOfWeek = dayOfWeek;
 		this.cost = cost;
@@ -48,31 +48,31 @@ public class RepTime {
 	}
 
 	/**
-	 * @return the begin
+	 * @return the startTime
 	 */
-	public Date getBegin() {
-		return begin;
+	public Date getStartTime() {
+		return startTime;
 	}
 
 	/**
-	 * @param begin the begin to set
+	 * @param startTime the startTime to set
 	 */
-	protected void setBegin(Date begin) {
-		this.begin = begin;
+	protected void setStartTime(Date startTime) {
+		this.startTime = startTime;
 	}
 
 	/**
-	 * @return the end
+	 * @return the endTime
 	 */
-	public Date getEnd() {
-		return end;
+	public Date getEndTime() {
+		return endTime;
 	}
 
 	/**
-	 * @param end the end to set
+	 * @param endTime the endTime to set
 	 */
-	protected void setEnd(Date end) {
-		this.end = end;
+	protected void setEndTime(Date endTime) {
+		this.endTime = endTime;
 	}
 
 	/**
@@ -137,8 +137,8 @@ public class RepTime {
 	
 	public String toStringFullInfo() {
 		String strCommonInfo = "id: " + this.id
-				+ ", begin: " + this.begin
-				+ ", end: " + this.end
+				+ ", begin: " + this.startTime
+				+ ", end: " + this.endTime
 				+ ", deleted: " + this.deleted
 				+ ", dayOfWeek: " + this.dayOfWeek
 				+ ", cost: " + this.cost
@@ -155,9 +155,9 @@ public class RepTime {
 
 			double diffHours = 0.0;
 			Calendar calendarBegin = new GregorianCalendar(Common.TZONE, Common.LOC);
-			calendarBegin.setTime(begin);
+			calendarBegin.setTime(startTime);
 			Calendar calendarEnd = new GregorianCalendar(Common.TZONE, Common.LOC);
-			calendarEnd.setTime(end);
+			calendarEnd.setTime(endTime);
 			
 //			// repTime can't start on one day and finish on other
 //			if (calendarEnd.get(Calendar.DAY_OF_YEAR) != calendarBegin.get(Calendar.DAY_OF_YEAR))

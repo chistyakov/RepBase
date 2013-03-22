@@ -43,17 +43,16 @@ public class RoomWithJSONSkills extends Room {
 	public Pair<Double, Double> getCostRange() throws InterruptedException,
 			ExecutionException, TimeoutException, JSONException,
 			WrongTimeRangeException {
-		List<RepTimeWithJSONSkills> repTimeList = DBInterface
-				.getRepTimesListByRoom(this.getId());
-		if (repTimeList.size() == 0)
+		List<RoomTimeWithJSONSkills> roomTimeList = this.getTimeList();
+		if (roomTimeList.size() == 0)
 			throw new WrongTimeRangeException();
 
 		double maxCost = 0.0;
 		double minCost = Double.MAX_VALUE;
 		boolean flagCorrectCostExist = false;
-		for (RepTimeWithJSONSkills repTime : repTimeList) {
+		for (RoomTimeWithJSONSkills roomTime : roomTimeList) {
 			try {
-				double cost = repTime.getCostPerHour();
+				double cost = roomTime.getCostPerHour();
 				// flag is set true if there is repTime with correct time range
 				// for the room
 				flagCorrectCostExist = true;
@@ -70,16 +69,16 @@ public class RoomWithJSONSkills extends Room {
 		else
 			return new Pair<Double, Double>(minCost, maxCost);
 	}
-	
-	public List<RepTimeWithJSONSkills> getRepsList()
+
+	public List<RoomTimeWithJSONSkills> getTimeList()
 			throws InterruptedException, ExecutionException, TimeoutException,
 			JSONException {
-		return DBInterface.getRepTimesListByRoom(this.getId());
+		return DBInterface.getRoomTimesList(this.getId());
 	}
 
-	public List<RepTimeWithJSONSkills> getRepsList(int dayOfWeek)
+	public List<RoomTimeWithJSONSkills> getRepsList(int dayOfWeek)
 			throws InterruptedException, ExecutionException, TimeoutException,
 			JSONException {
-		return DBInterface.getRepTimesListByRoom(this.getId(), dayOfWeek);
+		return DBInterface.getRoomTimesList(this.getId(), dayOfWeek);
 	}
 }

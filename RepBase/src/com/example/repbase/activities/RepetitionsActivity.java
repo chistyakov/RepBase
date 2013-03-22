@@ -28,7 +28,7 @@ import com.example.repbase.R;
 import com.example.repbase.classes.BaseWithJSONSkills;
 import com.example.repbase.classes.Group;
 import com.example.repbase.classes.GroupWithJSONSkills;
-import com.example.repbase.classes.RepTimeWithJSONSkills;
+import com.example.repbase.classes.RoomTimeWithJSONSkills;
 import com.example.repbase.classes.RepetitionWithJSONSkills;
 import com.example.repbase.classes.RoomWithJSONSkills;
 import com.example.repbase.classes.SessionState;
@@ -79,7 +79,7 @@ public class RepetitionsActivity extends Activity implements OnClickListener
     			
     			final RepetitionWithJSONSkills rep = new RepetitionWithJSONSkills(jRep);
     			Log.d(Common.TEMP_TAG, "REPETITION: " + rep.toStringFullInfo());
-    			final RepTimeWithJSONSkills rTime = new RepTimeWithJSONSkills(jRep.getJSONObject("Time"));
+    			final RoomTimeWithJSONSkills rTime = new RoomTimeWithJSONSkills(jRep.getJSONObject("Time"));
     			Log.d(Common.TEMP_TAG, "REPTIME: " + rTime.toStringFullInfo());
     			final RoomWithJSONSkills rRoom = new RoomWithJSONSkills(jRep.getJSONObject("RepRoom"));
     			Log.d(Common.TEMP_TAG, "ROOM: " + rRoom.toStringFullInfo());
@@ -99,8 +99,8 @@ public class RepetitionsActivity extends Activity implements OnClickListener
     			TextView until = (TextView)item.findViewById(R.id.repUntilText_list);
     			SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm", Common.LOC);
     			sdfTime.setTimeZone(Common.TZONE);
-    			from.setText(sdfTime.format(rTime.getBegin()));
-    			until.setText(sdfTime.format(rTime.getEnd()));
+    			from.setText(sdfTime.format(rTime.getStartTime()));
+    			until.setText(sdfTime.format(rTime.getEndTime()));
     			
     			// display group
     			TextView group = (TextView)item.findViewById(R.id.groupNameText_list);
@@ -116,7 +116,7 @@ public class RepetitionsActivity extends Activity implements OnClickListener
     			TextView date = (TextView)item.findViewById(R.id.repDateText_list);
     			SimpleDateFormat sdfDate = new SimpleDateFormat("dd.MM.yyyy", Common.LOC);
     			sdfDate.setTimeZone(Common.TZONE);
-    			date.setText(sdfDate.format(rTime.getBegin()));
+    			date.setText(sdfDate.format(rep.getDate()));
     			
     			// display money info
     			TextView conf = (TextView)item.findViewById(R.id.repConfirmedText_list);
@@ -147,7 +147,7 @@ public class RepetitionsActivity extends Activity implements OnClickListener
     			color = !color;
     			
     			// display cancel button
-    			if(rTime.getBegin().before(new Date()))
+    			if(rTime.getStartTime().before(new Date()))
     			{
     				Button canc = (Button)item.findViewById(R.id.cancelRepButton_list);
     				canc.setVisibility(4);

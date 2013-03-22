@@ -9,13 +9,13 @@ import org.json.JSONObject;
 import com.example.repbase.Common;
 import com.example.repbase.DBInterface;
 
-public class RepTimeWithJSONSkills extends RepTime {
-	public RepTimeWithJSONSkills(int id) throws JSONException,
+public class RoomTimeWithJSONSkills extends RoomTime {
+	public RoomTimeWithJSONSkills(int id) throws JSONException,
 			InterruptedException, ExecutionException, TimeoutException {
-		this(DBInterface.getRepTimeByID(id));
+		this(DBInterface.getRoomTimeByID(id));
 	}
 	
-	public RepTimeWithJSONSkills(JSONObject jo) throws JSONException {
+	public RoomTimeWithJSONSkills(JSONObject jo) throws JSONException {
 		super(jo.getInt("ID"),
 				Common.convJSONStringToDate(jo.getString("Begin")),
 				Common.convJSONStringToDate(jo.getString("End")),

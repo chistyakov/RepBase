@@ -6,7 +6,8 @@ import java.util.List;
 public class Repetition {
 	private int id;
 	private Integer groupId;
-	private int timeId;
+	private int roomTimeId;
+	private Date date;
 	private int payed;
 	private Date payedDate;
 	private boolean confirmed;
@@ -17,14 +18,15 @@ public class Repetition {
 		
 	}
 	
-	public Repetition(int id, Integer groupId, int timeId, int payed,
+	public Repetition(int id, Integer groupId, int roomTimeId, Date date, int payed,
 			Date payedDate, boolean confirmed, boolean cancelled,
 			List<Integer> servicesIds) {
 		this.id = id;
 //		this.groupId = (groupId != null) ? groupId : -1;
 //		this.groupId = new Integer(groupId);
 		this.groupId = groupId;
-		this.timeId = timeId;
+		this.roomTimeId = roomTimeId;
+		this.date = date;
 		this.payed = payed;
 		this.payedDate = payedDate;
 		this.confirmed = confirmed;
@@ -46,11 +48,11 @@ public class Repetition {
 		this.groupId = Integer.valueOf(groupId);
 	}
 	
-	public int getTimeId() {
-		return timeId;
+	public int getRoomTimeId() {
+		return roomTimeId;
 	}
-	protected void setTimeId(int timeId) {
-		this.timeId = timeId;
+	protected void setRoomTimeId(int roomTimeId) {
+		this.roomTimeId = roomTimeId;
 	}
 	
 	public int getPayed() {
@@ -95,7 +97,8 @@ public class Repetition {
 	public String toStringFullInfo() {
 		String strCommonInfo = "id: " + this.id 
 				+ ", groupId: " + this.groupId
-				+ ", timeId: " + this.timeId
+				+ ", roomTimeId: " + this.roomTimeId
+				+ ", date: " + this.date
 				+ ", payed: " + this.payed
 				+ ", payed date: " + this.payedDate
 				+ ", confirmed: " + this.confirmed 
@@ -110,6 +113,14 @@ public class Repetition {
 		sbServices.append("]");
 
 		return strCommonInfo+", "+sbServices;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	protected void setDate(Date date) {
+		this.date = date;
 	}
 
 }
