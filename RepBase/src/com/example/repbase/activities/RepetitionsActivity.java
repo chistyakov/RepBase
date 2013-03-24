@@ -1,7 +1,9 @@
 package com.example.repbase.activities;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -146,11 +148,26 @@ public class RepetitionsActivity extends Activity implements OnClickListener
     				item.setBackgroundColor(getResources().getColor(R.color.blue_item));
     			color = !color;
     			
-    			// display cancel button
-    			if(rep.getDate().before(new Date()))
+    			// hide cancel button
+    			// Calendar object with date
+    			Calendar calDate = new GregorianCalendar(Common.TZONE, Common.LOC);
+    			calDate.setTime(rep.getDate());
+    			// Calendar object with time
+    			Calendar calTime = new GregorianCalendar(Common.TZONE, Common.LOC);
+    			calTime.setTime(rTime.getStartTime());
+    			// Calendar object with date and time
+    			Calendar startMoment = new GregorianCalendar(Common.TZONE, Common.LOC);
+    			startMoment.set(calDate.get(Calendar.YEAR),
+						calDate.get(Calendar.MONTH),
+						calDate.get(Calendar.DAY_OF_MONTH),
+						calTime.get(Calendar.HOUR_OF_DAY),
+						calTime.get(Calendar.MINUTE),
+						calTime.get(Calendar.SECOND));
+    			// hide button if rep started after current moment
+    			if(startMoment.before(GregorianCalendar.getInstance(Common.TZONE, Common.LOC)))
     			{
     				Button canc = (Button)item.findViewById(R.id.cancelRepButton_list);
-    				canc.setVisibility(4);
+    				canc.setVisibility(android.view.View.INVISIBLE);
     			}
     			
     			Button cancelButton = (Button)item.findViewById(R.id.cancelRepButton_list);

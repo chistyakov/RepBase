@@ -2,10 +2,6 @@ package com.example.repbase.activities;
 
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
-
-import org.json.JSONException;
 
 import com.example.repbase.Common;
 import com.example.repbase.R;

@@ -80,18 +80,4 @@ public class ChoseRoomTimeDialogFragment extends DialogFragment {
 
 		return builder.create();
 	}
-
-	// public static ChoseRoomTimeDialogFragment newInstance(int roomId, Date
-	// date) {
-	// ChoseRoomTimeDialogFragment df = new ChoseRoomTimeDialogFragment();
-	// Bundle args = new Bundle();
-	// args.putInt("roomId", roomId);
-	// args.putLong("dateInMills", date.getTime());
-	// df.setArguments(args);
-	// return df;
-	// }
-
-	public ChoseRoomTimeDialogFragment() {
-		// TODO Auto-generated constructor stub
-	}
 }

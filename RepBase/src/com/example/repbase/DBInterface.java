@@ -179,10 +179,10 @@ public class DBInterface
 	
 	public static JSONArray getActiveReptetitions(int UserID)
 			throws InterruptedException, ExecutionException, JSONException, TimeoutException {
-		String MethodURL = "User_GetRepetitions/";
+		String MethodURL = "User_GetAllRepetitions/";
 		JSONObject reps = getObjectRespond(URL + MethodURL
 				+ wrapParameter("UserID", UserID));
-		return reps.getJSONArray("User_GetRepetitionsResult");
+		return reps.getJSONArray("User_GetAllRepetitionsResult");
 	}
 	
 	public static JSONObject getRoomByID(int RoomID)
