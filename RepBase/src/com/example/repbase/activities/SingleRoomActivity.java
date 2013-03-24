@@ -75,7 +75,7 @@ public class SingleRoomActivity extends Activity implements OnClickListener {
 			childData = new ArrayList<List<Map<String, String>>>();
 
 			for (int i = 1; i <= 7; i++) {
-				List<RoomTimeWithJSONSkills> lRepTimes = room.getRepsList(i);
+				List<RoomTimeWithJSONSkills> lRepTimes = room.getRoomTimesList(i);
 				if (!lRepTimes.isEmpty()) {
 					m = new HashMap<String, String>();
 					m.put(ATTRIBUTE_NAME_DAY, days[i - 1]);

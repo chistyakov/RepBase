@@ -43,7 +43,7 @@ public class RoomWithJSONSkills extends Room {
 	public Pair<Double, Double> getCostRange() throws InterruptedException,
 			ExecutionException, TimeoutException, JSONException,
 			WrongTimeRangeException {
-		List<RoomTimeWithJSONSkills> roomTimeList = this.getTimeList();
+		List<RoomTimeWithJSONSkills> roomTimeList = this.getRoomTimesList();
 		if (roomTimeList.size() == 0)
 			throw new WrongTimeRangeException();
 
@@ -70,13 +70,13 @@ public class RoomWithJSONSkills extends Room {
 			return new Pair<Double, Double>(minCost, maxCost);
 	}
 
-	public List<RoomTimeWithJSONSkills> getTimeList()
+	public List<RoomTimeWithJSONSkills> getRoomTimesList()
 			throws InterruptedException, ExecutionException, TimeoutException,
 			JSONException {
 		return DBInterface.getRoomTimesList(this.getId());
 	}
 
-	public List<RoomTimeWithJSONSkills> getRepsList(int dayOfWeek)
+	public List<RoomTimeWithJSONSkills> getRoomTimesList(int dayOfWeek)
 			throws InterruptedException, ExecutionException, TimeoutException,
 			JSONException {
 		return DBInterface.getRoomTimesList(this.getId(), dayOfWeek);
