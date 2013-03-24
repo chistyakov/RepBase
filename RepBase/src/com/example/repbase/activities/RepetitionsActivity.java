@@ -147,7 +147,7 @@ public class RepetitionsActivity extends Activity implements OnClickListener
     			color = !color;
     			
     			// display cancel button
-    			if(rTime.getStartTime().before(new Date()))
+    			if(rep.getDate().before(new Date()))
     			{
     				Button canc = (Button)item.findViewById(R.id.cancelRepButton_list);
     				canc.setVisibility(4);

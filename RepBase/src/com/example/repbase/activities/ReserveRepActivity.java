@@ -1,6 +1,7 @@
 package com.example.repbase.activities;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -14,6 +15,7 @@ import com.exina.android.calendar.CalendarView;
 import com.exina.android.calendar.Cell;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +34,7 @@ public class ReserveRepActivity extends Activity implements OnClickListener,
 	private Button btnNextMonth;
 	private TextView tvMonth;
 	private String[] monthes;
+	private int roomId = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +60,7 @@ public class ReserveRepActivity extends Activity implements OnClickListener,
 			refreshControls();
 
 			Intent intent = getIntent();
-			final int roomId = intent.getIntExtra("roomId", 0);
+			roomId = intent.getIntExtra("roomId", 0);
 			SparseArray<List<RoomTimeWithJSONSkills>> saRoomTimePerDay = new SparseArray<List<RoomTimeWithJSONSkills>>(
 					7);
 			RoomWithJSONSkills room = new RoomWithJSONSkills(roomId);
@@ -100,6 +103,24 @@ public class ReserveRepActivity extends Activity implements OnClickListener,
 				this,
 				cell.getDayOfMonth() + " " + monthes[cv.getMonth()] + " "
 						+ cv.getYear());
+		ChoseRoomTimeDialogFragment dialog = new ChoseRoomTimeDialogFragment();
+
+		Bundle args = new Bundle();
+		args.putInt("roomId", roomId);
+		Calendar d = new GregorianCalendar(Common.TZONE, Common.LOC);
+		d.setFirstDayOfWeek(Calendar.MONDAY);
+		Log.d(Common.TEMP_TAG, this.getClass().getSimpleName() +": " + (new Date(cv.getYear(), cv.getMonth()+1, cell.getDayOfMonth())));
+		d.set(cv.getYear(), cv.getMonth(), cell.getDayOfMonth(), 0, 0, 0);
+//		d.set(Calendar.HOUR_OF_DAY, 0);
+//		d.set(Calendar.MINUTE, 0);
+//		d.set(Calendar.SECOND, 0);
+//		d.set(Calendar.MILLISECOND, 0);
+		args.putLong("dateInMills", d.getTimeInMillis());
+		Log.d(Common.TEMP_TAG, this.getClass().getSimpleName() +": " + d.toString());
+		dialog.setArguments(args);
+
+		FragmentManager fm = getFragmentManager();
+		dialog.show(fm, "ChoseRoomTimeDialogFragment");
 	}
 
 	private void refreshControls() {

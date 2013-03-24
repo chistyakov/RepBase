@@ -29,7 +29,7 @@ public class GetJSONArrayFromUrl extends AsyncTask<String, Void, JSONArray> {
 
 	protected JSONArray doInBackground(String... Urls) {
 		try {
-			HttpGet request = new HttpGet(Urls[0]);
+			HttpGet request = new HttpGet(Urls[0].replace(" ", "%20"));
 			request.setHeader("Accept", "application/json");
 			request.setHeader("Content-type", "application/json");
 

@@ -43,6 +43,8 @@
     <string name="schedule">Расписание</string>
     <string name="rub">руб.</string>
     <string name="meter">м</string>
+    <string name="pick_room_time">Выберите время</string>
+    <string name="pick_group">Выберите группу</string>
     <string name="hint">Hint: touch the first or last day of month to move to previous or next month.</string>
 
 </resources>

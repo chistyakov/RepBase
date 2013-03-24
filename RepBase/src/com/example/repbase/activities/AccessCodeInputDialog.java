@@ -70,15 +70,11 @@ public class AccessCodeInputDialog extends DialogFragment
 	}
 
 	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-		Log.d(Common.TEMP_TAG, "method onEditorAction(...) was launched");
 		if (EditorInfo.IME_ACTION_DONE == actionId) {
-			Log.d(Common.TEMP_TAG, "method onEditorAction(...); EditorInfo.IME_ACTION_DONE == actionId");
 			// Return input text to activity
 			AccessCodeInputDialogListener activity = (AccessCodeInputDialogListener) getActivity();
 			activity.onFinishedAccCodeDialog(groupId, etAccCode.getText().toString());
-			Log.d(Common.TEMP_TAG, "method onEditorAction(...); before dismiss()");
 			this.dismiss();
-			Log.d(Common.TEMP_TAG, "method onEditorAction(...); after dismiss()");
 			return true;
 		}
 		return false;

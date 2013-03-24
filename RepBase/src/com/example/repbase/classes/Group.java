@@ -56,7 +56,7 @@ public class Group {
 		return accessCode_Num;
 	}
 	
-	public boolean getDelStatus(){
+	public boolean isDeleted(){
 		return deleted;
 	}
 	protected void markAsDeleted(){

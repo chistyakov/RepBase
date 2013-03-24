@@ -42,7 +42,7 @@ public class AllGroupsListActivity extends ListActivity
 			Iterator<GroupWithJSONSkills> itr = lAllGroups.iterator();
 			while(itr.hasNext()){
 				GroupWithJSONSkills group = itr.next();
-				if(group.getDelStatus() || group.getUserIds().contains(SessionState.currentUser.getId()))
+				if(group.isDeleted() || group.getUserIds().contains(SessionState.currentUser.getId()))
 					itr.remove();
 			}
 			

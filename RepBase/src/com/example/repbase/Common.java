@@ -165,4 +165,8 @@ public class Common {
 		return ob.equals(JSONObject.NULL) ? null : ob;
 	}
 	
+	public static int convCalDayOfWeekToDBSpecific(int cal) {
+		return cal==1 ? 7: --cal;
+	}
+	
 }

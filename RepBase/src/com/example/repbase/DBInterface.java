@@ -18,6 +18,7 @@ import android.util.Log;
 
 import com.example.repbase.classes.BaseWithJSONSkills;
 import com.example.repbase.classes.GroupWithJSONSkills;
+import com.example.repbase.classes.RepetitionWithJSONSkills;
 import com.example.repbase.classes.RoomTimeWithJSONSkills;
 import com.example.repbase.classes.SessionState;
 
@@ -367,8 +368,22 @@ public class DBInterface
 			retList.addAll(getRoomTimesList(roomId, i));
 		}
 		return retList;
-	}	
+	}
 	
+	public static JSONObject createRepetition(int roomId, int groupId,
+			int roomTimeId, Date date) throws InterruptedException,
+			ExecutionException, TimeoutException, JSONException {
+		String methodUrl = "CreateRepetition/";
+		return getObjectRespond(URL
+				+ methodUrl
+				+ wrapParameter("ActionPerformerID",
+						SessionState.currentUser.getId()) + '&'
+				+ wrapParameter_("RoomID", roomId) + '&'
+				+ wrapParameter_("GroupID", groupId) + '&'
+				+ wrapParameter_("RepTimeID", roomTimeId) + '&'
+				+ wrapDateParameter_("Begin", date));
+		// CreateRepetition/?ActionPerformerID={ActionPerformerID}&RoomID={RoomID}&GroupID={GroupID}&RepTimeID={RepTimeID}&Begin={Begin}&End={End}
+	}	
 	
 	private static JSONObject getObjectRespond(String URL) throws InterruptedException, ExecutionException, TimeoutException, JSONException {
 		Log.d(Common.JSON_TAG, URL);

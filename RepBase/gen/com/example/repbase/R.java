@@ -191,10 +191,12 @@ public final class R {
         public static final int errCancelRep=0x7f07001a;
         public static final int groups_tab=0x7f070005;
         public static final int hello_world=0x7f070001;
-        public static final int hint=0x7f07002b;
+        public static final int hint=0x7f07002d;
         public static final int menu_settings=0x7f070002;
         public static final int meter=0x7f07002a;
         public static final int okCancelRep=0x7f07001b;
+        public static final int pick_group=0x7f07002c;
+        public static final int pick_room_time=0x7f07002b;
         public static final int repCost=0x7f07001f;
         public static final int room=0x7f070025;
         public static final int rub=0x7f070029;

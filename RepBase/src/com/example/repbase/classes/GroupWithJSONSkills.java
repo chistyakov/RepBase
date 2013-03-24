@@ -1,5 +1,6 @@
 package com.example.repbase.classes;
 
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -132,5 +133,22 @@ public class GroupWithJSONSkills extends Group {
 			return true;
 		}
 		return false;
+	}
+	
+	public RepetitionWithJSONSkills createRepetition(
+			RoomTimeWithJSONSkills roomTime, Date date)
+			throws InterruptedException, ExecutionException, TimeoutException,
+			JSONException {
+		JSONObject jo = DBInterface.createRepetition(roomTime.getRoomId(),
+				this.getId(), roomTime.getId(), date);
+		RepetitionWithJSONSkills rep = new RepetitionWithJSONSkills(jo);
+		return rep;
+	}
+	
+	public RepetitionWithJSONSkills createRepetition(int roomTimeId, Date date)
+			throws JSONException, InterruptedException, ExecutionException,
+			TimeoutException {
+		RoomTimeWithJSONSkills roomTime = new RoomTimeWithJSONSkills(roomTimeId);
+		return createRepetition(roomTime, date);
 	}
 }

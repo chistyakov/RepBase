@@ -1,5 +1,7 @@
 package com.example.repbase.classes;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -256,5 +258,19 @@ public class UserWithJSONSkills extends User {
 		DBInterface.deleteUser(getId());
 		refreshFromServer();
 		return (getDelStatus());
+	}
+	
+	
+	public List<GroupWithJSONSkills> getGroupsList()
+			throws InterruptedException, ExecutionException, JSONException,
+			TimeoutException {
+		List<GroupWithJSONSkills> lGrous = new ArrayList<GroupWithJSONSkills>(
+				getGroupsIDList().size());
+		for (int groupId : getGroupsIDList()) {
+			GroupWithJSONSkills group = new GroupWithJSONSkills(groupId);
+			if(!group.isDeleted())
+				lGrous.add(group);
+		}
+		return lGrous;
 	}
 }

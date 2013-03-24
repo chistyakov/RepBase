@@ -149,7 +149,7 @@ public class GroupsActivity extends ListActivity implements OnClickListener{
 				// fill list
 				for (int groupId : SessionState.currentUser.getGroupsIDList()) {
 					GroupWithJSONSkills group = new GroupWithJSONSkills(groupId);
-					if (!group.getDelStatus())
+					if (!group.isDeleted())
 						lGroups.add(group); // add only groups witch wasn't
 											// deleted
 				}
