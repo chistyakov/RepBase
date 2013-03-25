@@ -186,6 +186,7 @@ public final class R {
         public static final int errCancelRep=0x7f07001a;
         public static final int groups_tab=0x7f070005;
         public static final int hello_world=0x7f070001;
+        public static final int leaveGroup=0x7f07002f;
         public static final int menu_settings=0x7f070002;
         public static final int meter=0x7f07002a;
         public static final int okCancelRep=0x7f07001b;

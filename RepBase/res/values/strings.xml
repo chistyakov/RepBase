@@ -47,5 +47,6 @@
     <string name="pick_group">Выберите группу</string>
     <string name="self_group">без группы</string>
     <string name="deleteGroup">Удалить группу?</string>
+    <string name="leaveGroup">Выйти из группы?</string>
 
 </resources>

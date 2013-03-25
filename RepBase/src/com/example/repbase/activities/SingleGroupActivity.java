@@ -14,6 +14,8 @@ import com.example.repbase.classes.SessionState;
 import com.example.repbase.classes.UserWithJSONSkills;
 import com.example.repbase.dialogs.DeleteGroupDialogFragment;
 import com.example.repbase.dialogs.DeleteGroupDialogFragment.DeleteGroupDialogFragmentListener;
+import com.example.repbase.dialogs.LeaveGroupDialogFragment;
+import com.example.repbase.dialogs.LeaveGroupDialogFragment.LeaveGroupDialogFragmentListener;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -28,11 +30,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-// TODO: add clarification dialogs for leaving the group and deleting the group
 public class SingleGroupActivity extends Activity implements OnClickListener,
-		DeleteGroupDialogFragmentListener {
+		DeleteGroupDialogFragmentListener, LeaveGroupDialogFragmentListener {
 
 	private String DEL_GROUP_DIALOG_TAG = "DeleteGroupDialogFragment";
+	private String LEAVE_GROUP_DIALOG_TAG = "LeaveGroupDialogFragment";
 
 	private TextView tvGroupName;
 	private TextView tvAccCode;
@@ -111,45 +113,48 @@ public class SingleGroupActivity extends Activity implements OnClickListener,
 	}
 
 	public void onClick(View v) {
-		try {
-			switch (v.getId()) {
-			case R.id.btnGenerateAccCode:
-				generateNewAccCode();
-				break;
-			case R.id.btnLeaveGroup:
-				leaveGroup();
-				break;
-			case R.id.btnDeleteGroup:
-				DeleteGroupDialogFragment dialog = new DeleteGroupDialogFragment();
-				dialog.show(getFragmentManager(), DEL_GROUP_DIALOG_TAG);
-				break;
-			case R.id.btnBack:
-				finish();
-				break;
-			}
-		} catch (Exception e) {
-			Log.d(Common.EXC_TAG, this.getClass().getName(), e);
-			Common.ShowMessageBox(this, e.getMessage());
+		switch (v.getId()) {
+		case R.id.btnGenerateAccCode:
+			generateNewAccCode();
+			break;
+		case R.id.btnLeaveGroup:
+			LeaveGroupDialogFragment leaveD = new LeaveGroupDialogFragment();
+			leaveD.show(getFragmentManager(), LEAVE_GROUP_DIALOG_TAG);
+			break;
+		case R.id.btnDeleteGroup:
+			DeleteGroupDialogFragment delD = new DeleteGroupDialogFragment();
+			delD.show(getFragmentManager(), DEL_GROUP_DIALOG_TAG);
+			break;
+		case R.id.btnBack:
+			finish();
+			break;
 		}
 	}
 
-	private void generateNewAccCode() throws InterruptedException,
-			ExecutionException, TimeoutException, JSONException {
-		tvAccCode.setText(group.generateNewAccessCode());
-	}
-
-	private void leaveGroup() throws InterruptedException, ExecutionException,
-			TimeoutException, JSONException {
-		group.deleteUser(SessionState.currentUser);
-		Common.ShowMessageBox(this, getString(R.string.successLeaveGroup) + group.getName());
-		finish();
+	private void generateNewAccCode() {
+		try {
+			tvAccCode.setText(group.generateNewAccessCode());
+		} catch (Exception e) {
+			Log.d(Common.EXC_TAG, this.getClass().getName(), e);
+			Common.ShowMessageBox(this, e.getMessage());		
+		}
 	}
 
 	public void onDialogPositiveClick(DialogFragment dialog) {
 		if (dialog.getTag().equals(DEL_GROUP_DIALOG_TAG)) {
 			try {
+				group.delete();
+				Common.ShowMessageBox(this, getString(R.string.successDelGroup));
+				finish();
+			} catch (Exception e) {
+				Log.d(Common.EXC_TAG, this.getClass().getSimpleName(), e);
+				Common.ShowMessageBox(getApplication(), e.getMessage());
+			}
+		} else if (dialog.getTag().equals(LEAVE_GROUP_DIALOG_TAG)) {
+			try {
 				group.deleteUser(SessionState.currentUser);
-				Common.ShowMessageBox(this, getString(R.string.successDelGroup) + group.getName());
+				Common.ShowMessageBox(this,
+						getString(R.string.successLeaveGroup) + group.getName());
 				finish();
 			} catch (Exception e) {
 				Log.d(Common.EXC_TAG, this.getClass().getSimpleName(), e);
