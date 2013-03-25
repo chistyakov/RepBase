@@ -1,4 +1,4 @@
-package com.example.repbase.activities;
+package com.example.repbase.dialogs;
 
 import com.example.repbase.Common;
 import com.example.repbase.R;
@@ -34,7 +34,7 @@ public class AccessCodeInputDialog extends DialogFragment
 	 * @param groupId group's id to check access code
 	 * @param groupName group's name to set dialog's title
 	 */
-    static AccessCodeInputDialog newInstance(int groupId, String groupName) {
+    public static AccessCodeInputDialog newInstance(int groupId, String groupName) {
     	AccessCodeInputDialog d = new AccessCodeInputDialog();
 
         // Supply group input as an argument.

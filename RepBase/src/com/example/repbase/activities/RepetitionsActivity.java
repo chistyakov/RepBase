@@ -33,6 +33,7 @@ import com.example.repbase.classes.RoomTimeWithJSONSkills;
 import com.example.repbase.classes.RepetitionWithJSONSkills;
 import com.example.repbase.classes.RoomWithJSONSkills;
 import com.example.repbase.classes.SessionState;
+import com.example.repbase.dialogs.CancelRepDialogFragment;
 
 public class RepetitionsActivity extends Activity implements OnClickListener
 {

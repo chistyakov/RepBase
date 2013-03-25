@@ -6,9 +6,10 @@ import java.util.List;
 import com.example.repbase.Common;
 import com.example.repbase.DBInterface;
 import com.example.repbase.R;
-import com.example.repbase.activities.AccessCodeInputDialog.AccessCodeInputDialogListener;
 import com.example.repbase.classes.GroupWithJSONSkills;
 import com.example.repbase.classes.SessionState;
+import com.example.repbase.dialogs.AccessCodeInputDialog;
+import com.example.repbase.dialogs.AccessCodeInputDialog.AccessCodeInputDialogListener;
 
 import android.app.FragmentManager;
 //import android.R;

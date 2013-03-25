@@ -1,4 +1,4 @@
-package com.example.repbase.activities;
+package com.example.repbase.dialogs;
 
 import com.example.repbase.R;
 

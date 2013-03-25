@@ -10,6 +10,7 @@ import com.example.repbase.Common;
 import com.example.repbase.R;
 import com.example.repbase.classes.RoomTimeWithJSONSkills;
 import com.example.repbase.classes.RoomWithJSONSkills;
+import com.example.repbase.dialogs.ChoseRoomTimeDialogFragment;
 import com.exina.android.calendar.CalendarView;
 import com.exina.android.calendar.Cell;
 
