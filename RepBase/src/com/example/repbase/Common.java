@@ -106,10 +106,10 @@ public class Common {
 		* afaik, Android does not currently support java7 */
 
 		if (engStr
-				.equals("Invalid argument. Invalid \"Nickname\" argument - length")) {
+				.equals("Invalid argument. Invalid \\\"Nickname\\\" argument - length")) {
 			return "Длина ника от 4 до 15 символов";
 		} else if (engStr
-				.equals("Invalid argument. Invalid \"Nickname\" argument - already exists")) {
+				.equals("Invalid argument. Invalid \\\"Nickname\\\" argument - already exists")) {
 			return "Пользователь с таким ником уже зарегистрирован";
 		} else if (engStr
 				.equals("Invalid argument. Invalid \"Password\" argument - length")) {

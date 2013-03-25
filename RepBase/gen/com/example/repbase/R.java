@@ -202,6 +202,7 @@ public final class R {
         public static final int room=0x7f070025;
         public static final int rub=0x7f070029;
         public static final int schedule=0x7f070028;
+        public static final int self_group=0x7f07002e;
         public static final int square=0x7f070021;
         public static final int successCreateGroup=0x7f070015;
         public static final int successDelGroup=0x7f070014;

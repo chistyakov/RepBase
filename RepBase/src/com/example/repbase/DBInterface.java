@@ -370,16 +370,18 @@ public class DBInterface
 		return retList;
 	}
 	
-	public static JSONObject createRepetition(int roomId, int groupId,
+	public static JSONObject createRepetition(int roomId, Integer groupId,
 			int roomTimeId, Date date) throws InterruptedException,
 			ExecutionException, TimeoutException, JSONException {
 		String methodUrl = "CreateRepetition/";
+		// insert blank string if group is null
+		String strGroupParam = (groupId == null) ? "" : String.valueOf(groupId);
 		return getObjectRespond(URL
 				+ methodUrl
 				+ wrapParameter("ActionPerformerID",
 						SessionState.currentUser.getId()) + '&'
 				+ wrapParameter_("RoomID", roomId) + '&'
-				+ wrapParameter_("GroupID", groupId) + '&'
+				+ wrapParameter_("GroupID", strGroupParam) + '&'
 				+ wrapParameter_("RepTimeID", roomTimeId) + '&'
 				+ wrapDateParameter_("Begin", date));
 		// CreateRepetition/?ActionPerformerID={ActionPerformerID}&RoomID={RoomID}&GroupID={GroupID}&RepTimeID={RepTimeID}&Begin={Begin}&End={End}

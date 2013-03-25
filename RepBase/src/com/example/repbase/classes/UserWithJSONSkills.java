@@ -264,8 +264,7 @@ public class UserWithJSONSkills extends User {
 	public List<GroupWithJSONSkills> getGroupsList()
 			throws InterruptedException, ExecutionException, JSONException,
 			TimeoutException {
-		List<GroupWithJSONSkills> lGrous = new ArrayList<GroupWithJSONSkills>(
-				getGroupsIDList().size());
+		List<GroupWithJSONSkills> lGrous = new ArrayList<GroupWithJSONSkills>();
 		for (int groupId : getGroupsIDList()) {
 			GroupWithJSONSkills group = new GroupWithJSONSkills(groupId);
 			if(!group.isDeleted())

@@ -104,7 +104,7 @@ public class Repetition {
 				+ ", confirmed: " + this.confirmed 
 				+ ", cancelled: " + this.cancelled;
 		StringBuilder sbServices = new StringBuilder();
-		sbServices.append("rooms: [");
+		sbServices.append("services: [");
 		for (Integer i : servicesIds)
 		{
 			sbServices.append(i);
