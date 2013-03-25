@@ -2,6 +2,7 @@ package com.example.repbase.activities;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TabHost;
 
 import com.example.repbase.Common;
@@ -13,6 +14,7 @@ public class AuthorizedActivity extends TabActivity
 {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
+		Log.d(Common.TEMP_TAG, this.getClass().getSimpleName() + " onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authorized);
         
@@ -47,4 +49,32 @@ public class AuthorizedActivity extends TabActivity
     {
     	Common.ShowMessageBox(AuthorizedActivity.this, msg);
     }
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		Log.d(Common.TEMP_TAG, this.getClass().getSimpleName() + ": onDestroy");
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		Log.d(Common.TEMP_TAG, this.getClass().getSimpleName() + ": onPause");
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		Log.d(Common.TEMP_TAG, this.getClass().getSimpleName() + ": onResume");
+	}
+
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		Log.d(Common.TEMP_TAG, this.getClass().getSimpleName() + ": onStop");
+	}
 }

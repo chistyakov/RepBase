@@ -199,6 +199,7 @@ public final class R {
         public static final int self_group=0x7f07002d;
         public static final int square=0x7f070021;
         public static final int successCreateGroup=0x7f070015;
+        public static final int successCreateRep=0x7f070030;
         public static final int successDelGroup=0x7f070014;
         public static final int successEnterIntoGroup=0x7f070012;
         public static final int successLeaveGroup=0x7f070013;

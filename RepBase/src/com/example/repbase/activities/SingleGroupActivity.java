@@ -2,10 +2,6 @@ package com.example.repbase.activities;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
-
-import org.json.JSONException;
 
 import com.example.repbase.Common;
 import com.example.repbase.R;
@@ -126,7 +122,12 @@ public class SingleGroupActivity extends Activity implements OnClickListener,
 			delD.show(getFragmentManager(), DEL_GROUP_DIALOG_TAG);
 			break;
 		case R.id.btnBack:
-			finish();
+			Intent intent = new Intent(this, AuthorizedActivity.class);
+			// resume AuthorizedActivity and delete all activities from activity
+			// stack above AuthorizedActivity
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//			intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			startActivity(intent);
 			break;
 		}
 	}

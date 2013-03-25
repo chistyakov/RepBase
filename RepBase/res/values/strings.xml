@@ -48,5 +48,6 @@
     <string name="self_group">без группы</string>
     <string name="deleteGroup">Удалить группу?</string>
     <string name="leaveGroup">Выйти из группы?</string>
+    <string name="successCreateRep">Репетиция создана</string>
 
 </resources>
