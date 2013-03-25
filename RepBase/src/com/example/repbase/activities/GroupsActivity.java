@@ -141,27 +141,22 @@ public class GroupsActivity extends ListActivity implements OnClickListener{
 			// other user)
 			SessionState.currentUser.refreshFromServer();
 			// list with user's groups
-			List<GroupWithJSONSkills> lGroups = new ArrayList<GroupWithJSONSkills>();
-			// set text for case when user doesn't have groups
-			String greating = getString(R.string.tvGroupsGreetingTextFail);
-			// check user's groups
-			if (SessionState.currentUser.getGroupsIDList().size() != 0) {
-				// fill list
-				for (int groupId : SessionState.currentUser.getGroupsIDList()) {
-					GroupWithJSONSkills group = new GroupWithJSONSkills(groupId);
-					if (!group.isDeleted())
-						lGroups.add(group); // add only groups witch wasn't
-											// deleted
-				}
-				// listGroups doesn't contain deleted groups!
-				if (lGroups.size() != 0) {
-					ArrayAdapter<GroupWithJSONSkills> adapter = new ArrayAdapter<GroupWithJSONSkills>(
-							this, android.R.layout.simple_list_item_1, lGroups);
-					setListAdapter(adapter);
-					// set greeting text: "You exist in those groups:"
-					greating = getString(R.string.tvGroupsGreetingText);
-				} else
-					setListAdapter(null);
+			List<GroupWithJSONSkills> lGroups = SessionState.currentUser
+					.getGroupsList();
+			String greating;
+			// check SessionState.currentUser's groupslist first to do not
+			// call to server if user doesn't contain in groups
+			if (!SessionState.currentUser.getGroupsIDList().isEmpty()
+					&& !lGroups.isEmpty()) {
+				ArrayAdapter<GroupWithJSONSkills> adapter = new ArrayAdapter<GroupWithJSONSkills>(
+						this, android.R.layout.simple_list_item_1, lGroups);
+				setListAdapter(adapter);
+				// set greeting text: "You exist in those groups:"
+				greating = getString(R.string.tvGroupsGreetingText);
+			} else {
+				setListAdapter(null);
+				// set text for case when user doesn't have groups
+				greating = getString(R.string.tvGroupsGreetingTextFail);
 			}
 
 			tvGreeting = (TextView) vHeader.findViewById(R.id.tvGroupsGreeting);
