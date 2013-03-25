@@ -106,31 +106,39 @@ public class Common {
 		* afaik, Android does not currently support java7 */
 
 		if (engStr
+				.equals("Invalid argument. Invalid \"Nickname\" argument - length")||engStr
 				.equals("Invalid argument. Invalid \\\"Nickname\\\" argument - length")) {
 			return "Длина ника от 4 до 15 символов";
 		} else if (engStr
+				.equals("Invalid argument. Invalid \"Nickname\" argument - already exists")||engStr
 				.equals("Invalid argument. Invalid \\\"Nickname\\\" argument - already exists")) {
 			return "Пользователь с таким ником уже зарегистрирован";
 		} else if (engStr
-				.equals("Invalid argument. Invalid \"Password\" argument - length")) {
+				.equals("Invalid argument. Invalid \"Password\" argument - length")||engStr
+				.equals("Invalid argument. Invalid \\\"Password\\\" argument - length")) {
 			return "Длина пароля от 5 до 25 символов";
 		} else if (engStr
-				.equals("Invalid argument. Invalid \"Name\" argument - length")) {
+				.equals("Invalid argument. Invalid \"Name\" argument - length")||engStr
+				.equals("Invalid argument. Invalid \\\"Name\\\" argument - length")) {
 			return "Длина имени до 20 символов";
 		} else if (engStr
-				.equals("Invalid argument. Invalid \"Surname\" argument - length")) {
+				.equals("Invalid argument. Invalid \"Surname\" argument - length")||engStr
+				.equals("Invalid argument. Invalid \\\"Surname\\\" argument - length")) {
 			return "Длина фамилии до 20 символов";
 		} else if (engStr.equals("Invalid phone number format")) {
 			// return "Неверный формат номера телефона"
 			return "Неверная длина номера телефона (необходимо 11 цифр)";
 		} else if (engStr
-				.equals("Invalid argument. Invalid \"Phone\" argument - length")) {
+				.equals("Invalid argument. Invalid \"Phone\" argument - length")||engStr
+				.equals("Invalid argument. Invalid \\\"Phone\\\" argument - length")) {
 			return "Неверная длина номера телефона (необходимо 11 цифр)";
 		} else if (engStr
-				.equals("Invalid argument. Invalid \"Phone\" argument - already exists")) {
+				.equals("Invalid argument. Invalid \"Phone\" argument - already exists")||engStr
+				.equals("Invalid argument. Invalid \\\"Phone\\\" argument - already exists")) {
 			return "Пользователь с таким номером тел. уже зарегистрирован";
 		} else if (engStr
-				.equals("Invalid argument. Invalid \"E-mail\" argument - already exists")) {
+				.equals("Invalid argument. Invalid \"E-mail\" argument - already exists")||engStr
+				.equals("Invalid argument. Invalid \\\"E-mail\\\" argument - already exists")) {
 			return "Пользователь с таким e-mail уже зарегистрирован";
 		} else if (engStr.equals("There is no such user in database")) {
 			return "Такого пользователя не сущуствует";

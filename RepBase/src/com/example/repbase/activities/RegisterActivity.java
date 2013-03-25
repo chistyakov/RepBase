@@ -1,7 +1,5 @@
 package com.example.repbase.activities;
 
-import org.json.JSONException;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -85,15 +83,9 @@ public class RegisterActivity extends Activity {
 								});
 						ad.show();
 					}
-				} catch (JSONException e) {
-					Log.d("reg", e.toString());
-					StackTraceElement[] ste = e.getStackTrace();
-					for (int i = 0; i < ste.length; i++) {
-						Log.d("reg", ste[i].toString());						
-					}
-					ShowMessageBox(Common.translateToRu(e.getMessage()));
 				} catch (Exception e) {
-					ShowMessageBox(e.toString());
+					Log.d(Common.EXC_TAG, this.getClass().getSimpleName(), e);
+					ShowMessageBox(e.getMessage());
 				}
 			}
 		};
