@@ -37,6 +37,7 @@ import com.example.repbase.classes.SessionState;
 public class RepetitionsActivity extends Activity implements OnClickListener
 {
 	private Button btnReserveRep;
+	private TextView tvNoDate;
 	@Override
     public void onCreate(Bundle savedInstanceState)
 	{
@@ -44,6 +45,8 @@ public class RepetitionsActivity extends Activity implements OnClickListener
         setContentView(R.layout.activity_repetitions);
         btnReserveRep = (Button) findViewById(R.id.addRepetitionButton);
         btnReserveRep.setOnClickListener(this);
+        
+        tvNoDate = (TextView) findViewById(R.id.tvNoData);
         
         try
         {
@@ -74,11 +77,14 @@ public class RepetitionsActivity extends Activity implements OnClickListener
     		
     		boolean color = true;
     		
+    		layout.removeAllViews();
     		for (int i = 0; i < reps.length(); i++)
     		{
     			JSONObject jRep = reps.getJSONObject(i);
     			
     			final RepetitionWithJSONSkills rep = new RepetitionWithJSONSkills(jRep);
+    			if (rep.isCancelled())
+    				continue;
     			Log.d(Common.TEMP_TAG, "REPETITION: " + rep.toStringFullInfo());
     			final RoomTimeWithJSONSkills rTime = new RoomTimeWithJSONSkills(jRep.getJSONObject("Time"));
     			Log.d(Common.TEMP_TAG, "REPTIME: " + rTime.toStringFullInfo());
@@ -194,6 +200,11 @@ public class RepetitionsActivity extends Activity implements OnClickListener
     			
     			layout.addView(item);
     		}
+    		if(layout.getChildCount()==0)
+    			tvNoDate.setVisibility(View.VISIBLE);
+    		else
+    			tvNoDate.setVisibility(View.GONE);
+    			
     	}
 	}
 
@@ -204,5 +215,19 @@ public class RepetitionsActivity extends Activity implements OnClickListener
 			Intent intent = new Intent(this, AllBasesListActivity.class);
 			startActivity(intent);
 		}
+	}
+
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+        try
+        {
+        	Refresh();
+        }
+        catch(Exception e)
+        {
+        	Log.d(Common.EXC_TAG, this.getClass().getName(), e);
+        	ShowMessageBox("Exception occured: " + e);
+        }
 	}
 }
