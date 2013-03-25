@@ -52,7 +52,7 @@ public class MainActivity extends Activity {
 					// so UserWithJSONskills.actuality was created :(
 					if (SessionState.currentUser.isActual()) {
 						Log.d(Common.TEMP_TAG, "user was created. Without any exception.");
-						if (!SessionState.currentUser.getDelStatus()) {
+						if (!SessionState.currentUser.isDeleted()) {
 							// goto AuthorizedActivity
 							Intent intent = new Intent(MainActivity.this,
 									AuthorizedActivity.class);

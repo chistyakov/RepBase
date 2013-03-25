@@ -127,7 +127,7 @@ public class User {
 	}
 
 	// deleted
-	public boolean getDelStatus() {
+	public boolean isDeleted() {
 		return deleted;
 	}
 	
@@ -140,7 +140,7 @@ public class User {
 	}
 	
 	// banned
-	public boolean getBanStatus() {
+	public boolean isBanned() {
 		return banned;
 	}
 	

@@ -18,6 +18,7 @@ import com.example.repbase.classes.BaseWithJSONSkills;
 import com.example.repbase.classes.GroupWithJSONSkills;
 import com.example.repbase.classes.RoomTimeWithJSONSkills;
 import com.example.repbase.classes.SessionState;
+import com.example.repbase.classes.UserWithJSONSkills;
 
 // TODO: spyke: mark class as static
 // (all methods are static but GetAvailableTimes())
@@ -382,7 +383,25 @@ public class DBInterface
 				+ wrapParameter_("RepTimeID", roomTimeId) + '&'
 				+ wrapDateParameter_("Begin", date));
 		// CreateRepetition/?ActionPerformerID={ActionPerformerID}&RoomID={RoomID}&GroupID={GroupID}&RepTimeID={RepTimeID}&Begin={Begin}&End={End}
-	}	
+	}
+	
+	public static List<UserWithJSONSkills> getUsersList(int groupId)
+			throws InterruptedException, ExecutionException, TimeoutException,
+			JSONException {
+		String methodUrl = "Group_LoadUsers/";
+		List<UserWithJSONSkills> lUsers = new ArrayList<UserWithJSONSkills>();
+		JSONArray ja = getArrayRespond(URL + methodUrl
+				+ wrapParameter("GroupID", groupId));
+		for (int i = 0; i < ja.length(); i++) {
+			UserWithJSONSkills user = new UserWithJSONSkills(
+					ja.getJSONObject(i));
+			if (!user.isDeleted()) {
+				lUsers.add(user);
+			}
+		}
+		return lUsers;
+		// Group_LoadUsers/?GroupID={GroupID}
+	}
 	
 	private static JSONObject getObjectRespond(String URL) throws InterruptedException, ExecutionException, TimeoutException, JSONException {
 		Log.d(Common.JSON_TAG, URL);

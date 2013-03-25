@@ -257,7 +257,7 @@ public class UserWithJSONSkills extends User {
 			JSONException, TimeoutException {
 		DBInterface.deleteUser(getId());
 		refreshFromServer();
-		return (getDelStatus());
+		return (isDeleted());
 	}
 	
 	

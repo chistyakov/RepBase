@@ -1,6 +1,7 @@
 package com.example.repbase.classes;
 
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -150,5 +151,10 @@ public class GroupWithJSONSkills extends Group {
 			TimeoutException {
 		RoomTimeWithJSONSkills roomTime = new RoomTimeWithJSONSkills(roomTimeId);
 		return createRepetition(roomTime, date);
+	}
+	
+	public List<UserWithJSONSkills> getUsersList() throws InterruptedException,
+			ExecutionException, TimeoutException, JSONException {
+		return DBInterface.getUsersList(this.getId());
 	}
 }

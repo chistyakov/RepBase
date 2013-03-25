@@ -40,7 +40,6 @@ public class SingleGroupActivity extends Activity implements OnClickListener{
 	private Button btnBack;
 	
 	GroupWithJSONSkills group;
-	// TODO: implement Group_LoadUsers/?GroupID={GroupID} (single request)
 	
 	List<UserWithJSONSkills> lUsers = new ArrayList<UserWithJSONSkills>();
 	
@@ -54,13 +53,7 @@ public class SingleGroupActivity extends Activity implements OnClickListener{
 			Intent intent = getIntent();
 			Log.d(Common.TEMP_TAG, String.valueOf(intent.getIntExtra("groupId", 0)));
 			group = new GroupWithJSONSkills(intent.getIntExtra("groupId", 0));
-			if(group.getUserIds().size() != 0){
-				for (int userId: group.getUserIds()){
-					UserWithJSONSkills user = new UserWithJSONSkills(userId);
-					if (!user.getDelStatus())
-						lUsers.add(user);
-				}
-			}
+			lUsers = group.getUsersList();
 			
 			tvGroupName = (TextView) findViewById(R.id.tvGroupName);
 			tvAccCode = (TextView) findViewById(R.id.tvAccCode);
@@ -70,7 +63,7 @@ public class SingleGroupActivity extends Activity implements OnClickListener{
 			llMemberGroup = (LinearLayout) findViewById(R.id.llGroupMemberBox);
 			LayoutInflater li = getLayoutInflater();
 			// lUser list contains all nondeleted users
-			if(lUsers.size() != 0){
+			if(!lUsers.isEmpty()){
 				tvMemberGroupHeader.setText(getString(R.string.tvGroupMemberHeder));
 				// create textview from xml with user's name and surname for every member
 				for (UserWithJSONSkills user : lUsers){
