@@ -49,7 +49,7 @@ public class SingleGroupActivity extends Activity implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		try {
 			super.onCreate(savedInstanceState);
-			setContentView(R.layout.activity_singlegroup);
+			setContentView(R.layout.activity_single_group);
 
 			Intent intent = getIntent();
 			Log.d(Common.TEMP_TAG, String.valueOf(intent.getIntExtra("groupId", 0)));
@@ -74,7 +74,7 @@ public class SingleGroupActivity extends Activity implements OnClickListener{
 				tvMemberGroupHeader.setText(getString(R.string.tvGroupMemberHeder));
 				// create textview from xml with user's name and surname for every member
 				for (UserWithJSONSkills user : lUsers){
-					View item = li.inflate(R.layout.group_member_box_item, llMemberGroup, false);
+					View item = li.inflate(R.layout.item_groupmembers_list, llMemberGroup, false);
 					TextView tvName = (TextView) item.findViewById(R.id.tvGroupMember);
 					tvName.setText(user.getName() + " " + user.getSurname());
 					// mark current user
@@ -118,7 +118,7 @@ public class SingleGroupActivity extends Activity implements OnClickListener{
 					deleteGroup();
 					break;
 				case R.id.btnBack :
-					goBack();
+					finish();
 					break;
 			}
 		} catch (Exception e) {
@@ -137,22 +137,13 @@ public class SingleGroupActivity extends Activity implements OnClickListener{
 			TimeoutException, JSONException {
 		group.deleteUser(SessionState.currentUser);
 		Common.ShowMessageBox(this, getString(R.string.successLeaveGroup) + group.getName());
-		goBack();
+		finish();
 	}
 	
 	private void deleteGroup() throws InterruptedException, ExecutionException,
 			TimeoutException, JSONException {
 		group.delete();
 		Common.ShowMessageBox(this, getString(R.string.successDelGroup));
-		goBack();
-	}
-	
-	private void goBack(){
-//		Intent intent = new Intent(this, GroupsActivity.class);
-//		startActivity(intent);
-//		finishActivity(0);
 		finish();
 	}
-	
-
 }

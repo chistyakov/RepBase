@@ -93,7 +93,7 @@ public class RepetitionsActivity extends Activity implements OnClickListener
     			final BaseWithJSONSkills rBase = new BaseWithJSONSkills(jRep.getJSONObject("RepBase"));
     			Log.d(Common.TEMP_TAG, "BASE: " + rBase.toStringFullInfo());
 
-    			View item = inflater.inflate(R.layout.replist_item, layout, false);
+    			View item = inflater.inflate(R.layout.item_repslist, layout, false);
     			
     			// display base name and room name
     			TextView basename = (TextView)item.findViewById(R.id.baseNameText_list);

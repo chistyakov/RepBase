@@ -1,6 +1,5 @@
 package com.example.repbase.activities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.example.repbase.Common;
@@ -22,13 +21,7 @@ import android.widget.TextView;
 
 public class GroupsActivity extends ListActivity implements OnClickListener{
 //TODO: try to add buttons directly to llHeader (currently view element is used)
-//	private TextView test;
-	
-//	private final String ATTRIBUTE_GROUP_ID = "gid";
-//	private final String ATTRIBUTE_GROUP_NAME = "gname";
-//	private final String ATTRIBUTE_ACC_CODE = "accCode";
-	
-//	private ListView lvGroups;
+
 	private Button btnEnterIntoGroup;
 	private Button btnCreateGroup;
 	private TextView tvGreeting;
@@ -38,57 +31,6 @@ public class GroupsActivity extends ListActivity implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_custom_list);
 		refresh();
-//			lvGroups.addHeaderView(vHeader);
-			
-			
-//			ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(
-//					listGroups.size());
-//			Map<String, Object> m;
-//			for (int i = 0; i < listGroups.size(); i++) {
-//				m = new HashMap<String, Object>();
-//				m.put(ATTRIBUTE_GROUP_ID, listGroups.get(i).getID());
-//				m.put(ATTRIBUTE_GROUP_NAME, listGroups.get(i).getName());
-//				m.put(ATTRIBUTE_ACC_CODE, listGroups.get(i).getAccessCode());
-//				data.add(m);
-//			}
-//		    
-//		    String[] from = new String[] {ATTRIBUTE_GROUP_NAME, ATTRIBUTE_ACC_CODE};
-//		    int[] to = new int[] {R.id.tvGroupName, R.id.tvAccCode};
-//		    
-//			PaintedSimpleAdapter sAdapter = new PaintedSimpleAdapter(this, data,
-//					R.layout.grouplist_item, from, to);
-//
-//		    lvGroups = (ListView) findViewById(R.id.lvGroups);
-//		    lvGroups.setAdapter(sAdapter);
-//		    
-//		    lvGroups.setOnItemClickListener(new OnItemClickListener() {
-////		        @Override
-//		        public void onItemClick(AdapterView<?> list, View view, int position, long id) {
-//		        	Map<String, Object> m = (Map<String, Object>)list.getItemAtPosition(position);
-//		        	Log.i(Common.TEMP_TAG, "onListItemClick: " + position + "; " + m.get(ATTRIBUTE_GROUP_ID));
-//		        	
-//		        	Intent intent = new Intent(getApplicationContext(), SingleGroupActivity.class);
-//		        	intent.putExtra("groupId",  (Integer)m.get(ATTRIBUTE_GROUP_ID));
-//		        	startActivity(intent);
-//		        	}
-//
-//		        });
-			
-//			lvGroups = (ListView)findViewById(R.id.lvGroups);
-			
-
-//			lvGroups.setAdapter(adapter);			
-			
-//			lvGroups.setOnItemClickListener(new OnItemClickListener() {
-//
-//				public void onItemClick(AdapterView<?> list, View view,
-//						int position, long id) {
-//					GroupWithJSONSkills g = (GroupWithJSONSkills)list.getItemAtPosition(position);
-//		        	Intent intent = new Intent(getApplicationContext(), SingleGroupActivity.class);
-//		        	intent.putExtra("groupId",  g.getId());
-//		        	startActivity(intent);
-//				}
-//			});
 	}
 
 	@Override

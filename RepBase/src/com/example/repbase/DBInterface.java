@@ -2,9 +2,7 @@ package com.example.repbase;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -18,7 +16,6 @@ import android.util.Log;
 
 import com.example.repbase.classes.BaseWithJSONSkills;
 import com.example.repbase.classes.GroupWithJSONSkills;
-import com.example.repbase.classes.RepetitionWithJSONSkills;
 import com.example.repbase.classes.RoomTimeWithJSONSkills;
 import com.example.repbase.classes.SessionState;
 

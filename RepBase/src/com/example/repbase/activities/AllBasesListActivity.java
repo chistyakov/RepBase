@@ -81,7 +81,7 @@ public class AllBasesListActivity extends ListActivity implements
 					R.id.tvBaseCostsRange };
 
 			SimpleAdapter sAdapter = new SimpleAdapter(this, data,
-					R.layout.baseslist_item, from, to);
+					R.layout.item_baseslist, from, to);
 			setListAdapter(sAdapter);
 
 		} catch (Exception e) {

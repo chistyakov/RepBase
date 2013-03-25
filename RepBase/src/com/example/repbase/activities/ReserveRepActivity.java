@@ -1,7 +1,6 @@
 package com.example.repbase.activities;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -93,9 +92,6 @@ public class ReserveRepActivity extends Activity implements OnClickListener,
 	}
 
 	public void onTouch(Cell cell) {
-		// int year = cv.getYear();
-		// int month = cv.getMonth();
-		// int day = cell.getDayOfMonth();
 
 		if (cell instanceof CalendarView.GrayCell)
 			return;
@@ -109,14 +105,8 @@ public class ReserveRepActivity extends Activity implements OnClickListener,
 		args.putInt("roomId", roomId);
 		Calendar d = new GregorianCalendar(Common.TZONE, Common.LOC);
 		d.setFirstDayOfWeek(Calendar.MONDAY);
-		Log.d(Common.TEMP_TAG, this.getClass().getSimpleName() +": " + (new Date(cv.getYear(), cv.getMonth()+1, cell.getDayOfMonth())));
 		d.set(cv.getYear(), cv.getMonth(), cell.getDayOfMonth(), 0, 0, 0);
-//		d.set(Calendar.HOUR_OF_DAY, 0);
-//		d.set(Calendar.MINUTE, 0);
-//		d.set(Calendar.SECOND, 0);
-//		d.set(Calendar.MILLISECOND, 0);
 		args.putLong("dateInMills", d.getTimeInMillis());
-		Log.d(Common.TEMP_TAG, this.getClass().getSimpleName() +": " + d.toString());
 		dialog.setArguments(args);
 
 		FragmentManager fm = getFragmentManager();

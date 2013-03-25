@@ -75,24 +75,24 @@ public class SingleRoomActivity extends Activity implements OnClickListener {
 			childData = new ArrayList<List<Map<String, String>>>();
 
 			for (int i = 1; i <= 7; i++) {
-				List<RoomTimeWithJSONSkills> lRepTimes = room.getRoomTimesList(i);
-				if (!lRepTimes.isEmpty()) {
+				List<RoomTimeWithJSONSkills> lRoomTimes = room.getRoomTimesList(i);
+				if (!lRoomTimes.isEmpty()) {
 					m = new HashMap<String, String>();
 					m.put(ATTRIBUTE_NAME_DAY, days[i - 1]);
 					lDayOfWeek.add(m);
 
 					childDataItem = new ArrayList<Map<String, String>>();
-					for (RoomTimeWithJSONSkills repTime : lRepTimes) {
+					for (RoomTimeWithJSONSkills roomTime : lRoomTimes) {
 						m = new HashMap<String, String>();
 
 						SimpleDateFormat sdfTime = new SimpleDateFormat(
 								"HH:mm", Common.LOC);
 						sdfTime.setTimeZone(Common.TZONE);
 						m.put(ATTRIBUTE_NAME_TIME,
-								sdfTime.format(repTime.getStartTime()) + " - "
-										+ sdfTime.format(repTime.getEndTime()));
+								sdfTime.format(roomTime.getStartTime()) + " - "
+										+ sdfTime.format(roomTime.getEndTime()));
 						m.put(ATTRIBUTE_NAME_COST,
-								String.valueOf(repTime.getCost()) + " "
+								String.valueOf(roomTime.getCost()) + " "
 										+ getString(R.string.rub));
 						childDataItem.add(m);
 					}
@@ -105,11 +105,11 @@ public class SingleRoomActivity extends Activity implements OnClickListener {
 
 			String childFrom[] = new String[] { ATTRIBUTE_NAME_TIME,
 					ATTRIBUTE_NAME_COST };
-			int childTo[] = new int[] { R.id.tvRepTimeRange, R.id.tvRepTimeCost };
+			int childTo[] = new int[] { R.id.tvRoomTimeRange, R.id.tvRoomTimeCost };
 
 			SimpleExpandableListAdapter adapter = new SimpleExpandableListAdapter(
-					this, lDayOfWeek, R.layout.reptimelist_expandable_item,
-					groupFrom, groupTo, childData, R.layout.reptimelist_item,
+					this, lDayOfWeek, R.layout.item_roomtimeslist_expandable,
+					groupFrom, groupTo, childData, R.layout.item_roomtimeslist,
 					childFrom, childTo);
 
 			elRepTimes = (ExpandableListView) findViewById(R.id.elRepTimes);

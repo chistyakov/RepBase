@@ -102,7 +102,7 @@ public class RoomsListActivity extends ListActivity implements OnClickListener {
 							R.id.tvRoomCostsRange };
 
 					SimpleAdapter sAdapter = new SimpleAdapter(this, data,
-							R.layout.roomslist_item, from, to);
+							R.layout.item_roomslist, from, to);
 					setListAdapter(sAdapter);
 				}
 				

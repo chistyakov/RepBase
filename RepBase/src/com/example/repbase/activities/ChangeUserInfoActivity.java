@@ -38,7 +38,7 @@ public class ChangeUserInfoActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_changeuserinfo);
+		setContentView(R.layout.activity_change_user_info);
 
 		Button decline = (Button) findViewById(R.id.declineUserChangesButton);
 		Button save = (Button) findViewById(R.id.saveUserChangesButton);
