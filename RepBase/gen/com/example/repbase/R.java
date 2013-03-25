@@ -180,12 +180,12 @@ public final class R {
         public static final int btnOkText=0x7f07000e;
         public static final int btnReserveText=0x7f070027;
         public static final int city=0x7f070022;
+        public static final int deleteGroup=0x7f07002e;
         public static final int description=0x7f070024;
         public static final int dlgAccCodeTitle=0x7f070016;
         public static final int errCancelRep=0x7f07001a;
         public static final int groups_tab=0x7f070005;
         public static final int hello_world=0x7f070001;
-        public static final int hint=0x7f07002d;
         public static final int menu_settings=0x7f070002;
         public static final int meter=0x7f07002a;
         public static final int okCancelRep=0x7f07001b;
@@ -195,7 +195,7 @@ public final class R {
         public static final int room=0x7f070025;
         public static final int rub=0x7f070029;
         public static final int schedule=0x7f070028;
-        public static final int self_group=0x7f07002e;
+        public static final int self_group=0x7f07002d;
         public static final int square=0x7f070021;
         public static final int successCreateGroup=0x7f070015;
         public static final int successDelGroup=0x7f070014;
